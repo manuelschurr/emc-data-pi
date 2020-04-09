@@ -2,7 +2,7 @@
 .idea
 
 # ignore vs code project config files
-.vscode/settings.json
+.vscode
 .vs
 
 # ignore logs
@@ -12,14 +12,14 @@ logs
 # ignore 3rd party lib
 node_modules
 
-# ignore key
-*.pem
-
 # Ignore built files
-build
+build/**/*
 
 # ignore test converage
 coverage
 
-# Environment varibles
-.env
+# git
+.gitignore
+.git
+
+.DS_Store  
