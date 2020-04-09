@@ -1,5 +1,5 @@
 {
-  "name": "emc-data-server-backend",
+  "name": "emc-data-pi-backend",
   "version": "1.0.0",
   "description": "",
   "main": "build/index.js",
