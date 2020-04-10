@@ -4,6 +4,10 @@
   "description": "Raspberry Pi backend for EMC data transmission",
   "main": "index.js",
   "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/manuelschurr/emc-data-pi.git"
+  },
   "scripts": {
     "start": "npm run build && npm run serve",
     "serve": "node -r dotenv/config build/server.js",
