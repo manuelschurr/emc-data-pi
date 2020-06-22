@@ -1,18 +1,24 @@
 <template>
   <div id="app">
-    <header/>
+    <Header/>
+    <PatientData/>
+    <RightSidebar/>
   </div>
 </template>
 
 <script>
-import header from "./components/header.vue";
-import mainComponent from "./components/mainComponent.vue";
+import Header from "./components/header.vue";
+import PatientData from "./components/patientData.vue";
+import RightSidebar from "./components/rightSidebar";
+
+//import MainComponent from "./components/mainComponent.vue";
 
 export default {
   name: "App",
   components: {
-    header,
-    mainComponent
+    Header,
+    PatientData,
+    RightSidebar
   }
 };
 </script>
