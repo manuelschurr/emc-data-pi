@@ -1,8 +1,14 @@
 <template>
   <div id="app">
 <<<<<<< HEAD
+<<<<<<< HEAD
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
+=======
+    <Header/>
+    <PatientData/>
+    <RightSidebar/>
+>>>>>>> parent of 360967a... add basic navigation and map component
 =======
     <Header/>
     <PatientData/>
@@ -31,6 +37,9 @@ export default {
     Header,
     PatientData,
     RightSidebar
+<<<<<<< HEAD
+>>>>>>> parent of 360967a... add basic navigation and map component
+=======
 >>>>>>> parent of 360967a... add basic navigation and map component
   }
 };
