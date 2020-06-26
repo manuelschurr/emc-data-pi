@@ -1,37 +1,17 @@
 <template>
   <div id="app">
-<<<<<<< HEAD
     <img alt="Vue logo" src="./assets/logo.png" />
     <HelloWorld msg="Welcome to Your Vue.js App" />
-=======
-    <Header/>
-    <PatientData/>
-    <RightSidebar/>
->>>>>>> parent of 360967a... add basic navigation and map component
   </div>
 </template>
 
 <script>
-<<<<<<< HEAD
 import HelloWorld from "./components/HelloWorld.vue";
-=======
-import Header from "./components/header.vue";
-import PatientData from "./components/patientData.vue";
-import RightSidebar from "./components/rightSidebar";
-
-//import MainComponent from "./components/mainComponent.vue";
->>>>>>> parent of 360967a... add basic navigation and map component
 
 export default {
   name: "App",
   components: {
-<<<<<<< HEAD
     HelloWorld
-=======
-    Header,
-    PatientData,
-    RightSidebar
->>>>>>> parent of 360967a... add basic navigation and map component
   }
 };
 </script>
