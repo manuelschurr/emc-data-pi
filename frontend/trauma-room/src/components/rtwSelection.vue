@@ -3,6 +3,7 @@
     <div>
       <h1>
         <img
+          style="vertical-align:text-top"
           alt="Universitätsklinikum Mannheim logo"
           src="../assets/umm_logo.png"
           height="50"
@@ -14,7 +15,8 @@
         <li v-for="ambulance in ambulances" v-bind:key="ambulance.id">
           <p>
             <button @click="selectRTW">
-              <img src="../assets/ambulance.png" height="100" width="100" />
+              <img src="../assets/ambulance.png" width="100" />
+              <br />
               <br />
               RTW - {{ ambulance.name }}
               <br />
@@ -23,27 +25,20 @@
               Diagnose: {{ ambulance.diagnosis }}
               <br />
               <ul>
-                <li
-                  v-for="(value, name) in ambulance.abcde_schema"
-                  v-bind:key="name"
-                >
+                <li v-for="(value, name) in ambulance.abcde_schema" v-bind:key="name">
                   <div class="text-center">
                     <button
                       v-if="value === true"
                       disabled
                       pill
                       class="rounded-circle notOkABCDE"
-                    >
-                      {{ name }}
-                    </button>
+                    >{{ name }}</button>
                     <button
                       v-else-if="value === false"
                       disabled
                       pill
                       class="rounded-circle okABCDE"
-                    >
-                      {{ name }}
-                    </button>
+                    >{{ name }}</button>
                   </div>
                 </li>
               </ul>
@@ -90,24 +85,20 @@ export default {
 };
 </script>
 
-<!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
 h1 {
-  margin: 0 0 40px;
+  margin: 5px 0 40px;
 }
 h3 {
   margin: 100px 0 0;
 }
 ul {
   list-style-type: none;
-  padding: 0;
+  padding: 5px;
 }
 li {
   display: inline-block;
   margin: 5px 5px;
-}
-a {
-  color: #42b983;
 }
 .okABCDE {
   background-color: lightgreen;
