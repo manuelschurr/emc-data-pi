@@ -23,7 +23,7 @@
         class="btn btn-secondary"
       >
         Position <br />
-        ETA: 5 min
+        ETA: {{ arrivalTime ? arrivalTime : "-" }}
       </button>
     </div>
   </div>
@@ -37,6 +37,9 @@ export default {
       pastEvent: null,
       selection: []
     };
+  },
+  props: {
+    arrivalTime: Number
   },
   methods: {
     setSelection(event) {

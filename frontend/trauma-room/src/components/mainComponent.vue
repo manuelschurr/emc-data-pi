@@ -1,6 +1,6 @@
 <template>
   <div>
-    <component v-bind:is="component" />
+    <component v-bind:is="component" :Rtwdocument="Rtwdocument" />
   </div>
 </template>
 
@@ -19,6 +19,9 @@ export default {
     return {
       component: null
     };
+  },
+  props: {
+    Rtwdocument: Object
   },
   mounted() {
     this.$root.$on("selectedComponent", data => {
