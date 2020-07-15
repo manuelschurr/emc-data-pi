@@ -1,46 +1,35 @@
 <template>
-  <div>PulsOxy</div>
+  <div class="small">
+    Puls Oxy
+    <puls-oxy-line v-if="loaded" :chartdata="chartdata" :options="options" />
+  </div>
 </template>
 
-// <script>
-// import { Line, mixins } from "vue-chartjs";
-// const { reactiveProp } = mixins;
-// export default Line.extend({
-//   mixins: [reactiveProp],
-//   data() {
-//     return {
-//       options: {
-//         scales: {
-//           yAxes: [
-//             {
-//               ticks: {
-//                 beginAtZero: true
-//               },
-//               gridLines: {
-//                 display: true
-//               }
-//             }
-//           ],
-//           xAxes: [
-//             {
-//               gridLines: {
-//                 display: false
-//               }
-//             }
-//           ]
-//         },
-//         legend: {
-//           display: true
-//         },
-//         responsive: true,
-//         maintainAspectRatio: false
-//       }
-//     };
-//   },
-//   mounted() {
-//     // this.chartData is created in the mixin
-//     this.renderChart(this.chartData, this.options);
-//   }
-// });
-//
+<script>
+import PulsOxyLine from "./pulsOxyLine.vue";
+export default {
+  name: 'LineChartContainer',
+  components: { PulsOxyLine },
+  data: () => ({
+    loaded: false,
+    chartdata: null
+  }),
+  async mounted () {
+    this.loaded = false
+    try {
+      const { userlist } = await fetch('/api/userlist')
+      this.chartdata = userlist
+      this.loaded = true
+    } catch (e) {
+      console.error(e)
+    }
+  }
+}
 </script>
+
+<style>
+.small {
+  max-width: 700px;
+  max-height: 300px;
+}
+</style>
