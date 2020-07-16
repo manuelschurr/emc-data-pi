@@ -61,13 +61,8 @@ export default {
   },
   methods: {
     adjustPosition: function(lat, long) {
-      this.markerPatient.lat = lat;
-      this.markerPatient.lng = long;
-      if (this.zoom % 2 === 1) {
-        this.zoom = this.zoom - 1;
-      } else {
-        this.zoom = this.zoom + 1;
-      }
+      this.markerPatient = L.latLng(lat, long);
+      this.center = L.latLng(lat, long);
     }
   }
 };
