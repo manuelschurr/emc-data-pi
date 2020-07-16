@@ -23,7 +23,7 @@
         class="btn btn-secondary"
       >
         Position <br />
-        ETA: {{ arrivalTime ? arrivalTime : "-" }}
+        ETA: {{ arrivalTime ? arrivalTime : "-" | secToTime }}
       </button>
     </div>
   </div>
@@ -53,6 +53,16 @@ export default {
         this.showComponent = false;
         this.pastEvent = event.currentTarget.id;
       }
+    }
+  },
+  filters: {
+    secToTime: function(value) {
+      var seconds = Math.floor(value % 60).toString();
+      var minutes = Math.floor(value / 60).toString();
+      if (seconds.length === 1) {
+        seconds = "0" + seconds;
+      }
+      return minutes + ":" + seconds;
     }
   }
 };
