@@ -1,7 +1,7 @@
 <template>
   <div>
     <!-- Header -->
-    <div class="container-fluid bg-dark text-white">
+    <div class="container-fluid bg-dark text-white" style="text-align: left">
       <p>
         <b>Patienten-Stammdaten</b>
       </p>
@@ -61,15 +61,42 @@
       <div class="form-group row">
         <label for="textarea" class="col-2 col-form-label">Sonstiges</label>
         <div class="col-10">
-          <textarea id="textarea" name="textarea" cols="40" rows="10" class="form-control"></textarea>
+          <textarea id="textarea" name="textarea" cols="40" rows="13" class="form-control"></textarea>
         </div>
       </div>
     </form>
     <!-- Right Middle Half of Screen -->
     <div>
-      <!-- Video Placeholder -->
+      <!-- Video -->
       <div class="stream">
-        <img src="./images/videoIcon.png" class="img-fluid" alt="Video Placeholder Image" />
+        <video width="320" height="180" controls poster="./images/videoIcon.png">
+          <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" />
+          <p>Your browser does not support video tag - maybe think about using a modern browser.</p>
+        </video>
+        <!-- <img src="./images/videoIcon.png" class="img-fluid" alt="Video Placeholder Image" /> -->
+      </div>
+      <!-- Start and Stop Stream Buttons -->
+      <!-- Video Stream Start - Button -->
+      <div class="streamButtons">
+        <button
+          type="button"
+          id="button_play"
+          class="btn btn-lg"
+          onclick="buttonPlayPress()"
+          style="background-color: #0069D9; color: white; margin-right: 0.5vw"
+        >
+          <i class="fa fa-video-camera"></i>
+        </button>
+        <!-- Video Stream Pause - Button -->
+        <button
+          type="button"
+          id="button_stop"
+          class="btn btn-lg"
+          onclick="buttonStopPress()"
+          style="background-color: crimson; color: white"
+        >
+          <i class="fa fa-stop"></i>
+        </button>
       </div>
       <!-- ABCDE Schema -->
       <div class="text-fields-right">
@@ -239,7 +266,7 @@ export default {
 }
 
 .text-fields-right {
-  padding: 2vw;
+  padding: 1vw;
   float: top;
 }
 
@@ -255,12 +282,14 @@ export default {
   position: absolute;
   bottom: 0vw;
   left: 1vw;
-  width: 10%;
-  height: 10%;
+  width: 7%;
+  height: 7%;
 }
 
 .submit-button {
   display: inline-block;
   position: relative;
+}
+.streamButtons {
 }
 </style>
