@@ -1,16 +1,19 @@
 <template>
   <div id="app">
     <UI msg="Patienten Stammdaten" />
+    <Camera />
   </div>
 </template>
 
 <script>
 import UI from "./components/UI.vue";
+import Camera from "./components/Camera.vue";
 
 export default {
   name: "App",
   components: {
-    UI
+    UI,
+    Camera
   }
 };
 </script>

@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div style="background-color: #fafafa">
     <!-- Header -->
     <div class="container-fluid bg-dark text-white" style="text-align: left">
       <p>
@@ -49,7 +49,7 @@
           <div class="input-group">
             <input id name type="text" class="form-control" />
             <div class="input-group-append">
-              <div class="input-group-text">
+              <div class="input-group-text btn btn-light" type="button" onclick>
                 <!-- Microphone Button -->
                 <i class="fa fa-microphone"></i>
               </div>
@@ -59,9 +59,18 @@
       </div>
       <!-- Sonstiges Textarea -->
       <div class="form-group row">
-        <label for="textarea" class="col-2 col-form-label">Sonstiges</label>
+        <label for="textarea" class="col-2 col-form-label labelTop">Sonstiges</label>
         <div class="col-10">
           <textarea id="textarea" name="textarea" cols="40" rows="13" class="form-control"></textarea>
+          <!-- Microphone Button
+          <div class="iconTextArea">
+            <div class="microTextArea">
+              <div class="input-group-text btn btn-light">
+                <i class="fa fa-microphone"></i>
+              </div>
+            </div>
+          </div>
+          -->
         </div>
       </div>
     </form>
@@ -69,7 +78,7 @@
     <div>
       <!-- Video -->
       <div class="stream">
-        <video width="320" height="180" controls poster="./images/videoIcon.png">
+        <video width="320" height="180" controls poster="./images/videoIcon2.png">
           <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" />
           <p>Your browser does not support video tag - maybe think about using a modern browser.</p>
         </video>
@@ -81,9 +90,9 @@
         <button
           type="button"
           id="button_play"
-          class="btn btn-lg"
+          class="btn btn-primary btn-lg"
           onclick="buttonPlayPress()"
-          style="background-color: #0069D9; color: white; margin-right: 0.5vw"
+          style="margin-right: 0.5vw"
         >
           <i class="fa fa-video-camera"></i>
         </button>
@@ -91,9 +100,8 @@
         <button
           type="button"
           id="button_stop"
-          class="btn btn-lg"
+          class="btn btn-danger btn-lg"
           onclick="buttonStopPress()"
-          style="background-color: crimson; color: white"
         >
           <i class="fa fa-stop"></i>
         </button>
@@ -108,7 +116,12 @@
           <div class="col-11">
             <div class="input-group">
               <div class="input-group-prepend">
-                <div class="input-group-text" style="background-color: #22bf45">
+                <div
+                  class="input-group-text btn btn-success"
+                  type="button"
+                  onclick
+                  style="background-color: #22bf45; color: white"
+                >
                   <i class="fa fa-check"></i>
                 </div>
               </div>
@@ -120,7 +133,12 @@
                 class="form-control"
               />
               <div class="input-group-append">
-                <div class="input-group-text" style="background-color: #C82333">
+                <div
+                  class="input-group-text btn btn-danger"
+                  type="button"
+                  onclick
+                  style="background-color: #C82333; color: white"
+                >
                   <i class="fa fa-close"></i>
                 </div>
               </div>
@@ -135,7 +153,12 @@
           <div class="col-11">
             <div class="input-group">
               <div class="input-group-prepend">
-                <div class="input-group-text" style="background-color: #22bf45">
+                <div
+                  class="input-group-text btn btn-success"
+                  style="background-color: #22bf45; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-check"></i>
                 </div>
               </div>
@@ -147,7 +170,12 @@
                 class="form-control"
               />
               <div class="input-group-append">
-                <div class="input-group-text" style="background-color: #C82333">
+                <div
+                  class="input-group-text btn btn-danger"
+                  style="background-color: #C82333; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-close"></i>
                 </div>
               </div>
@@ -162,7 +190,12 @@
           <div class="col-11">
             <div class="input-group">
               <div class="input-group-prepend">
-                <div class="input-group-text" style="background-color: #22bf45">
+                <div
+                  class="input-group-text btn btn-success"
+                  style="background-color: #22bf45; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-check"></i>
                 </div>
               </div>
@@ -174,7 +207,12 @@
                 class="form-control"
               />
               <div class="input-group-append">
-                <div class="input-group-text" style="background-color: #C82333">
+                <div
+                  class="input-group-text btn btn-danger"
+                  style="background-color: #C82333; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-close"></i>
                 </div>
               </div>
@@ -189,7 +227,12 @@
           <div class="col-11">
             <div class="input-group">
               <div class="input-group-prepend">
-                <div class="input-group-text" style="background-color: #22bf45">
+                <div
+                  class="input-group-text btn btn-success"
+                  style="background-color: #22bf45; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-check"></i>
                 </div>
               </div>
@@ -201,7 +244,12 @@
                 class="form-control"
               />
               <div class="input-group-append">
-                <div class="input-group-text" style="background-color: #C82333">
+                <div
+                  class="input-group-text btn btn-danger"
+                  style="background-color: #C82333; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-close"></i>
                 </div>
               </div>
@@ -216,7 +264,12 @@
           <div class="col-11">
             <div class="input-group">
               <div class="input-group-prepend">
-                <div class="input-group-text" style="background-color: #22bf45">
+                <div
+                  class="input-group-text btn btn-success"
+                  style="background-color: #22bf45; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-check"></i>
                 </div>
               </div>
@@ -228,7 +281,12 @@
                 class="form-control"
               />
               <div class="input-group-append">
-                <div class="input-group-text" style="background-color: #C82333">
+                <div
+                  class="input-group-text btn btn-danger"
+                  style="background-color: #C82333; color: white"
+                  type="button"
+                  onclick
+                >
                   <i class="fa fa-close"></i>
                 </div>
               </div>
@@ -290,6 +348,12 @@ export default {
   display: inline-block;
   position: relative;
 }
-.streamButtons {
+
+/*
+.microTextArea {
+  position: absolute;
+  left: 40vw;
+  bottom: 19.3vw;
 }
+*/
 </style>
