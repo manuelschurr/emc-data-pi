@@ -1,15 +1,20 @@
 #!/bin/sh
 
-import serial, subprocess, time
+import serial, subprocess, time, threading, json, requests
 from datetime import datetime
 
-#set device connection port and save file
-device = '/dev/ttyUSB0'
-outfile = '/home/pi/Documents/PulsOxy_data.csv'
+#define variables
+data = []
+output = []
+lock = threading.Lock()
 
-#grant read/write/execute permissons for device
+#set device connection port and grant read/write/execute permissons
+device = '/dev/ttyUSB0'
 bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
+
+#set server address
+url = 'https://134.155.58.211/'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -21,13 +26,14 @@ ser.xonxoff = 1
 ser.timeout = 1
 ser.port = device
 ser.open()
-ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
 
 #check if data input stream is received
 try:
+    ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
     raw = ser.read(9)
 except:
-    print ('No data stream found.')
+    print ('No data stream found. Exiting program.')
+    ser.close()
     exit()
     
 #wait for data recording until pulsoximeter is applied to patient for the first time
@@ -35,37 +41,88 @@ fingerIn = raw[5] & 0x7f
 
 while(fingerIn == 0):
     try:
+        ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
         raw = ser.read(9)
     except:
-        print ('Data read error.')
+        print ('Data read error. Exiting program.')
+        ser.close()
         exit()
 
     fingerIn = raw[5] & 0x7f
 
-#testing only
-with open(outfile, 'a') as csvWrite:
-    csvWrite.write('Timestamp,' + 'Puls Rate,' + 'SpO2\n')
+#constantly obtain data from device
+def read_data():
+    global data
 
-    #obtain data from component
-    while len(raw) >= 9:
-        time = datetime.now().strftime('%H:%M:%S.%f') [:-3]
+    y = True
+    while y:
+        try:
+            ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
+            raw = ser.read(9)
+            y = False
+        except:
+            print ('Data read error. Trying again...')
+            y = True
+        if len(raw) < 9:
+            print ('Data read error. Trying again...')
+            y = True
+
+    x = True
+    while x:
+        time = datetime.now().strftime('%H:%M:%S')
         pulsRate_i = raw[5] & 0x7f
         spo2_i = raw[6] & 0x7f
-        pulsRate = [time, pulsRate_i]
-        sp2o = [time, spo2_i]
+        lock.acquire()
+        data = [time, pulsRate_i, spo2_i]
+        lock.release()
 
-        #testing only
-        csvWrite.write(str(time) + ', ' + str(pulsRate_i) + ', ' + str(spo2_i) + '\n')
-        print(time, str(pulsRate_i), str(spo2_i))
+        y = True
+        while y:
+            try:
+                ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
+                raw = ser.read(9)
+                y = False
+            except:
+                print ('Data read error. Trying again...')
+                y = True
+            if len(raw) < 9:
+                print ('Data read error. Trying again...')
+                y = True
 
-        try:
-            raw = ser.read(9)
-        except:
-            print ('Data read error.')
-            exit()
+#write data to JSON-File once every second, as mor precise data is not needed
+def write_data():
+    global data
+    global output
 
-    if len(raw) <= 1:
-        print ('Data read error.')
-        exit()
+    x = True
+    while x:
+        time.sleep(1)
+        lock.acquire()
+        output.append(data)
+        lock.release()
 
-    ser.close()
+#send data via HTTPS-Request to server every 5 seconds
+def send_data():
+    global output
+
+    x = True
+    while x:
+        time.sleep(5)
+        lock.acquire()
+        #requests.post(url, data = json.dumps(output))
+        print(output)
+        output = []
+        lock.release()
+
+#start threads to execute program
+try:
+    t1 = threading.Thread(target=read_data)
+    t2 = threading.Thread(target=write_data)
+    t3 = threading.Thread(target=send_data)
+    t1.start()
+    t2.start()
+    t3.start()
+except:
+   print ("Error: unable to start threads. Exiting program.")
+   ser.close()
+   exit()
