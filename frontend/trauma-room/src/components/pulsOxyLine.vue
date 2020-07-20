@@ -1,62 +1,68 @@
-
 <script>
+import { Line, mixins } from "vue-chartjs";
 
-import { Line } from 'vue-chartjs'
+const { reactiveProp } = mixins;
 
 export default {
   extends: Line,
+  mixins: [reactiveProp],
   props: {
-    chartdata: {
-      type: Object,
-      default: null
+    chartData: {
+      type: Array,
+      required: false,
     },
-    options: {
-      type: Object,
-      default: null
-    }
+    chartLabels: {
+      type: Array,
+      required: false,
+    },
   },
-  mounted () {
-    this.renderChart(this.chartdata, this.options)
-  }
-}
-
-// import { Line, mixins } from "vue-chartjs";
-// const { reactiveProp } = mixins;
-// export default Line.extend({
-//   mixins: [reactiveProp],
-//   data() {
-//     return {
-//       options: {
-//         scales: {
-//           yAxes: [
-//             {
-//               ticks: {
-//                 beginAtZero: true
-//               },
-//               gridLines: {
-//                 display: true
-//               }
-//             }
-//           ],
-//           xAxes: [
-//             {
-//               gridLines: {
-//                 display: false
-//               }
-//             }
-//           ]
-//         },
-//         legend: {
-//           display: true
-//         },
-//         responsive: true,
-//         maintainAspectRatio: false
-//       }
-//     };
-//   },
-//   mounted() {
-//     // this.chartData is created in the mixin
-//     this.renderChart(this.chartData, this.options);
-//   }
-// });
+  data() {
+    return {
+      options: {
+        scales: {
+          yAxes: [
+            {
+              ticks: {
+                beginAtZero: false,
+              },
+              gridLines: {
+                display: true,
+              },
+            },
+          ],
+          xAxes: [
+            {
+              gridLines: {
+                display: false,
+              },
+            },
+          ],
+        },
+        legend: {
+          display: false,
+        },
+        responsive: true,
+        maintainAspectRatio: false,
+      },
+    };
+  },
+  mounted() {
+    this.renderChart(
+      {
+        labels: this.chartLabels,
+        datasets: [
+          {
+            borderColor: "#249EBF",
+            pointBackgroundColor: "white",
+            borderWidth: 1,
+            pointBorderColor: "#249EBF",
+            backgroundColor: "transparent",
+            data: this.chartData,
+          },
+        ],
+      },
+      this.options
+    );
+  },
+};
 </script>

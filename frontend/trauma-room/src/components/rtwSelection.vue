@@ -3,7 +3,7 @@
     <div>
       <h1>
         <img
-          style="vertical-align:text-top"
+          style="vertical-align: text-top;"
           alt="Universitätsklinikum Mannheim logo"
           src="../assets/umm_logo.png"
           height="50"
@@ -25,20 +25,27 @@
               Diagnose: {{ ambulance.diagnosis }}
               <br />
               <ul>
-                <li v-for="(value, name) in ambulance.abcde_schema" v-bind:key="name">
+                <li
+                  v-for="(value, name) in ambulance.abcde_schema"
+                  v-bind:key="name"
+                >
                   <div class="text-center">
                     <button
                       v-if="value === true"
                       disabled
                       pill
                       class="rounded-circle notOkABCDE"
-                    >{{ name }}</button>
+                    >
+                      {{ name }}
+                    </button>
                     <button
                       v-else-if="value === false"
                       disabled
                       pill
                       class="rounded-circle okABCDE"
-                    >{{ name }}</button>
+                    >
+                      {{ name }}
+                    </button>
                   </div>
                 </li>
               </ul>
@@ -55,7 +62,7 @@
 export default {
   name: "RtwSelection",
   props: {
-    selectRTW: Function
+    selectRTW: Function,
   },
   data: () => ({
     ambulances: [
@@ -64,24 +71,24 @@ export default {
         name: "DRK",
         eta: 3.35,
         diagnosis: "Gebrochenes Bein",
-        abcde_schema: { A: false, B: false, C: true, D: true, E: false }
+        abcde_schema: { A: false, B: false, C: true, D: true, E: false },
       },
       {
         id: 2,
         name: "Malteser",
         eta: 2.45,
         diagnosis: "Gebrochenes Bein",
-        abcde_schema: { A: false, B: true, C: false, D: true, E: false }
+        abcde_schema: { A: false, B: true, C: false, D: true, E: false },
       },
       {
         id: 3,
         name: "ASB",
         eta: 6.05,
         diagnosis: "Gebrochenes Bein",
-        abcde_schema: { A: false, B: false, C: true, D: true, E: true }
-      }
-    ]
-  })
+        abcde_schema: { A: false, B: false, C: true, D: true, E: true },
+      },
+    ],
+  }),
 };
 </script>
 
