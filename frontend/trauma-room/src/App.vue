@@ -1,14 +1,20 @@
 <template>
   <div id="app">
-    <RtwSelection v-if="!rtwSelected" :selectRTW="selectRTW"/>
+    <RtwSelection v-if="!rtwSelected" :selectRTW="selectRTW" />
     <div v-if="rtwSelected">
       <Header :changeRTW="changeRTW" />
       <PatientData />
       <div class="container-fluid" v-if="rtwSelected">
         <div class="row align-items-start">
-          <div class="col-2"><LeftSidebar /></div>
-          <div class="col-8"><MainComponent /></div>
-          <div class="col-2"><RightSidebar /></div>
+          <div class="col-2">
+            <LeftSidebar />
+          </div>
+          <div class="col-8">
+            <MainComponent />
+          </div>
+          <div class="col-2">
+            <RightSidebar />
+          </div>
         </div>
       </div>
     </div>
