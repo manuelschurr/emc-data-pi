@@ -33,7 +33,8 @@ export default {
   name: "App",
   data() {
     return {
-      rtwSelected: false
+      rtwSelected: false,
+      streamSelected: false
     };
   },
   components: {
@@ -50,7 +51,7 @@ export default {
     },
     selectRTW: function() {
       this.rtwSelected = !this.rtwSelected;
-    }
+    },
   }
 };
 </script>
