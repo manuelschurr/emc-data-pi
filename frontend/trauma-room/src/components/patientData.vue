@@ -1,19 +1,15 @@
 <template>
-  <div class="container-fluid">
+  <div class="container-fluid patientData">
     <div class="row align-items-start">
-      <div class="col">
-        Patient Data
-      </div>
+      <h5 class="col patientDataText" style="text-align:start">Patientendaten</h5>
     </div>
     <div class="row align-items-start">
       <div class="col-10">
-        <form class="form-inline">
-          <div class="col">
-            <div class="form-group row">
-              <label for="patientName" class="col-sm-2 col-form-label"
-                >Name</label
-              >
-              <div class="col-sm-6">
+        <form class="form-inline" style="align-items:start">
+          <div class="col-5">
+            <div class="form-group row columnSpacing">
+              <label for="patientName" class="col-4 col-form-label labelTitle">Name:</label>
+              <div class="col-8">
                 <input
                   type="text"
                   readonly
@@ -23,11 +19,9 @@
                 />
               </div>
             </div>
-            <div class="form-group row">
-              <label for="patientGeschlecht" class="col-sm-2 col-form-label"
-                >Geschlecht</label
-              >
-              <div class="col-sm-6">
+            <div class="form-group row columnSpacing">
+              <label for="patientGeschlecht" class="col-4 col-form-label labelTitle">Geschlecht:</label>
+              <div class="col-8">
                 <input
                   type="text"
                   readonly
@@ -37,11 +31,9 @@
                 />
               </div>
             </div>
-            <div class="form-group row">
-              <label for="patientAlter" class="col-sm-2 col-form-label"
-                >Alter</label
-              >
-              <div class="col-sm-6">
+            <div class="form-group row columnSpacing">
+              <label for="patientAlter" class="col-4 col-form-label labelTitle">Alter:</label>
+              <div class="col-8">
                 <input
                   type="text"
                   readonly
@@ -51,13 +43,12 @@
                 />
               </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row columnSpacing">
               <label
                 for="patientVorerkrankungen"
-                class="col-sm-2 col-form-label"
-                >Vorerkrankungen</label
-              >
-              <div class="col-sm-6">
+                class="col-4 col-form-label labelTitle"
+              >Vorerkrankungen:</label>
+              <div class="col-8">
                 <input
                   type="text"
                   readonly
@@ -68,12 +59,12 @@
               </div>
             </div>
           </div>
-          <div class="col">
-            <div class="form-group row">
+          <div class="col-7" style="align-items:start">
+            <div class="form-group row labelTitle">
               <label>Sonstiges</label>
               <textarea
                 class="form-control-plaintext"
-                rows="3"
+                rows="4"
                 v-model="patient.miscellaneaous.text"
                 readonly
               ></textarea>
@@ -82,6 +73,7 @@
         </form>
       </div>
       <div class="col-2">
+        <br />
         <div class="btn-group" role="group">
           <button
             type="button"
@@ -89,45 +81,35 @@
             id="btn-a"
             @click="openABCDE(patient.status.a.notes, $event)"
             :class="classABCDE(patient.status.a.isSelected)"
-          >
-            A
-          </button>
+          >A</button>
           <button
             type="button"
             class="btn btn-secondary"
             id="btn-b"
             @click="openABCDE(patient.status.b.notes, $event)"
             :class="classABCDE(patient.status.b.isSelected)"
-          >
-            B
-          </button>
+          >B</button>
           <button
             type="button"
             class="btn btn-secondary"
             id="btn-c"
             @click="openABCDE(patient.status.c.notes, $event)"
             :class="classABCDE(patient.status.c.isSelected)"
-          >
-            C
-          </button>
+          >C</button>
           <button
             type="button"
             class="btn btn-secondary"
             id="btn-d"
             @click="openABCDE(patient.status.d.notes, $event)"
             :class="classABCDE(patient.status.d.isSelected)"
-          >
-            D
-          </button>
+          >D</button>
           <button
             type="button"
             class="btn btn-secondary"
             id="btn-e"
             @click="openABCDE(patient.status.e.notes, $event)"
             :class="classABCDE(patient.status.e.isSelected)"
-          >
-            E
-          </button>
+          >E</button>
         </div>
       </div>
     </div>
@@ -209,7 +191,24 @@ export default {
 .notOkABCDE {
   background-color: red;
 }
-.space {
-  padding-right: 15px;
+.patientData {
+  margin: 3px;
+  align-content: flex-start;
+  border: 1px black;
+  border-style: solid;
+  border-radius: 5px;
+}
+.patientDataText {
+  margin: 5px;
+  font-weight: bold;
+}
+.labelTitle {
+  justify-content: flex-start;
+  padding: 0px;
+  font-weight: 500;
+}
+.columnSpacing {
+  height: 28px;
+  text-align: center;
 }
 </style>
