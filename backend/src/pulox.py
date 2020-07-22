@@ -69,7 +69,7 @@ def read_data():
 
     x = True
     while x:
-        time = datetime.now().strftime('%H:%M:%S')
+        time = datetime.now().strftime('%H:%M:%S.%f') [:-5]
         pulsRate_i = raw[5] & 0x7f
         spo2_i = raw[6] & 0x7f
         lock.acquire()
@@ -89,16 +89,17 @@ def read_data():
                 print ('Data read error. Trying again...')
                 y = True
 
-#write data to JSON-File once every second, as mor precise data is not needed
+#write data to JSON-File once every second, as more precise data is not needed
 def write_data():
     global data
     global output
 
     x = True
     while x:
-        time.sleep(1)
+        time.sleep(.5)
         lock.acquire()
-        output.append(data)
+        jsonData = '{"patientID:":%d,"pulsoxy":{"pulsRate":{"value":%d,"time":"%s"},"spo2":{"value":%d,"time":"%s"}}}\n' % (1, int(data[1]), data[0], int(data[2]), data[0])
+        output.append(jsonData)
         lock.release()
 
 #send data via HTTPS-Request to server every 5 seconds
@@ -109,8 +110,15 @@ def send_data():
     while x:
         time.sleep(5)
         lock.acquire()
-        #requests.post(url, data = json.dumps(output))
-        print(output)
+        
+        #testing functionality w/o sending to server
+        outfile = '/home/tc/Documents/PulsOxy_data.json'
+        with open(outfile, 'a') as dataWrite:
+            for x in output:
+                dataWrite.write(x)
+
+        #requests.post(url, data = output)
+
         output = []
         lock.release()
 
