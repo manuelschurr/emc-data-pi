@@ -1,39 +1,43 @@
 #!/bin/bash
 
-# Nicht mehr benoetigte Pakete koennen deinstalliert werden
-echo "Nicht mehr benötigte Pakete werden deinstalliert..."
+# Uninstall unused packages
+echo "Removing unused packages..."
 sudo apt autoremove -y
 
-# Vor der Installation der Sotware, wird die Paketliste aktualisiert
-echo "Paketliste aktualisieren..."
+# Updating the package list
+echo "Updating apt package cache..."
 sudo apt update
 
-# Gefundende Updates installieren
-echo "Gefundene Updates installieren..."
+# Install updates
+echo "Installing all updates..."
 sudo apt full-upgrade -y
 
-# Node.js installieren
-echo "Node.js installieren..."
+# Install Node.js
+echo "Installing Node.js..."
+curl -sL https://deb.nodesource.com/setup_14.x | sudo bash -
 sudo apt install nodejs -y
 
-# npm installieren
-echo "npm installieren..."
+# Install npm
+echo "Installing npm..."
 sudo apt install npm -y
 
-# mongoDB installieren
-echo "mongoDB installieren..."
-sudo apt install mongodb -y
+# Install sqlite3
+echo "Installing sqlite3..."
+sudo apt install sqlite3 -y
 
-# PIP installieren
-echo "PIP installieren..."
-sudo apt install python-pip
+# Create first database
+echo "Creating first database..."
+mkdir DB
+sqlite3 ./DB/emcdata.db
 
-# Python Modules Serial and Dateutil installieren
-sudo pip install pyserial
-sudo pip install py-dateutil
+# Install PIP (package manager for Python)
+echo "Installing PIP..."
+sudo apt install python-pip -y
 
-# Versionen anzeigen
-echo -n "Installierte Version Node.js: ";node -v
-echo -n "Installierte Version npm: ";npm -v
-echo -n "Installierte Version Datenbank: ";mongod --version
-echo -n "Installierte Version der Datenbank-Shell: ";mongo -version
+# Install Python Modules Serial
+echo "Installing pyserial..."
+sudo pip install pyserial -y
+
+# Show installed versions
+echo -n "Installed version Node.js: ";node -v
+echo -n "Installed version npm: ";npm -v
