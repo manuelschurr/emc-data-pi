@@ -45,53 +45,16 @@ export default {
   },
   methods: {
     setSelection(event) {
-      if (event.currentTarget.id === "btn-puls" && !this.showComponentPulsoxy) {
-        this.showComponentPulsoxy = true;
+      this.pastEvent = event.currentTarget.id;
+      if (!this.selection.includes(event.currentTarget.id)) {
         this.selection.push(event.currentTarget.id);
-      } else if (
-        event.currentTarget.id === "btn-puls" &&
-        this.showComponentPulsoxy
-      ) {
-        this.showComponentPulsoxy = false;
-        this.selection.pop(event.currentTarget.id);
-      }
-
-      if (
-        event.currentTarget.id === "btn-stream" &&
-        !this.showComponentStream
-      ) {
-        this.showComponentStream = true;
-        this.selection.push(event.currentTarget.id);
-      } else if (
-        event.currentTarget.id === "btn-stream" &&
-        this.showComponentStream
-      ) {
-        this.showComponentStream = false;
-        this.selection.pop(event.currentTarget.id);
-      }
-
-      if (event.currentTarget.id === "btn-position" && !this.showComponentMap) {
-        this.showComponentMap = true;
-        this.selection.push(event.currentTarget.id);
-      } else if (
-        event.currentTarget.id === "btn-position" &&
-        this.showComponentMap
-      ) {
-        this.showComponentMap = false;
-        this.selection.pop(event.currentTarget.id);
+      } else {
+        let index = this.selection.indexOf(event.currentTarget.id);
+        if (index > -1) {
+          this.selection.splice(index, 1);
+        }
       }
       this.$root.$emit("selectedComponent", this.selection);
-      //single version
-      /* if (!this.showComponent || event.currentTarget.id !== this.pastEvent) {
-        this.selection.push(event.currentTarget.id);
-        this.$root.$emit("selectedComponent", event.currentTarget.id);
-        this.showComponent = true;
-        this.pastEvent = event.currentTarget.id;
-      } else if (event.currentTarget.id == this.pastEvent) {
-        this.$root.$emit("selectedComponent", null);
-        this.showComponent = false;
-        this.pastEvent = event.currentTarget.id;
-      } */
     }
   },
   filters: {
