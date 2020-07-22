@@ -1,29 +1,22 @@
 <template>
-  <div class="container-fluid">
+  <div class="container">
     <div v-if="componentArray.length === 1">
       <div v-for="child in componentArray" :key="child.name">
         <component :is="child" :Rtwdocument="Rtwdocument"></component>
       </div>
     </div>
-    <!-- <div v-if="componentArray.length === 2">
-      <div class="col-6">
-        <component v-bind:is="componentOne" :Rtwdocument="Rtwdocument" />
-      </div>
-      <div class="col-6">
-        <component v-bind:is="componentTwo" :Rtwdocument="Rtwdocument" />
+    <div class="row" v-if="componentArray.length === 2">
+      <div v-for="child in componentArray" :key="child.name">
+        <div class="col-4">
+          <component :is="child" :Rtwdocument="Rtwdocument"></component>
+        </div>
       </div>
     </div>
-    <div v-if="componentArray.length === 3">
-      <div class="col-4">
-        <component v-bind:is="componentOne" :Rtwdocument="Rtwdocument" />
+    <div class="row" v-if="componentArray.length === 3">
+      <div class="col" v-for="child in componentArray" :key="child.name">
+        <component :is="child" :Rtwdocument="Rtwdocument"></component>
       </div>
-      <div class="col-4">
-        <component v-bind:is="componentTwo" :Rtwdocument="Rtwdocument" />
-      </div>
-      <div class="col-4">
-        <component v-bind:is="componentThree" :Rtwdocument="Rtwdocument" />
-      </div>
-    </div> -->
+    </div>
   </div>
 </template>
 
@@ -40,10 +33,7 @@ export default {
   },
   data() {
     return {
-      componentArray: [],
-      componentOne: null,
-      componentTwo: null,
-      componentThree: null
+      componentArray: []
     };
   },
   props: {
@@ -64,34 +54,6 @@ export default {
           this.componentArray.push(Maps);
         }
       }
-
-      /*         console.log(d)
-        console.log(index)
-        if (d === "btn-puls") {
-          if (index === 0) {
-            this.componentOne = PulsOxy;
-          } else if (index === 1) {
-            this.componentTwo = PulsOxy;
-          } else if (index === 2) {
-            this.componentThree = PulsOxy;
-          }
-        } else if (d === "btn-stream") {
-          if (index === 0) {
-            this.componentOne = Stream;
-          } else if (index === 1) {
-            this.componentTwo = Stream;
-          } else if (index === 2) {
-            this.componentThree = Stream;
-          }
-        } else if (d === "btn-position") {
-          if (index === 0) {
-            this.componentOne = Maps;
-          } else if (index === 1) {
-            this.componentTwo = Maps;
-          } else if (index === 2) {
-            this.componentThree = Maps;
-          }
-        } */
     });
   }
 };

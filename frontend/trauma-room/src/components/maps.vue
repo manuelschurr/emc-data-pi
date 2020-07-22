@@ -1,5 +1,5 @@
 <template>
-  <l-map :zoom="zoom" :center="center" style="height: 600px;">
+  <l-map :zoom="zoom" :center="center" style="height: 400px; width: 200px">
     <l-tile-layer :url="url" :attribution="attribution"></l-tile-layer>
     <l-marker :lat-lng="markerUMM">
       <l-tooltip :options="{ permanent: true, interactive: true }">

@@ -7,14 +7,6 @@
       <div class="container-fluid" v-if="rtwSelected">
         <div class="row align-items-start">
           <div class="col-2"><LeftSidebar :arrivalTime="arrivalTime" /></div>
-          <input
-            v-model="Rtwdocument.gnssPosition.long"
-            placeholder="8.4660395"
-          />
-          <input
-            v-model="Rtwdocument.gnssPosition.lat"
-            placeholder="49.4874592"
-          />
           <div class="col-8"><MainComponent :Rtwdocument="Rtwdocument" /></div>
           <div class="col-2"><RightSidebar /></div>
         </div>
