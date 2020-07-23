@@ -28,9 +28,8 @@ sudo apt install mongodb -y
 echo "PIP installieren..."
 sudo apt install python-pip
 
-# Python Modules Serial and Dateutil installieren
+# Install Python modules for pulsoximeter script
 sudo pip install pyserial
-sudo pip install py-dateutil
 
 # Versionen anzeigen
 echo -n "Installierte Version Node.js: ";node -v
