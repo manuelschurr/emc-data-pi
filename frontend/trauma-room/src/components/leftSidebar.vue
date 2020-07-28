@@ -33,7 +33,9 @@
 export default {
   data() {
     return {
-      showComponent: false,
+      showComponentMap: false,
+      showComponentStream: false,
+      showComponentPulsoxy: false,
       pastEvent: null,
       selection: []
     };
@@ -43,16 +45,16 @@ export default {
   },
   methods: {
     setSelection(event) {
-      if (!this.showComponent || event.currentTarget.id !== this.pastEvent) {
-        //this.selection.push(event.currentTarget.id);
-        this.$root.$emit("selectedComponent", event.currentTarget.id);
-        this.showComponent = true;
-        this.pastEvent = event.currentTarget.id;
-      } else if (event.currentTarget.id == this.pastEvent) {
-        this.$root.$emit("selectedComponent", null);
-        this.showComponent = false;
-        this.pastEvent = event.currentTarget.id;
+      this.pastEvent = event.currentTarget.id;
+      if (!this.selection.includes(event.currentTarget.id)) {
+        this.selection.push(event.currentTarget.id);
+      } else {
+        let index = this.selection.indexOf(event.currentTarget.id);
+        if (index > -1) {
+          this.selection.splice(index, 1);
+        }
       }
+      this.$root.$emit("selectedComponent", this.selection);
     }
   },
   filters: {

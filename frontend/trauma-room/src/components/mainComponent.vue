@@ -1,6 +1,22 @@
 <template>
-  <div>
-    <component v-bind:is="component" :Rtwdocument="Rtwdocument" />
+  <div class="container">
+    <div v-if="componentArray.length === 1">
+      <div v-for="child in componentArray" :key="child.name">
+        <component :is="child" :Rtwdocument="Rtwdocument"></component>
+      </div>
+    </div>
+    <div class="row" v-if="componentArray.length === 2">
+      <div v-for="child in componentArray" :key="child.name">
+        <div class="col-4">
+          <component :is="child" :Rtwdocument="Rtwdocument"></component>
+        </div>
+      </div>
+    </div>
+    <div class="row" v-if="componentArray.length === 3">
+      <div class="col" v-for="child in componentArray" :key="child.name">
+        <component :is="child" :Rtwdocument="Rtwdocument"></component>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -17,7 +33,7 @@ export default {
   },
   data() {
     return {
-      component: null
+      componentArray: []
     };
   },
   props: {
@@ -25,14 +41,18 @@ export default {
   },
   mounted() {
     this.$root.$on("selectedComponent", data => {
-      if (data === "btn-puls") {
-        this.component = PulsOxy;
-      } else if (data === "btn-stream") {
-        this.component = Stream;
-      } else if (data === "btn-position") {
-        this.component = Maps;
-      } else {
-        this.component = null;
+      this.componentArray = [];
+      for (var d of data) {
+        console.log(d);
+        if (d === "btn-puls") {
+          this.componentArray.push(PulsOxy);
+        }
+        if (d === "btn-stream") {
+          this.componentArray.push(Stream);
+        }
+        if (d === "btn-position") {
+          this.componentArray.push(Maps);
+        }
       }
     });
   }
