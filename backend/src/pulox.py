@@ -98,7 +98,7 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = '{"patientID":%d,"pulsoxy":{"pulsRate":{"value":%d,"time":"%s"},"spo2":{"value":%d,"time":"%s"}}}\n' % (1, int(data[1]), data[0], int(data[2]), data[0])
+        jsonData = '{"patientID":%d, "timestamp":%s, "pulsrate":%d, "spo2":%d}\n' % (1, data[0], int(data[1]), int(data[2]))
         output.append(jsonData)
         lock.release()
 
