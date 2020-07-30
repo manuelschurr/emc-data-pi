@@ -5,7 +5,7 @@ from datetime import datetime
 
 #define variables
 data = []
-output = []
+output = ''
 lock = threading.Lock()
 
 #set device connection port and grant read/write/execute permissons
@@ -14,7 +14,7 @@ bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
 
 #set server address
-url = 'https://134.155.58.211/'
+url = 'wifo1-29.bwl.uni-mannheim.de:3000/patient'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -98,8 +98,8 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = '{"patientID":%d, "timestamp":%s, "pulsrate":%d, "spo2":%d}\n' % (1, data[0], int(data[1]), int(data[2]))
-        output.append(jsonData)
+        jsonData = '{"patientID":%d, "timestamp":%s, "pulsrate":%d, "spo2":%d},\n' % (1, data[0], int(data[1]), int(data[2]))
+        output = output + jsonData
         lock.release()
 
 #send data via HTTPS-Request to server every 5 seconds
@@ -112,14 +112,11 @@ def send_data():
         lock.acquire()
         
         #testing functionality w/o sending to server
-        outfile = '/home/tc/Documents/PulsOxy_data.json'
-        with open(outfile, 'a') as dataWrite:
-            for x in output:
-                dataWrite.write(x)
+        print(output)
 
-        #requests.post(url, data = output)
+        requests.post(url, data = output)
 
-        output = []
+        output = ''
         lock.release()
 
 #start threads to execute program
