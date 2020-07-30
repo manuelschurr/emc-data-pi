@@ -80,7 +80,7 @@
       <div class="stream">
         <video width="320" height="180" controls poster="./images/videoIcon2.png">
           <source src="http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4" type="video/mp4" />
-          <p>Your browser does not support video tag - maybe think about using a modern browser.</p>
+          <p>Ihr Browser erlaubt nicht das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
         </video>
         <!-- <img src="./images/videoIcon.png" class="img-fluid" alt="Video Placeholder Image" /> -->
       </div>
