@@ -98,7 +98,7 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = '{"patientID":%d, "timestamp":%s, "pulsrate":%d, "spo2":%d},\n' % (1, data[0], int(data[1]), int(data[2]))
+        jsonData = '{"patientID":%d, "timestamp":"%s", "pulsrate":%d, "spo2":%d},\n' % (1, data[0], int(data[1]), int(data[2]))
         output = output + jsonData
         lock.release()
 
