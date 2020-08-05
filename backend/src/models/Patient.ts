@@ -1,6 +1,6 @@
 enum Gender {M, F, D};
 
-class Patient {
+export class Patient {
    patientId: number;
    surName: string;
    firstName: string;
