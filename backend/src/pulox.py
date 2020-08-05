@@ -14,7 +14,8 @@ bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
 
 #set server address
-url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient'
+url = 'http://localhost:3000/patient'
+#url = 'https://http://wifo1-29.bwl.uni-mannheim.de:3000/patient'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -89,7 +90,7 @@ def read_data():
                 print ('Data read error. Trying again...')
                 y = True
 
-#write data to JSON-File once every second, as more precise data is not needed
+#write data to server once half a second, as more precise data is not needed
 def write_data():
     global data
     global output
@@ -98,39 +99,16 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = '{"patientID":%d, "timestamp":"%s", "pulsrate":%d, "spo2":%d},\n' % (1, data[0], int(data[1]), int(data[2]))
-        output = output + jsonData
-        lock.release()
-
-#send data via HTTPS-Request to server every 5 seconds
-def send_data():
-    global output
-
-    x = True
-    while x:
-        time.sleep(5)
-        lock.acquire()
-        
-        output = output[:-2] + ']'
-
-        #testing functionality w/o sending to server
-        print(output)
-        #with open ('/home/tc/Documents/pData.txt', 'a') as textFile:
-        #    textFile.write(output)
-
-        #requests.post(url, json = output)
-
-        output = '['
+        jsonData = {'patientID':6,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
+        requests.post(url, data = jsonData)
         lock.release()
 
 #start threads to execute program
 try:
     t1 = threading.Thread(target=read_data)
     t2 = threading.Thread(target=write_data)
-    t3 = threading.Thread(target=send_data)
     t1.start()
     t2.start()
-    t3.start()
 except:
    print ("Error: unable to start threads. Exiting program.")
    ser.close()
