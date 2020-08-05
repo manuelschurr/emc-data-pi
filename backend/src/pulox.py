@@ -14,8 +14,8 @@ bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
 
 #set server address
-url = 'http://localhost:3000/patient'
-#url = 'https://http://wifo1-29.bwl.uni-mannheim.de:3000/patient'
+#url = 'http://localhost:3000/patient'
+url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -99,7 +99,7 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = {'patientID':6,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
+        jsonData = {'patientID':5,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
         requests.post(url, data = jsonData)
         lock.release()
 
