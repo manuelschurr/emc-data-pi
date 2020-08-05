@@ -2,7 +2,7 @@
     <div>
         <!-- Video -->
         <div class="stream">
-            <video width="320" height="180" controls poster="./images/videoIcon2.png">
+            <video width="320" height="180" controls poster="../assets/videoIcon2.png">
                 <source="" type="video/mp4" />
                 <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
             </video>
