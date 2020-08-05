@@ -99,7 +99,7 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = {'patientID':5,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
+        jsonData = {'patientID':8,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
         requests.post(url, data = jsonData)
         lock.release()
 
