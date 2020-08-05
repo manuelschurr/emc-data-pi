@@ -316,7 +316,6 @@
 <script>
 // Camera import
 import Camera from "./Camera.vue";
-import AudioRecorder from "node-audiorecorder";
 
 export default {
   name: "UI",
@@ -336,31 +335,20 @@ export default {
       Cinput: "",
       Dinput: "",
       Einput: "",
-      recordingStarted: false,
-      recorderOptions: {
-        program: "arecord", // Which program to use, either `arecord`, `rec`, or `sox`.
-        device: "sysdefault:CARD=StudioTM", // Recording device to use, e.g. `hw:1,0`
-
-        format: "S16_LE", // Encoding type. (only for `arecord`)
-        rate: 48000, // Sample rate.
-        type: "wav", // Format type.
-      },
-      audioRecorder: new AudioRecorder(options),
+      isRecording: false,
     };
   },
   methods: {
     record() {
-      if (this.recordingStarted) {
+      if (this.isRecording) {
         console.log("Stopping the recording");
-        this.audioRecorder.stop();
-        this.recordingStarted = !this.recordingStarted;
-        this.audioRecorder.stream();
+        // Call backend
+        this.isRecording = !this.isRecording;
         return;
       }
       console.log("Recording");
-      this.audioRecorder.start();
-
-      this.recordingStarted = !this.recordingStarted;
+      // Call backend
+      this.isRecording = !this.isRecording;
     },
 
     /**
