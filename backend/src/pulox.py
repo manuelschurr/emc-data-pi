@@ -15,7 +15,7 @@ subprocess.check_call(bashCommand.split())
 
 #set server address
 #url = 'http://localhost:3000/patient'
-url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient'
+url = 'http://wifo1-29.bwl.uni-mannheim.de:3000/patient'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -99,8 +99,8 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = {'patientID':8,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
-        requests.post(url, data = jsonData)
+        jsonData = {'patientID':1,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
+        requests.post(url, json = jsonData)
         lock.release()
 
 #start threads to execute program
