@@ -301,7 +301,7 @@
     </div>
     <!-- Logo Uniklinik -->
     <div class="logo">
-      <img src="./images/logo.png" class="img-fluid" alt="Logo Uniklinik" />
+      <img src="../assets/logo.png" class="img-fluid" alt="Logo Uniklinik" />
     </div>
     <!-- Final div -->
   </div>
