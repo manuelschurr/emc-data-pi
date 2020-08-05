@@ -83,7 +83,12 @@
       <div class="form-group row">
         <label for="Audio" class="col-2 col-form-label labelTop">Audio</label>
         <div class="col-1">
-          <button type="button" id="button_stop" class="btn btn-warning btn-lg">
+          <button
+            @click="this.record"
+            type="button"
+            id="button_stop"
+            class="btn btn-warning btn-lg"
+          >
             <i class="fa fa-microphone"></i>
           </button>
         </div>
@@ -311,6 +316,8 @@
 <script>
 // Camera import
 import Camera from "./Camera.vue";
+import AudioRecorder from "node-audiorecorder";
+
 export default {
   name: "UI",
   components: {
@@ -329,9 +336,33 @@ export default {
       Cinput: "",
       Dinput: "",
       Einput: "",
+      recordingStarted: false,
+      recorderOptions: {
+        program: "arecord", // Which program to use, either `arecord`, `rec`, or `sox`.
+        device: "sysdefault:CARD=StudioTM", // Recording device to use, e.g. `hw:1,0`
+
+        format: "S16_LE", // Encoding type. (only for `arecord`)
+        rate: 48000, // Sample rate.
+        type: "wav", // Format type.
+      },
+      audioRecorder: new AudioRecorder(options),
     };
   },
   methods: {
+    record() {
+      if (this.recordingStarted) {
+        console.log("Stopping the recording");
+        this.audioRecorder.stop();
+        this.recordingStarted = !this.recordingStarted;
+        this.audioRecorder.stream();
+        return;
+      }
+      console.log("Recording");
+      this.audioRecorder.start();
+
+      this.recordingStarted = !this.recordingStarted;
+    },
+
     /**
      * Methode zum Versenden der Daten an Backend ueber Submit Button
      */
