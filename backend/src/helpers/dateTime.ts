@@ -16,3 +16,4 @@ export default class DateTime {
       return (`0${i}`).slice(-2);
    }
 }
+
