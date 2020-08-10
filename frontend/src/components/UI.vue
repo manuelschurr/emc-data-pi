@@ -200,6 +200,7 @@
 <script>
 // Camera import
 import Camera from "./Camera.vue";
+import axios from "axios";
 
 export default {
     name: "UI",
@@ -246,6 +247,8 @@ export default {
         submitData() {
             // JSON Objekt aus Data der Textfelder/User Input
             var dataObj = {
+                patientId: 1,
+                ambulanceId: 1,
                 name: this.nameOf,
                 gender: this.geschlecht,
                 age: this.alter,
@@ -262,8 +265,26 @@ export default {
                 EIsSelected: this.Evalue,
                 EText: this.Einput,
             };
-            var dataJSON = JSON.stringify(dataObj);
+            let dataJSON = JSON.stringify(dataObj);
             console.log(dataJSON);
+            axios({
+                method: "post",
+                url: "http://localhost:3000/patient/create",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: dataJSON,
+            })
+                // .post("http://localhost:3000/patient/create", {
+                //     headers: { "Content-Type": "application/json" },
+                //     body: { dataJSON },
+                // })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         colorizeRow() {
             if (this.Avalue === true) {
