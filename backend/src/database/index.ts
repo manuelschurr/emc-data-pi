@@ -33,7 +33,7 @@ export const DB_CONNECTION = new sqlite3.Database(db.path, (err) => {
    if (err) {
       return Logger.error(err.message);
    }
-   Logger.info('Connected to the EMC databse');
+   Logger.info('Connected to the EMC database');
 });
 
 // running the command to create the patient table

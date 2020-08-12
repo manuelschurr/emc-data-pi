@@ -2,6 +2,9 @@
 export const environment = process.env.NODE_ENV
 export const port = process.env.PORT
 
+// Uni server environment variables
+export const uniServerUrl = process.env.UNI_SERVER_URL
+
 export const db = {
     path: process.env.DB_PATH
 }
