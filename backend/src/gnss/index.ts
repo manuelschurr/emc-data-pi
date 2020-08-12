@@ -1,6 +1,7 @@
 // Importing from Modules
 import axios, { AxiosRequestConfig } from 'axios';
 import GPS from "gps";
+import { centralServerAddress } from '../config';
 import Logger from "../core/Logger";
 import DateTime from "../helpers/dateTime";
 
@@ -35,7 +36,7 @@ gpsListener.on("data", data => {
 
          var config = {
             method: 'post',
-            url: 'http://134.155.48.211:3000/ambulance/createGnss',
+            url: centralServerAddress + '/ambulance/createGnss',
             headers: { 
                'Content-Type': 'application/json'
             },
