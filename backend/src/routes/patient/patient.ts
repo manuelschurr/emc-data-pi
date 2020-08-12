@@ -2,10 +2,10 @@ import express from "express";
 import _ from "lodash";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
+import Patient from "../../database/model/Patient";
 import PatientRepo from "../../database/repository/PatientRepo";
 import asyncHandler from "../../helpers/asyncHandler";
 import validator from "../../helpers/validator";
-import { Patient } from "../../models/Patient";
 import schema from "./schema";
 
 const router = express.Router()
@@ -40,7 +40,7 @@ router.post(
          }
       })
       return new SuccessResponse("Successful", {
-         pulsoxy: _.pick(patient, ['patientId', 'ambulanceId'])
+         patient: _.pick(patient, ['patientId', 'ambulanceId'])
       }).send(res);
    }),
 )
