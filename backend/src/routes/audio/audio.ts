@@ -4,9 +4,11 @@ import FormData from "form-data";
 import fs from "fs";
 import multer from "multer";
 import path from "path";
+import { centralServerAddress } from '../../config';
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
 import asyncHandler from "../../helpers/asyncHandler";
+
 
 const router = express.Router()
 
@@ -38,7 +40,7 @@ router.post("/", upload.single("audio"), asyncHandler(async (req, res, next) => 
                 ...data.getHeaders()
             },
         };
-        const res = await axios.post(`${process.env.UNI_SERVER_URL}/audio`, data, config)
+        const res = await axios.post(`${centralServerAddress}/audio`, data, config)
     } catch (error) {
         console.log(error);
     }
