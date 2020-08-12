@@ -40,7 +40,7 @@ router.post("/", upload.single("img"), asyncHandler(async (req, res, next) => {
                 ...data.getHeaders()
             },
         };
-        const res = await axios.post(`${centralServerAddress}/img`, data, config)
+        await axios.post(`${centralServerAddress}/img`, data, config)
     } catch (error) {
         console.log(error);
     }

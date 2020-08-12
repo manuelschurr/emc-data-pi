@@ -40,7 +40,7 @@ router.post("/", upload.single("audio"), asyncHandler(async (req, res, next) => 
                 ...data.getHeaders()
             },
         };
-        const res = await axios.post(`${centralServerAddress}/audio`, data, config)
+        await axios.post(`${centralServerAddress}/audio`, data, config)
     } catch (error) {
         console.log(error);
     }
