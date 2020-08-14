@@ -32,23 +32,23 @@ router.post(
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
-      
-      PatientRepo.checkIfPatientDataExists(patient.patientId, patient.ambulanceId, function (result: number) {
-         if (result > 0) {
-            PatientRepo.updatePatient(patient);
-         }
-         else {
-            PatientRepo.insertPatient(patient);
-         }
-      });
 
       var config = {
          headers: { 
             'Content-Type': 'application/json'
          }
       };
-        
-      await axios.post(`${centralServerAddress}/patient/create`, patient, config);
+      
+      PatientRepo.checkIfPatientDataExists(patient.patientId, patient.ambulanceId, async function (result: number) {
+         if (result > 0) {
+            PatientRepo.updatePatient(patient);
+            await axios.put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, config);
+         }
+         else {
+            PatientRepo.insertPatient(patient);
+            await axios.post(`${centralServerAddress}/patient/create`, patient, config);
+         }
+      });
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])

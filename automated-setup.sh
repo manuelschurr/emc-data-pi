@@ -27,8 +27,8 @@ sudo apt install sqlite3 -y
 
 # Create first database
 echo "Creating first database..."
-mkdir DB
-sqlite3 ./DB/emcdata.db
+mkdir $HOME/DB
+touch $HOME/DB/emcdata.db
 
 # Install PIP (package manager for Python)
 echo "Installing PIP..."
