@@ -1,4 +1,5 @@
 import sqlite3 from 'sqlite3';
+import { db } from "../config";
 import Logger from "../core/Logger";
 
 // SQL command to create the table, if it is not existing
@@ -26,13 +27,13 @@ const CREATE_PATIENT_TABLE_SQL = `CREATE TABLE IF NOT EXISTS Patient(
 
 // opening the connection to the database
 // note: we are connecting to a disk file database 'emcdata.db'
-// using the opening mode OPEN_READWRITE, default is OPEN_READWRITE | OPEN_CREATE
+// using the default opening mode OPEN_READWRITE | OPEN_CREATE
 // but the database should already be created by the setup script
-export const DB_CONNECTION = new sqlite3.Database('/home/pi/DB/emcdata.db', sqlite3.OPEN_READWRITE, (err) => {
+export const DB_CONNECTION = new sqlite3.Database(db.path, (err) => {
    if (err) {
       return Logger.error(err.message);
    }
-   Logger.info('Connected to the EMC databse');
+   Logger.info('Connected to the EMC database');
 });
 
 // running the command to create the patient table

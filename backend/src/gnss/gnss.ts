@@ -17,7 +17,7 @@ gpsListener.on("data", data => {
    if (data.type == "GGA"){
       // the quality of the record is != null, if a connection is established
       if(data.quality != null) {
-         console.log("Time: " + getCurrentDateAsTimeStamp() + ", Longitude: " + data.lon + ", Latitude: " + data.lat);       
+         // console.log("Time: " + getCurrentDateAsTimeStamp() + ", Longitude: " + data.lon + ", Latitude: " + data.lat);       
       }
    }
 });
