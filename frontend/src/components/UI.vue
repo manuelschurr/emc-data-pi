@@ -58,15 +58,8 @@
                     <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="13" class="form-control"></textarea>
                 </div>
             </div>
-            <!-- Voice Record - Row + Button -->
-            <div class="form-group row">
-                <label for="Audio" class="col-2 col-form-label labelTop">Audio</label>
-                <div class="col-1">
-                    <button @click="this.record" type="button" id="button_stop" class="btn btn-warning btn-lg">
-                        <i class="fa fa-microphone"></i>
-                    </button>
-                </div>
-            </div>
+            <!-- Sprachnachricht Audio Import an dieser Stelle -->
+            <Audio />
         </form>
         <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
         <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
@@ -200,12 +193,14 @@
 <script>
 // Camera import
 import Camera from "./Camera.vue";
+import Audio from "./Audio.vue";
 import axios from "axios";
 
 export default {
     name: "UI",
     components: {
         Camera,
+        Audio,
     },
     // return input of text fields
     data() {
@@ -229,18 +224,6 @@ export default {
         };
     },
     methods: {
-        record() {
-            if (this.isRecording) {
-                console.log("Stopping the recording");
-                // Call backend
-                this.isRecording = !this.isRecording;
-                return;
-            }
-            console.log("Recording");
-            // Call backend
-            this.isRecording = !this.isRecording;
-        },
-
         /**
          * Methode zum Versenden der Daten an Backend ueber Submit Button
          */
