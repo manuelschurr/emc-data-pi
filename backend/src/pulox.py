@@ -20,8 +20,8 @@ args = parser.parse_args()
 pID = args.pID
 
 #set server address
-#url = 'http://localhost:3000/patient'
-url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient'
+url = 'http://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
+#url = 'http://localhost:3000/patient/createPulsoxy'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -76,7 +76,7 @@ def read_data():
 
     x = True
     while x:
-        time = datetime.now().strftime('%H:%M:%S.%f') [:-5]
+        time = datetime.now().strftime('%m-%d-%Y %H:%M:%S')
         pulsRate_i = raw[5] & 0x7f
         spo2_i = raw[6] & 0x7f
         lock.acquire()
@@ -96,14 +96,14 @@ def read_data():
                 print ('Data read error. Trying again...')
                 y = True
 
-#write data to server once half a second, as more precise data is not needed
+#write data to server once a second, as more precise data is not needed
 def write_data():
     global data
     global output
 
     x = True
     while x:
-        time.sleep(.5)
+        time.sleep(1)
         lock.acquire()
         jsonData = {'patientID': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
         requests.post(url, data = jsonData)
