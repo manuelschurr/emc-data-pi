@@ -1,6 +1,6 @@
 #!/bin/sh
 
-import serial, subprocess, time, threading, json, requests
+import serial, subprocess, time, threading, json, requests, argparse
 from datetime import datetime
 
 #define variables
@@ -12,6 +12,12 @@ lock = threading.Lock()
 device = '/dev/ttyUSB0'
 bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
+
+#insert next free PatientId from server into documents to be sent to server
+parser = argparse.ArgumentParser()
+parser.add_argument('pID', type=str, help='PatientId obtained from server.')
+args = parser.parse_args()
+pID = args.pID
 
 #set server address
 #url = 'http://localhost:3000/patient'
@@ -99,7 +105,7 @@ def write_data():
     while x:
         time.sleep(.5)
         lock.acquire()
-        jsonData = {'patientID':8,'timestamp':data[0], 'pulsrate':int(data[1]), 'spo2':int(data[2])}
+        jsonData = {'patientID': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
         requests.post(url, data = jsonData)
         lock.release()
 
