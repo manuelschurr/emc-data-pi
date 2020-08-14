@@ -1,5 +1,7 @@
+import axios from "axios";
 import express from "express";
 import _ from "lodash";
+import { centralServerAddress } from "../../config";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
 import Patient from "../../database/model/Patient";
@@ -30,15 +32,24 @@ router.post(
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
+
+      var config = {
+         headers: { 
+            'Content-Type': 'application/json'
+         }
+      };
       
-      PatientRepo.checkIfPatientDataExists(patient.patientId, patient.ambulanceId, function (result: number) {
+      PatientRepo.checkIfPatientDataExists(patient.patientId, patient.ambulanceId, async function (result: number) {
          if (result > 0) {
             PatientRepo.updatePatient(patient);
+            await axios.put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, config);
          }
          else {
             PatientRepo.insertPatient(patient);
+            await axios.post(`${centralServerAddress}/patient/create`, patient, config);
          }
-      })
+      });
+
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
       }).send(res);
