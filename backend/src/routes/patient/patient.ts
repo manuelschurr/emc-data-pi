@@ -1,5 +1,7 @@
+import axios from "axios";
 import express from "express";
 import _ from "lodash";
+import { centralServerAddress } from "../../config";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
 import Patient from "../../database/model/Patient";
@@ -38,7 +40,16 @@ router.post(
          else {
             PatientRepo.insertPatient(patient);
          }
-      })
+      });
+
+      var config = {
+         headers: { 
+            'Content-Type': 'application/json'
+         }
+      };
+        
+      await axios.post(`${centralServerAddress}/patient/create`, patient, config);
+
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
       }).send(res);

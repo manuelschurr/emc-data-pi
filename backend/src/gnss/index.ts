@@ -1,8 +1,7 @@
 // Importing from Modules
-import axios, { AxiosRequestConfig } from 'axios';
+import axios from 'axios';
 import GPS from "gps";
 import { centralServerAddress } from '../config';
-import Logger from "../core/Logger";
 import DateTime from "../helpers/dateTime";
 
 // normally we do import ... from '...'
@@ -35,21 +34,12 @@ gpsListener.on("data", data => {
          // Logger.info(gnss);
 
          var config = {
-            method: 'post',
-            url: centralServerAddress + '/ambulance/createGnss',
             headers: { 
                'Content-Type': 'application/json'
-            },
-           data : gnss
-         } as AxiosRequestConfig;
-
-         axios(config)
-            .then(response => {
-               Logger.info(response.data);
-            })
-            .catch(error => {
-               Logger.error(error);
-            });
+            }
+         };
+           
+         axios.post(`${centralServerAddress}/ambulance/createGnss`, gnss, config);
       }
    }
 });
