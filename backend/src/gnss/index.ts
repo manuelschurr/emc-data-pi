@@ -2,7 +2,6 @@
 import axios from 'axios';
 import GPS from "gps";
 import { centralServerAddress } from '../config';
-import DateTime from "../helpers/dateTime";
 
 // normally we do import ... from '...'
 // however, the serialport module does not seem to provide this
@@ -30,7 +29,7 @@ gpsListener.on("data", data => {
    if (data.type == "GGA"){
       // the quality of the record is != null, if a connection is established
       if(data.quality != null) {
-         var gnss = JSON.stringify({"ambulanceId": 1, "timestamp": DateTime.getCurrentDateAsTimeStamp(), "longitude":data.lon, "latitude":data.lat});
+         var gnss = JSON.stringify({"ambulanceId": 1, "timestamp": new Date(), "longitude":data.lon, "latitude":data.lat});
          // Logger.info(gnss);
 
          var config = {
