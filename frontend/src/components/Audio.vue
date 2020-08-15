@@ -6,7 +6,7 @@
             <button @click="recordAudio()" type="button" id="button_record" style="float: left" class="btn btn-warning btn-lg button">
                 <i class="fa fa-microphone"></i>
             </button>
-            <button type="button" id="button_stop" class="btn btn-danger btn-lg button">
+            <button @click="stopAudio()" type="button" id="button_stop" class="btn btn-danger btn-lg button">
                 <i class="fa fa-stop"></i>
             </button>
             <div id="audio" class="audio" controls>
@@ -20,15 +20,23 @@
 
 <script>
 export default {
+    data() {
+        return {
+            recorder: null,
+        };
+    },
     methods: {
         recordAudio() {
-            var device = navigator.mediaDevices.getUserMedia({ audio: true });
+            var device = navigator.mediaDevices.getUserMedia({
+                audio: true,
+            });
             var items = [];
             device.then((stream) => {
-                var recorder = new MediaRecorder(stream);
-                recorder.ondataavailable = (e) => {
+                this.recorder = new MediaRecorder(stream);
+                this.recorder.ondataavailable = (e) => {
                     items.push(e.data);
-                    if (recorder.state == "inactive") {
+                    if (this.recorder.state == "inactive") {
+                        console.log("Recording");
                         var blob = new Blob(items, { type: "audio/webm" });
                         var audio = document.getElementById("audio");
                         var mainaudio = document.createElement("audio");
@@ -37,24 +45,14 @@ export default {
                         mainaudio.innerHTML =
                             '<source src="' +
                             URL.createObjectURL(blob) +
-                            '" type="video/webm" />';
+                            '" type="audio/webm" />';
                     }
                 };
-
-                recorder.start();
-                // hier muss iwas wie: if (this.press === true){ recorder.stop();}
-                // Event Listener!
-                // document
-                //     .getElementById("button_stop")
-                //     .addEventListener("click", recorder.stop());
-                // if (document.getElementById("button_stop").clicked == true) {
-                //     recorder.stop();
-                // }
-                setTimeout(() => {
-                    recorder.stop();
-                }, 5000);
-                //saveAs(blob, "./audios/sprachnachricht.mp3");
+                this.recorder.start();
             });
+        },
+        stopAudio() {
+            this.recorder.stop();
         },
     },
 };
