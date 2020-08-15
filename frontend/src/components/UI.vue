@@ -59,7 +59,8 @@
                 </div>
             </div>
             <!-- Sprachnachricht Audio Import an dieser Stelle -->
-            <Audio />
+            <!-- <Audio /> -->
+            <Recording />
         </form>
         <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
         <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
@@ -193,14 +194,16 @@
 <script>
 // Camera import
 import Camera from "./Camera.vue";
-import Audio from "./Audio.vue";
+// import Audio from "./Audio.vue";
+import Recording from "./Recording.vue";
 import axios from "axios";
 
 export default {
     name: "UI",
     components: {
         Camera,
-        Audio,
+        Recording,
+        //Audio,
     },
     // return input of text fields
     data() {
@@ -336,7 +339,7 @@ export default {
 }
 
 .logo {
-    position: absolute;
+    position: relative;
     bottom: 0vw;
     left: 1vw;
     width: 7%;

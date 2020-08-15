@@ -36,7 +36,7 @@ export default {
                 this.recorder.ondataavailable = (e) => {
                     items.push(e.data);
                     if (this.recorder.state == "inactive") {
-                        console.log("Recording");
+                        // console.log("Recording");
                         var blob = new Blob(items, { type: "audio/webm" });
                         var audio = document.getElementById("audio");
                         var mainaudio = document.createElement("audio");
@@ -51,6 +51,7 @@ export default {
                 this.recorder.start();
             });
         },
+        // bei Click auf Stop Button recording stoppen
         stopAudio() {
             this.recorder.stop();
         },
