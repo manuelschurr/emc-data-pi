@@ -17,8 +17,11 @@
 </template>
 
 <script>
+// Sprachnachricht Funktionalitaet
 import Vue from "vue";
 import VueRecord from "@codekraft-studio/vue-record";
+// REST
+import axios from "axios";
 
 Vue.use(VueRecord);
 export default {
@@ -29,17 +32,37 @@ export default {
     },
     methods: {
         onResult(data) {
-            console.log("The blob data:", data);
-            console.log("Downloadable audio", window.URL.createObjectURL(data));
             var audio = document.getElementById("audio");
             var mainaudio = document.createElement("audio");
             mainaudio.setAttribute("controls", "controls");
             audio.appendChild(mainaudio);
+            var audioFile = URL.createObjectURL(data);
             mainaudio.innerHTML =
-                '<source src="' +
-                URL.createObjectURL(data) +
-                '" type="audio/webm" />';
+                '<source src="' + audioFile + '" type="audio/webm" />';
             this.recordings.push(data);
+            /**
+             * sending audio to PI
+             */
+            console.log("Sending the blob data:", data);
+            console.log("Downloadable audio", window.URL.createObjectURL(data));
+            axios({
+                method: "post",
+                url: "http://localhost:3000/audio/audio",
+                headers: {
+                    "Content-Type": "audio/webm",
+                },
+                data: this.recordings,
+            })
+                // .post("http://localhost:3000/patient/create", {
+                //     headers: { "Content-Type": "application/json" },
+                //     body: { dataJSON },
+                // })
+                .then(function (response) {
+                    console.log(response);
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
         },
         removeRecord(index) {
             this.recordings.splice(index, 1);

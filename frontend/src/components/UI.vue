@@ -252,7 +252,7 @@ export default {
                 EText: this.Einput,
             };
             let dataJSON = JSON.stringify(dataObj);
-            console.log(dataJSON);
+            console.log("Sending " + dataJSON);
             axios({
                 method: "post",
                 url: "http://localhost:3000/patient/create",
@@ -272,6 +272,9 @@ export default {
                     console.log(error);
                 });
         },
+        /**
+         * ABCDE Farben
+         */
         colorizeRow() {
             if (this.Avalue === true) {
                 document.getElementById("ARow").style.backgroundColor =
