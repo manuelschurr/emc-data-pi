@@ -25,8 +25,7 @@ const QUERY_PATIENT_SQL = `SELECT DISTINCT
    E_IsSelected EIsSelected,
    E_Text EText
   FROM Patient
-WHERE PatientId = ?
-  AND AmbulanceId = ?`;
+WHERE PatientId = ?`;
 
 // SQL command to insert a patient in the relation
 const INSERT_PATIENT_SQL = `INSERT INTO Patient(
@@ -77,8 +76,8 @@ const CHECK_PATIENT_SQL = `SELECT COUNT(*) FROM Patient WHERE PatientId = ? AND 
 
 
 export default class PatientRepo {
-   public static queryPatient(patientId: number, ambulanceId: number, callback: Function) {
-      DB_CONNECTION.get(QUERY_PATIENT_SQL, [patientId, ambulanceId], (err, row) => {
+   public static queryPatient(patientId: number, callback: Function) {
+      DB_CONNECTION.get(QUERY_PATIENT_SQL, [patientId], (err, row) => {
          if (err) {
             return Logger.error(err.message);
          }

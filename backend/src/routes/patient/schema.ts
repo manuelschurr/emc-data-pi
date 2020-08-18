@@ -3,7 +3,6 @@ import Joi from '@hapi/joi';
 export default {
    findPatient: Joi.object().keys({
       patientId: Joi.number().required(),
-      ambulanceId: Joi.number().required(),
    }),
    createPatient: Joi.object().keys({
       patientId: Joi.number().required(),
