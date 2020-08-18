@@ -7,17 +7,18 @@ import { SuccessResponse } from "../../core/ApiResponse";
 import Patient from "../../database/model/Patient";
 import PatientRepo from "../../database/repository/PatientRepo";
 import asyncHandler from "../../helpers/asyncHandler";
-import validator from "../../helpers/validator";
+import validator, { ValidationSource } from "../../helpers/validator";
 import schema from "./schema";
 
 const router = express.Router()
 
 router.get(
-   "/find",
-   validator(schema.findPatient),
+   "/findByPatientId/:patientId",
+   validator(schema.findPatient, ValidationSource.PARAM),
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    asyncHandler(async (req, res, next) => {
-      PatientRepo.queryPatient(req.body.patientId, req.body.ambulanceId, function (row: Patient) {
+      const { patientId } = req.params;
+      PatientRepo.queryPatient(parseInt(patientId), function (row: Patient) {
          if (!row) {
             throw new BadRequestError('Patient could not be found.');
          }
