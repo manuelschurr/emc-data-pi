@@ -27,7 +27,7 @@ Vue.use(VueRecord);
 export default {
     data() {
         return {
-            recordings: [],
+            audio: [],
         };
     },
     methods: {
@@ -39,7 +39,7 @@ export default {
             var audioFile = URL.createObjectURL(data);
             mainaudio.innerHTML =
                 '<source src="' + audioFile + '" type="audio/webm" />';
-            this.recordings.push(data);
+            this.audio.push(data);
             /**
              * sending audio to PI
              */
@@ -47,16 +47,12 @@ export default {
             console.log("Downloadable audio", window.URL.createObjectURL(data));
             axios({
                 method: "post",
-                url: "http://localhost:3000/audio/audio",
+                url: "http://localhost:3000/audio",
                 headers: {
                     "Content-Type": "audio/webm",
                 },
-                data: this.recordings,
+                data: this.audio,
             })
-                // .post("http://localhost:3000/patient/create", {
-                //     headers: { "Content-Type": "application/json" },
-                //     body: { dataJSON },
-                // })
                 .then(function (response) {
                     console.log(response);
                 })
@@ -64,14 +60,14 @@ export default {
                     console.log(error);
                 });
         },
-        removeRecord(index) {
-            this.recordings.splice(index, 1);
-            // mainaudio.innerHTML =
-            //     '<source src="' +
-            //     URL.createObjectURL(data) +
-            //     '" type="audio/webm" />';
-            console.log("index removed");
-        },
+        // removeRecord(index) {
+        //     this.recordings.splice(index, 1);
+        //     // mainaudio.innerHTML =
+        //     //     '<source src="' +
+        //     //     URL.createObjectURL(data) +
+        //     //     '" type="audio/webm" />';
+        //     console.log("index removed");
+        // },
     },
 };
 </script>
