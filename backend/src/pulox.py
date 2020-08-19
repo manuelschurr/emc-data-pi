@@ -20,8 +20,8 @@ args = parser.parse_args()
 pID = args.pID
 
 #set server address
-url = 'http://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
-#url = 'http://localhost:3000/patient/createPulsoxy'
+url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
+#url = 'https://localhost:3000/patient/createPulsoxy'
 
 #establish connection via serial port
 ser = serial.Serial()
@@ -105,8 +105,8 @@ def write_data():
     while x:
         time.sleep(1)
         lock.acquire()
-        jsonData = {'patientID': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
-        requests.post(url, data = jsonData)
+        jsonData = {'patientId': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
+        requests.post(url, data = jsonData, verify = 'certificates\cert.pem')
         lock.release()
 
 #start threads to execute program
