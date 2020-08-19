@@ -106,7 +106,7 @@ def write_data():
         time.sleep(1)
         lock.acquire()
         jsonData = {'patientId': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
-        requests.post(url, data = jsonData, verify = 'certificates\cert.pem')
+        requests.post(url, data = jsonData, verify = '../../certificates/cert.pem')
         lock.release()
 
 #start threads to execute program
