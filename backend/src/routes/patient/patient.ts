@@ -1,9 +1,9 @@
 import axios from "axios";
 import express from "express";
-import _ from "lodash";
 import { centralServerAddress } from "../../config";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
+import Logger from "../../core/Logger";
 import Patient from "../../database/model/Patient";
 import PatientRepo from "../../database/repository/PatientRepo";
 import asyncHandler from "../../helpers/asyncHandler";
@@ -35,25 +35,41 @@ router.post(
       let patient = Object.assign(new Patient(), req.body);
 
       var config = {
-         headers: { 
+         headers: {
             'Content-Type': 'application/json'
          }
       };
-      
+
       PatientRepo.checkIfPatientDataExists(patient.patientId, patient.ambulanceId, async function (result: number) {
          if (result > 0) {
             PatientRepo.updatePatient(patient);
-            await axios.put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, config);
+            await axios
+               .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, config)
+               .catch(error => {
+                  Logger.error(error);
+               });
          }
          else {
+            await axios
+               .get(`${centralServerAddress}/patient/findNextPatientId`)
+               .then(response => {
+                  patient.patientId = response.data.data;
+               })
+               .catch(error => {
+                  Logger.error(error);
+               });
             PatientRepo.insertPatient(patient);
-            await axios.post(`${centralServerAddress}/patient/create`, patient, config);
+            await axios
+               .post(`${centralServerAddress}/patient/create`, patient, config)
+               .catch(error => {
+                  Logger.error(error);
+               });;
          }
-      });
 
-      return new SuccessResponse("Successful", {
-         patient: _.pick(patient, ['patientId', 'ambulanceId'])
-      }).send(res);
+         return new SuccessResponse("Successful", {
+            patient: patient
+         }).send(res);
+      });
    }),
 )
 

@@ -5,8 +5,8 @@ export default {
       patientId: Joi.number().required(),
    }),
    createPatient: Joi.object().keys({
-      patientId: Joi.number().required(),
-      ambulanceId: Joi.number().required(),
+      patientId: Joi.number(),
+      ambulanceId: Joi.number(),
       name: Joi.string().required().max(150),
       gender: Joi.string().required().max(1),
       age: Joi.number().required(),
