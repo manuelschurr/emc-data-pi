@@ -96,7 +96,7 @@ def read_data():
                 print ('Data read error. Trying again...')
                 y = True
 
-#write data to server once a second, as more precise data is not needed
+#write data to server once a second
 def write_data():
     global data
     global output
