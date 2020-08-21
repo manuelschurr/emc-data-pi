@@ -8,7 +8,7 @@ data = []
 output = '['
 lock = threading.Lock()
 
-#set device connection port and grant read/write/execute permissons
+#set device connection port and grant read/write/execute permissons --> remove bashCommand part, as it will be part of Cron-job
 device = '/dev/ttyUSB0'
 bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
@@ -106,7 +106,14 @@ def write_data():
         time.sleep(1)
         lock.acquire()
         jsonData = {'patientId': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
-        requests.post(url, data = jsonData, verify = '../../certificates/cert.pem')
+        flag = True
+        #retry to connect to server in case of connection loss
+        while flag = True:
+            try:
+                requests.post(url, data = jsonData, verify = '../../certificates/cert.pem')
+                break
+            except:
+                print('No internet connection available. Retrying ...')
         lock.release()
 
 #start threads to execute program
