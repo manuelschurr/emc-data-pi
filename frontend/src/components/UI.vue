@@ -261,11 +261,11 @@ export default {
                 },
                 data: dataJSON,
             })
-                // .post("http://localhost:3000/patient/create", {
-                //     headers: { "Content-Type": "application/json" },
-                //     body: { dataJSON },
-                // })
                 .then(function (response) {
+                    // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
+                    // patientID dann aus dataObj raus und in data (return) Objekt rein
+                    // ambulanceID kann komplett raus, wird backend seitig realisiert
+                    //
                     console.log(response);
                 })
                 .catch(function (error) {
