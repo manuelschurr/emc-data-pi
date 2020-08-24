@@ -1,6 +1,6 @@
 import Logger from "../../core/Logger";
 import DateTime from "../../helpers/dateTime";
-import { DB_CONNECTION } from '../index';
+import { booleanToNumber, DB_CONNECTION } from '../index';
 import Patient from "../model/Patient";
 
 // SQL command to find a patient
@@ -53,6 +53,7 @@ const INSERT_PATIENT_SQL = `INSERT INTO Patient(
 // SQL command to update a patient in the relation
 const UPDATE_PATIENT_SQL = `UPDATE Patient SET
    UpdateDat = ?,
+   AmbulanceId = ?,
    Name = ?,
    Gender = ?,
    Age = ?,
@@ -68,53 +69,45 @@ const UPDATE_PATIENT_SQL = `UPDATE Patient SET
    D_Text = ?,
    E_IsSelected = ?,
    E_Text  = ?
-WHERE PatientId = ?
-  AND AmbulanceId = ?`;
+WHERE PatientId = ?`;
 
 // SQL command to check if a patient already exists (to determine what function we have to call afterwards)
-const CHECK_PATIENT_SQL = `SELECT COUNT(*) FROM Patient WHERE PatientId = ? AND AmbulanceId = ?`;                        
+const CHECK_PATIENT_SQL = `SELECT COUNT(*) FROM Patient WHERE PatientId = ?`;
 
 
 export default class PatientRepo {
-   public static queryPatient(patientId: number, callback: Function) {
-      DB_CONNECTION.get(QUERY_PATIENT_SQL, [patientId], (err, row) => {
-         if (err) {
-            return Logger.error(err.message);
-         }
-         callback(row);
-      })
+   public static queryPatient(patientId: number): Patient {
+      const stmt = DB_CONNECTION.prepare(QUERY_PATIENT_SQL);
+      const patient = stmt.get(patientId) as Patient;
+      return patient;
    }
 
    public static insertPatient(patient: Patient) {
       const currentDate = DateTime.getCurrentDateAsTimeStamp();
-      DB_CONNECTION.run(INSERT_PATIENT_SQL, [patient.patientId, patient.ambulanceId, currentDate, currentDate, patient.name, patient.gender,
-      patient.age, patient.preExistingIllness, patient.miscellaneous, patient.AIsSelected, patient.AText, patient.BIsSelected, patient.BText,
-      patient.CIsSelected, patient.CText, patient.DIsSelected, patient.DText, patient.EIsSelected, patient.EText], function (err) {
-         if (err) {
-            return Logger.error(err.message);
-         }
-         Logger.info('1 row inserted');
-      });
+      const stmt = DB_CONNECTION.prepare(INSERT_PATIENT_SQL);
+      const info = stmt.run(patient.patientId, patient.ambulanceId, currentDate, currentDate, patient.name, patient.gender, patient.age,
+         patient.preExistingIllness, patient.miscellaneous, booleanToNumber(patient.AIsSelected), patient.AText, booleanToNumber(patient.BIsSelected),
+         patient.BText, booleanToNumber(patient.CIsSelected), patient.CText, booleanToNumber(patient.DIsSelected), patient.DText,
+         booleanToNumber(patient.EIsSelected), patient.EText);
+      Logger.debug(`${info.changes} patient row(s) inserted`);
+
    }
 
    public static updatePatient(patient: Patient) {
-      DB_CONNECTION.run(UPDATE_PATIENT_SQL, [DateTime.getCurrentDateAsTimeStamp(), patient.name, patient.gender, patient.age, patient.preExistingIllness,
-      patient.miscellaneous, patient.AIsSelected, patient.AText, patient.BIsSelected, patient.BText, patient.CIsSelected, patient.CText, patient.DIsSelected,
-      patient.DText, patient.EIsSelected, patient.EText, 
-         patient.patientId, patient.ambulanceId], function (err) {
-         if (err) {
-            return Logger.error(err.message);
-         }
-         Logger.info('1 row updated');
-      });
+      const stmt = DB_CONNECTION.prepare(UPDATE_PATIENT_SQL);
+      const info = stmt.run(DateTime.getCurrentDateAsTimeStamp(), patient.ambulanceId, patient.name, patient.gender, patient.age, patient.preExistingIllness,
+         patient.miscellaneous, booleanToNumber(patient.AIsSelected), patient.AText, booleanToNumber(patient.BIsSelected), patient.BText,
+         booleanToNumber(patient.CIsSelected), patient.CText, booleanToNumber(patient.DIsSelected), patient.DText, booleanToNumber(patient.EIsSelected),
+         patient.EText,
+         patient.patientId); // last parameter is where clause
+      Logger.debug(`${info.changes} patient row(s) updated`);
    }
 
-   public static checkIfPatientDataExists(patientId: number, ambulanceId: number, callback: Function) {
-      DB_CONNECTION.get(CHECK_PATIENT_SQL, [patientId, ambulanceId], function(err, result) {
-         if (err) {
-            return Logger.error(err.message);
-         }
-         callback(result["COUNT(*)"]);
-      });
+   public static checkIfPatientDataExists(patientId: number): boolean {
+      patientId = patientId === null || typeof patientId === 'undefined' ? 0 : patientId;
+      const stmt = DB_CONNECTION.prepare(CHECK_PATIENT_SQL);
+      const result = stmt.get(patientId);
+
+      return result['COUNT(*)'] === 1;
    }
 }
