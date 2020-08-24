@@ -1,10 +1,11 @@
-import sqlite3 from 'sqlite3';
+import Database from "better-sqlite3";
 import { db } from "../config";
 import Logger from "../core/Logger";
+import AmbulanceHelper from '../helpers/ambulance.helper';
 
-// SQL command to create the table, if it is not existing
+// SQL command to create the patient table, if it is not existing
 const CREATE_PATIENT_TABLE_SQL = `CREATE TABLE IF NOT EXISTS Patient(
-   PatientId          INTEGER,
+   PatientId          INTEGER PRIMARY KEY,
    AmbulanceId        INTEGER,
    CreateDat          DATE,
    UpdateDat          DATE,
@@ -25,36 +26,39 @@ const CREATE_PATIENT_TABLE_SQL = `CREATE TABLE IF NOT EXISTS Patient(
    E_Text             TEXT
 )`;
 
+// SQL command to create the ambulance table, if it is not existing
+const CREATE_AMBULANCE_TABLE_SQL = `CREATE TABLE IF NOT EXISTS Ambulance(
+   AmbulanceId INTEGER PRIMARY KEY,
+   Identifier  VARCHAR(50) NOT NULL,
+   PatientId   INTEGER 
+)`;
+
 // opening the connection to the database
-// note: we are connecting to a disk file database 'emcdata.db'
-// using the default opening mode OPEN_READWRITE | OPEN_CREATE
-// but the database should already be created by the setup script
-export const DB_CONNECTION = new sqlite3.Database(db.path, (err) => {
-   if (err) {
-      return Logger.error(err.message);
-   }
-   Logger.info('Connected to the EMC database');
-});
+// note: connecting to a disk file given in the .env file
+export const DB_CONNECTION = new Database(db.path, { verbose: Logger.debug });
+
+// SQLite does not have a separate Boolean storage class.
+// Instead, Boolean values are stored as integers 0 (false) and 1 (true)
+// => return 1 if boolValue is TRUE, 0 otherwise
+export function booleanToNumber(boolValue: boolean): number {
+   return boolValue ? 1 : 0;
+}
 
 // running the command to create the patient table
-// queries scheduled here will be serialized
-DB_CONNECTION.serialize(() => {
-   DB_CONNECTION.run(CREATE_PATIENT_TABLE_SQL, function (err) {
-      if (err) {
-         return Logger.error(err.message);
-      }
-      Logger.info('Table \'Patient\' created successfully');
-   });
-});
+let stmt = DB_CONNECTION.prepare(CREATE_PATIENT_TABLE_SQL);
+let info = stmt.run();
+Logger.info('Table \'Patient\' created successfully');
 
+// running the command to create the ambulance table
+stmt = DB_CONNECTION.prepare(CREATE_AMBULANCE_TABLE_SQL);
+info = stmt.run();
+Logger.info('Table \'Ambulance\' created successfully');
+
+// call the method to create an ambulance tuple after creation of database tables
+AmbulanceHelper.createAmbulanceEntry();
 
 // if the Node process ends, close the sqlite connection
 process.on('SIGINT', () => {
-   DB_CONNECTION.close((err) => {
-      if (err) {
-         return Logger.error(err.message);
-      }
-      Logger.info('SQLite connection disconnected through app termination');
-      process.exit(0);
-   });
+   DB_CONNECTION.close();
+   process.exit(0);
 });
