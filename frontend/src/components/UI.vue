@@ -33,11 +33,11 @@
                 <label class="col-2">Geschlecht</label>
                 <div class="col-2">
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input v-model="geschlecht" value="m" name="radio" id="radio_0" type="radio" class="custom-control-input" />
+                        <input v-model="geschlecht" value="M" name="radio" id="radio_0" type="radio" class="custom-control-input" />
                         <label for="radio_0" class="custom-control-label">m</label>
                     </div>
                     <div class="custom-control custom-radio custom-control-inline">
-                        <input v-model="geschlecht" value="w" name="radio" id="radio_1" type="radio" class="custom-control-input" />
+                        <input v-model="geschlecht" value="W" name="radio" id="radio_1" type="radio" class="custom-control-input" />
                         <label for="radio_1" class="custom-control-label">w</label>
                     </div>
                 </div>
@@ -55,7 +55,7 @@
             <div class="form-group row">
                 <label for="textarea" class="col-2 col-form-label labelTop">Sonstiges</label>
                 <div class="col-10">
-                    <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="13" class="form-control"></textarea>
+                    <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="10" class="form-control"></textarea>
                 </div>
             </div>
             <!-- Sprachnachricht Audio Import an dieser Stelle -->
@@ -177,15 +177,28 @@
             </div>
         </div>
         <!-- loading UI in here then add submit button -->
-        <div class="submit-button btn-lg btn-block">
+        <div id="submitButton" class="submit-button btn-lg btn-block" v-if="!loading">
             <button @click="this.submitData" id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
                 <b>Senden</b>
             </button>
         </div>
-        <!-- Logo Uniklinik -->
-        <div class="logo">
-            <img src="./images/logo.png" class="img-fluid" alt="Logo Uniklinik" />
+        <!-- Button with Spinner to be shown when data is being processed -->
+        <div class="submit-button btn-lg btn-block" v-if="loading">
+            <button id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
+                <span class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
+                Daten werden gesendet...
+            </button>
         </div>
+        <!-- Success Message when data has successfully been sent -->
+        <div id="successMsg" v-if="successMsg">
+            <p style="color: green">
+                <b>Daten erfolgreich gesendet!</b>
+            </p>
+        </div>
+        <!-- Logo Uniklinik - deactivated for now -->
+        <!-- <div class="logo">
+            <img src="./images/logo.png" class="img-fluid" alt="Logo Uniklinik" />
+        </div>-->
         <!-- Final div -->
     </div>
 </template>
@@ -208,6 +221,10 @@ export default {
     // return input of text fields
     data() {
         return {
+            // data not loading initially
+            loading: false,
+            successMsg: false,
+            // declare patientId
             patientId: "",
             nameOf: "",
             alter: "",
@@ -225,6 +242,8 @@ export default {
             Evalue: "",
             Einput: "",
             isRecording: false,
+            // decalre dataObj
+            dataObj: "",
         };
     },
     methods: {
@@ -232,10 +251,13 @@ export default {
          * Methode zum Versenden der Daten an Backend ueber Submit Button
          */
         submitData() {
+            // set loading to true so that spinner is shown
+            this.loading = true;
+            this.successMsg = false;
             // JSON Objekt aus Data der Textfelder/User Input
             // if patient ID exists, then send it as well to be able to update patients
-            if (patientId != 0) {
-                var dataObj = {
+            if (this.patientId != 0) {
+                this.dataObj = {
                     patientId: this.patientId,
                     name: this.nameOf,
                     gender: this.geschlecht,
@@ -256,7 +278,7 @@ export default {
                 // JSON Objekt aus Data der Textfelder/User Input
                 // if patient ID not existing yet, new patient
             } else {
-                var dataObj = {
+                this.dataObj = {
                     name: this.nameOf,
                     gender: this.geschlecht,
                     age: this.alter,
@@ -274,7 +296,7 @@ export default {
                     EText: this.Einput,
                 };
             }
-            let dataJSON = JSON.stringify(dataObj);
+            let dataJSON = JSON.stringify(this.dataObj);
             console.log("Sending " + dataJSON);
             axios({
                 method: "post",
@@ -288,12 +310,21 @@ export default {
                     // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
                     // patientID dann aus dataObj raus und in data (return) Objekt rein
                     // ambulanceID kann komplett raus, wird backend seitig realisiert
-                    patientId = response.data.data.patient.patientId;
+                    this.patientId = response.data.data.patient.patientId;
                     console.log(response);
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
+            // Timer to reset button & display success message when data was sent
+            if (dataJSON) {
+                setTimeout(() => {
+                    this.loading = false;
+                    this.successMsg = true;
+                }, 2000);
+            } else {
+                alert("Daten konnten nicht gesendet werden...");
+            }
         },
         /**
          * ABCDE Farben
@@ -364,17 +395,21 @@ export default {
     display: inline-block;
 }
 
-.logo {
+/* .logo {
     position: relative;
     bottom: 0vw;
     left: 1vw;
     width: 7%;
     height: 7%;
-}
+} */
 
 .submit-button {
     display: inline-block;
     position: relative;
+}
+.spinner {
+    display: inline-block;
+    margin: 5px auto;
 }
 
 /*
