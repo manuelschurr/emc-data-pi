@@ -208,6 +208,7 @@ export default {
     // return input of text fields
     data() {
         return {
+            patientId: "",
             nameOf: "",
             alter: "",
             geschlecht: "",
@@ -232,23 +233,47 @@ export default {
          */
         submitData() {
             // JSON Objekt aus Data der Textfelder/User Input
-            var dataObj = {
-                name: this.nameOf,
-                gender: this.geschlecht,
-                age: this.alter,
-                preExistingIllness: this.vorerkrankung,
-                miscellaneous: this.sonstiges,
-                AIsSelected: this.Avalue,
-                AText: this.Ainput,
-                BIsSelected: this.Bvalue,
-                BText: this.Binput,
-                CIsSelected: this.Cvalue,
-                CText: this.Cinput,
-                DIsSelected: this.Dvalue,
-                DText: this.Dinput,
-                EIsSelected: this.Evalue,
-                EText: this.Einput,
-            };
+            // if patient ID exists, then send it as well to be able to update patients
+            if (patientId != 0) {
+                var dataObj = {
+                    patientId: this.patientId,
+                    name: this.nameOf,
+                    gender: this.geschlecht,
+                    age: this.alter,
+                    preExistingIllness: this.vorerkrankung,
+                    miscellaneous: this.sonstiges,
+                    AIsSelected: this.Avalue,
+                    AText: this.Ainput,
+                    BIsSelected: this.Bvalue,
+                    BText: this.Binput,
+                    CIsSelected: this.Cvalue,
+                    CText: this.Cinput,
+                    DIsSelected: this.Dvalue,
+                    DText: this.Dinput,
+                    EIsSelected: this.Evalue,
+                    EText: this.Einput,
+                };
+                // JSON Objekt aus Data der Textfelder/User Input
+                // if patient ID not existing yet, new patient
+            } else {
+                var dataObj = {
+                    name: this.nameOf,
+                    gender: this.geschlecht,
+                    age: this.alter,
+                    preExistingIllness: this.vorerkrankung,
+                    miscellaneous: this.sonstiges,
+                    AIsSelected: this.Avalue,
+                    AText: this.Ainput,
+                    BIsSelected: this.Bvalue,
+                    BText: this.Binput,
+                    CIsSelected: this.Cvalue,
+                    CText: this.Cinput,
+                    DIsSelected: this.Dvalue,
+                    DText: this.Dinput,
+                    EIsSelected: this.Evalue,
+                    EText: this.Einput,
+                };
+            }
             let dataJSON = JSON.stringify(dataObj);
             console.log("Sending " + dataJSON);
             axios({
@@ -263,7 +288,7 @@ export default {
                     // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
                     // patientID dann aus dataObj raus und in data (return) Objekt rein
                     // ambulanceID kann komplett raus, wird backend seitig realisiert
-                    //
+                    patientId = response.data.data.patient.patientId;
                     console.log(response);
                 })
                 .catch(function (error) {
