@@ -39,7 +39,8 @@ export default {
             var audioFile = URL.createObjectURL(data);
             mainaudio.innerHTML =
                 '<source src="' + audioFile + '" type="audio/webm" />';
-            this.audio.push(data);
+            //this.audio.push(data);
+            this.audio.push(audioFile);
             /**
              * sending audio to PI
              */
@@ -51,7 +52,7 @@ export default {
                 headers: {
                     "Content-Type": "audio/webm",
                 },
-                data: this.audio,
+                data: audioFile,
             })
                 .then(function (response) {
                     console.log(response);
@@ -59,6 +60,15 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                 });
+            //alternativ ueber FormaData - nicht notwendig
+            // try {
+            //     const formData = new FormData();
+            //     formData.append("audioFile", audioFile);
+
+            //     axios.post("https://localhost:3000/audio", formData);
+            // } catch (error) {
+            //     console.log(error);
+            // }
         },
         // removeRecord(index) {
         //     this.recordings.splice(index, 1);

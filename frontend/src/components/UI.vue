@@ -233,8 +233,6 @@ export default {
         submitData() {
             // JSON Objekt aus Data der Textfelder/User Input
             var dataObj = {
-                patientId: 1,
-                ambulanceId: 1,
                 name: this.nameOf,
                 gender: this.geschlecht,
                 age: this.alter,
