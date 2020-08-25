@@ -1,5 +1,5 @@
 <template>
-    <div style="background-color: #fafafa">
+    <div id="rtwForm" style="background-color: #fafafa">
         <!-- Header -->
         <div class="container-fluid bg-dark text-white" style="text-align: left">
             <p>
@@ -15,7 +15,7 @@
                 <div class="col-10">
                     <div class="input-group">
                         <div class="input-group-prepend"></div>
-                        <input v-model="nameOf" type="text" class="form-control" />
+                        <input id="nameInput" v-model="nameOf" type="text" class="form-control" />
                     </div>
                 </div>
             </div>
@@ -185,7 +185,7 @@
         <!-- Button with Spinner to be shown when data is being processed -->
         <div class="submit-button btn-lg btn-block" v-if="loading">
             <button id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
-                <span class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
+                <span id="btnMsg" class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
                 Daten werden gesendet...
             </button>
         </div>
@@ -194,6 +194,16 @@
             <p style="color: green">
                 <b>Daten erfolgreich gesendet!</b>
             </p>
+        </div>
+        <div id="successMsg" v-if="finishMsg">
+            <p style="color: red">
+                <b>Patient erfolgreich abgeschlossen.</b>
+            </p>
+        </div>
+        <div id="finishButton" class="submit-button btn-lg btn-block">
+            <button @click="this.finishPatient" id="finishButton" name="submit" type="submit" class="btn btn-danger btn-lg btn-block">
+                <b>Patienten abschließen</b>
+            </button>
         </div>
         <!-- Logo Uniklinik - deactivated for now -->
         <!-- <div class="logo">
@@ -224,6 +234,7 @@ export default {
             // data not loading initially
             loading: false,
             successMsg: false,
+            finishMsg: false,
             // declare patientId
             patientId: "",
             nameOf: "",
@@ -242,7 +253,7 @@ export default {
             Evalue: "",
             Einput: "",
             isRecording: false,
-            // decalre dataObj
+            // declare dataObj
             dataObj: "",
         };
     },
@@ -306,17 +317,25 @@ export default {
                 },
                 data: dataJSON,
             })
-                .then(function (response) {
+                .then((response) => {
                     // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
                     // patientID dann aus dataObj raus und in data (return) Objekt rein
                     // ambulanceID kann komplett raus, wird backend seitig realisiert
                     this.patientId = response.data.data.patient.patientId;
                     console.log(response);
+                    // Timer to reset button & display success message when data was sent
+                    // setTimeout(() => {
+                    //     this.loading = false;
+                    //     this.successMsg = true;
+                    // }, 2000);
                 })
                 .catch(function (error) {
                     console.log(error);
+                    // alert(
+                    //     "Daten konnten nicht gesendet werden, aufgrund " + error
+                    // );
                 });
-            // Timer to reset button & display success message when data was sent
+            // // Timer to reset button & display success message when data was sent
             if (dataJSON) {
                 setTimeout(() => {
                     this.loading = false;
@@ -325,6 +344,53 @@ export default {
             } else {
                 alert("Daten konnten nicht gesendet werden...");
             }
+        },
+        /**
+         * Patienten abschließen - Button
+         */
+        finishPatient() {
+            // sending dataObj with the patientID to PI
+            this.dataObj = {
+                patientId: this.patientId,
+                name: this.nameOf,
+                gender: this.geschlecht,
+                age: this.alter,
+                preExistingIllness: this.vorerkrankung,
+                miscellaneous: this.sonstiges,
+                AIsSelected: this.Avalue,
+                AText: this.Ainput,
+                BIsSelected: this.Bvalue,
+                BText: this.Binput,
+                CIsSelected: this.Cvalue,
+                CText: this.Cinput,
+                DIsSelected: this.Dvalue,
+                DText: this.Dinput,
+                EIsSelected: this.Evalue,
+                EText: this.Einput,
+            };
+            let dataJSON = JSON.stringify(this.dataObj);
+            console.log("Abgeschlossenes JSON Obj " + dataJSON);
+            axios({
+                method: "post",
+                url: "http://localhost:3000/patient/finish",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: dataJSON,
+            })
+                .then((response) => {
+                    console.log(response);
+                    // activate to display success patient finish message
+                    this.finishMsg = true;
+                    // the text fields can be emptied now
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+
+            this.finishMsg = true;
+            //document.getElementById("rtwForm").reset();
+            console.log("Geloeschtes Obj " + dataJSON);
         },
         /**
          * ABCDE Farben
