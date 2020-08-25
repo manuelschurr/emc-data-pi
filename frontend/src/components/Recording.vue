@@ -17,7 +17,7 @@
 </template>
 
 <script>
-// Sprachnachricht Funktionalitaet
+// Sprachnachricht Funktionalitaet von externer open source library
 import Vue from "vue";
 import VueRecord from "@codekraft-studio/vue-record";
 // REST

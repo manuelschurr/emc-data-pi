@@ -1,3 +1,4 @@
+// Ignore this here, this is just a backup for recording a voice message, but instead, working way better, we are using @codekraft-studio/vue-record!
 <template>
     <!-- Voice Record - Row + Button -->
     <div class="form-group row">

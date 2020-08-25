@@ -1,5 +1,6 @@
 <template>
-    <div id="rtwForm" style="background-color: #fafafa">
+    <!-- Backgroundcolor is set in index.html -->
+    <div id="rtwForm">
         <!-- Header -->
         <div class="container-fluid bg-dark text-white" style="text-align: left">
             <p>
@@ -8,7 +9,7 @@
         </div>
         <!-- Main Body -->
         <!-- Left Half of Screen -->
-        <form class="text-fields-left">
+        <form class="text-fields-left" id="left-text-fields">
             <!-- Name Feld -->
             <div id="NameFeld" class="form-group row">
                 <label for="text" class="col-2 col-form-label">Name</label>
@@ -59,16 +60,14 @@
                 </div>
             </div>
             <!-- Sprachnachricht Audio Import an dieser Stelle -->
-            <!-- <Audio /> -->
             <Recording />
         </form>
-        <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
         <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
         <div>
             <!------- Camera Import -------->
             <Camera />
             <!-- ABCDE Schema -->
-            <div class="text-fields-right">
+            <form class="text-fields-right" id="right-text-fields">
                 <!-- A -->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
@@ -174,42 +173,43 @@
                         </div>
                     </div>
                 </div>
+            </form>
+        </div>
+        <!-- Bootstrap Button Group to display buttons next to each other and at bottom of screen -->
+        <div class="btn-group confirmButtons fixed-bottom" style="margin:10px auto" role="group">
+            <!-- Submit button -->
+            <div id="submitButton" class="submit-button btn-lg btn-block" v-if="!loading">
+                <button @click="this.submitData" id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
+                    <b>Senden</b>
+                </button>
             </div>
-        </div>
-        <!-- loading UI in here then add submit button -->
-        <div id="submitButton" class="submit-button btn-lg btn-block" v-if="!loading">
-            <button @click="this.submitData" id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
-                <b>Senden</b>
-            </button>
-        </div>
-        <!-- Button with Spinner to be shown when data is being processed -->
-        <div class="submit-button btn-lg btn-block" v-if="loading">
-            <button id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
-                <span id="btnMsg" class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
-                Daten werden gesendet...
-            </button>
-        </div>
-        <!-- Success Message when data has successfully been sent -->
-        <div id="successMsg" v-if="successMsg">
-            <p style="color: green">
-                <b>Daten erfolgreich gesendet!</b>
-            </p>
-        </div>
-        <div id="successMsg" v-if="finishMsg">
-            <p style="color: red">
-                <b>Patient erfolgreich abgeschlossen.</b>
-            </p>
-        </div>
-        <div id="finishButton" class="submit-button btn-lg btn-block">
-            <button @click="this.finishPatient" id="finishButton" name="submit" type="submit" class="btn btn-danger btn-lg btn-block">
-                <b>Patienten abschließen</b>
-            </button>
+            <!-- Spinner inside Submit Button to indicate when data is being processed -->
+            <div class="submit-button btn-lg btn-block" v-if="loading">
+                <button id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
+                    <span id="btnMsg" class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
+                    Daten werden gesendet...
+                </button>
+            </div>
+            <!-- Modal Windows Import for Data Sending and Patient Finishing Confirmation Windows -->
+            <Modals />
+            <!-- "Patient abschließen" Button - Reset Button -->
+            <div id="finishButton" class="finish-button btn-lg btn-block" v-if="!finishing">
+                <button @click="this.finishPatient" id="finishButton" name="submit" type="reset" class="btn btn-danger btn-lg btn-block">
+                    <b>Patient abschließen / Neuer Patient</b>
+                </button>
+            </div>
+            <!-- Spinner inside Finish Button to indicate when data is being processed -->
+            <div class="finish-button btn-lg btn-block" v-if="finishing">
+                <button id="finishButton" name="finish" type="submit" class="btn btn-danger btn-lg btn-block">
+                    <span id="btnMsg" class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
+                    Patient wird abgeschlossen...
+                </button>
+            </div>
         </div>
         <!-- Logo Uniklinik - deactivated for now -->
         <!-- <div class="logo">
             <img src="./images/logo.png" class="img-fluid" alt="Logo Uniklinik" />
         </div>-->
-        <!-- Final div -->
     </div>
 </template>
 
@@ -217,24 +217,28 @@
 <script>
 // Camera import
 import Camera from "./Camera.vue";
-// import Audio from "./Audio.vue";
 import Recording from "./Recording.vue";
 import axios from "axios";
+// importing and using lib for modal windows
+import Vue from "vue";
+import VModal from "vue-js-modal";
+Vue.use(VModal);
+import Modals from "./Modals.vue";
 
 export default {
     name: "UI",
     components: {
         Camera,
         Recording,
-        //Audio,
+        Modals,
     },
     // return input of text fields
     data() {
         return {
-            // data not loading initially
+            // flag indicating that data is being sent when active
             loading: false,
-            successMsg: false,
-            finishMsg: false,
+            // flag indicating that patient is being finished when active
+            finishing: false,
             // declare patientId
             patientId: "",
             nameOf: "",
@@ -264,7 +268,6 @@ export default {
         submitData() {
             // set loading to true so that spinner is shown
             this.loading = true;
-            this.successMsg = false;
             // JSON Objekt aus Data der Textfelder/User Input
             // if patient ID exists, then send it as well to be able to update patients
             if (this.patientId != 0) {
@@ -339,16 +342,19 @@ export default {
             if (dataJSON) {
                 setTimeout(() => {
                     this.loading = false;
-                    this.successMsg = true;
+                    this.$modal.show("sentModal");
                 }, 2000);
             } else {
+                this.loading = false;
                 alert("Daten konnten nicht gesendet werden...");
             }
         },
         /**
-         * Patienten abschließen - Button
+         * Patienten abschließen Funktionalität
          */
         finishPatient() {
+            // set finishing flag to true
+            this.finishing = true;
             // sending dataObj with the patientID to PI
             this.dataObj = {
                 patientId: this.patientId,
@@ -380,17 +386,19 @@ export default {
             })
                 .then((response) => {
                     console.log(response);
-                    // activate to display success patient finish message
-                    this.finishMsg = true;
-                    // the text fields can be emptied now
                 })
                 .catch(function (error) {
                     console.log(error);
                 });
-
-            this.finishMsg = true;
-            //document.getElementById("rtwForm").reset();
-            console.log("Geloeschtes Obj " + dataJSON);
+            //this.$modal.hide("modal");
+            if (dataJSON) {
+                setTimeout(() => {
+                    // when finished set flag to false again
+                    this.finishing = false;
+                    // displaying modal then
+                    this.$modal.show("finishModal");
+                }, 2000);
+            }
         },
         /**
          * ABCDE Farben
@@ -448,6 +456,9 @@ export default {
 
 <!------------------------------ Style (scoped limits css to this component only) ------------------------------>
 <style scoped>
+#rtwForm {
+    height: 100%;
+}
 .text-fields-left {
     float: left;
     width: 50vw;
@@ -470,19 +481,9 @@ export default {
 } */
 
 .submit-button {
-    display: inline-block;
-    position: relative;
+    width: 50vw;
 }
-.spinner {
-    display: inline-block;
-    margin: 5px auto;
+.finish-button {
+    width: 50vw;
 }
-
-/*
-.microTextArea {
-  position: absolute;
-  left: 40vw;
-  bottom: 19.3vw;
-}
-*/
 </style>
