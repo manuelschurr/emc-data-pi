@@ -3,7 +3,7 @@
 import serial, subprocess, time, threading, json, requests, argparse
 from datetime import datetime
 
-#define variables
+#declare variables
 data = []
 output = '['
 lock = threading.Lock()
@@ -13,7 +13,7 @@ device = '/dev/ttyUSB0'
 bashCommand = 'sudo chmod 777 ' + device
 subprocess.check_call(bashCommand.split())
 
-#insert next free PatientId from server into documents to be sent to server
+#deliver next free PatientId from server into script to be inserted into documents to be sent to server
 parser = argparse.ArgumentParser()
 parser.add_argument('pID', type=str, help='PatientId obtained from server.')
 args = parser.parse_args()
@@ -23,7 +23,7 @@ pID = args.pID
 url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
 #url = 'https://localhost:3000/patient/createPulsoxy'
 
-#establish connection via serial port
+#establish connection via serial port; information on needed settings 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8
 ser = serial.Serial()
 ser.baudrate = 115200          
 ser.bytesize = serial.EIGHTBITS    
@@ -34,7 +34,7 @@ ser.timeout = 1
 ser.port = device
 ser.open()
 
-#check if data input stream is received
+#check if data input stream is received; key to be written to component for communication from 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8'
 try:
     ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
     raw = ser.read(9)
@@ -43,7 +43,7 @@ except:
     ser.close()
     exit()
     
-#wait for data recording until pulsoximeter is applied to patient for the first time
+#wait for data recording until pulsoximeter is applied to patient for the first time (equals first time recording other values than zero)
 fingerIn = raw[5] & 0x7f
 
 while(fingerIn == 0):
@@ -108,7 +108,7 @@ def write_data():
         jsonData = {'patientId': pID,'timestamp': data[0], 'pulsrate': int(data[1]), 'spo2': int(data[2])}
         flag = True
         #retry to connect to server in case of connection loss
-        while flag = True:
+        while flag:
             try:
                 requests.post(url, data = jsonData, verify = '../../certificates/cert.pem')
                 break
