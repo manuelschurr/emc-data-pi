@@ -10,6 +10,8 @@ export const corsUrl = process.env.CORS_URL
 
 export const centralServerAddress = process.env.CENTRAL_SERVER_ADDRESS
 
+export const ambulanceIdentifier = process.env.AMBULANCE_IDENTIFIER
+
 // export const tokenInfo = {
 //     // eslint-disable-next-line radix
 //     accessTokenValidityDays: parseInt(process.env.ACCESS_TOKEN_VALIDITY_DAYS),
