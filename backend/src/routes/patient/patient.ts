@@ -34,6 +34,13 @@ router.post(
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
 
+      /*
+      // /start child process that runs python script when patient is approached first
+      let pID = req.body.patientId;
+      let spawn = require('child_process');
+      let child = spawn('python3', ['../pulox.py', 'pID']);
+      */
+
       await PatientHelper.createOrUpdatePatientInformation(patient);
       
       return new SuccessResponse("Successful", {
@@ -51,6 +58,11 @@ router.post(
       let patient = Object.assign(new Patient(), req.body);
 
       await PatientHelper.finishPatient(patient);
+
+      /*
+      // kill process that runs pulox.py script
+      child.kill('SIGTERM');
+      */
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
