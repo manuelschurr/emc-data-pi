@@ -3,8 +3,8 @@ import DateTime from "../../helpers/dateTime";
 import { booleanToNumber, DB_CONNECTION } from '../index';
 import Patient from "../model/Patient";
 
-// SQL command to find a patient
-const QUERY_PATIENT_SQL = `SELECT DISTINCT 
+// SQL command to find a specific patient
+const QUERY_SPECIFIC_PATIENT_SQL = `SELECT DISTINCT 
    PatientId patientId,
    AmbulanceId ambulanceId,
    CreateDat createDat,
@@ -26,6 +26,31 @@ const QUERY_PATIENT_SQL = `SELECT DISTINCT
    E_Text EText
   FROM Patient
 WHERE PatientId = ?`;
+
+// SQL command to find the latest active patient
+const QUERY_LATEST_ACTIVE_PATIENT_SQL = `SELECT DISTINCT 
+   PatientId patientId,
+   AmbulanceId ambulanceId,
+   CreateDat createDat,
+   UpdateDat updateDat,
+   Name name,
+   Gender gender,
+   Age age,
+   PreExistingIllness preExistingIllness,
+   Miscellaneous miscellaneous,
+   A_IsSelected AIsSelected,
+   A_Text AText,
+   B_IsSelected BIsSelected,
+   B_Text BText,
+   C_IsSelected CIsSelected,
+   C_Text CText,
+   D_IsSelected DIsSelected,
+   D_Text DText,
+   E_IsSelected EIsSelected,
+   E_Text EText
+  FROM Patient
+WHERE AmbulanceId != 0
+ORDER BY PatientId DESC`;
 
 // SQL command to insert a patient in the relation
 const INSERT_PATIENT_SQL = `INSERT INTO Patient(
@@ -76,9 +101,15 @@ const CHECK_PATIENT_SQL = `SELECT COUNT(*) FROM Patient WHERE PatientId = ?`;
 
 
 export default class PatientRepo {
-   public static queryPatient(patientId: number): Patient {
-      const stmt = DB_CONNECTION.prepare(QUERY_PATIENT_SQL);
+   public static querySpecificPatient(patientId: number): Patient {
+      const stmt = DB_CONNECTION.prepare(QUERY_SPECIFIC_PATIENT_SQL);
       const patient = stmt.get(patientId) as Patient;
+      return patient;
+   }
+
+   public static queryLatestActivePatient(): Patient {
+      const stmt = DB_CONNECTION.prepare(QUERY_LATEST_ACTIVE_PATIENT_SQL);
+      const patient = stmt.get() as Patient;
       return patient;
    }
 
@@ -90,7 +121,6 @@ export default class PatientRepo {
          patient.BText, booleanToNumber(patient.CIsSelected), patient.CText, booleanToNumber(patient.DIsSelected), patient.DText,
          booleanToNumber(patient.EIsSelected), patient.EText);
       Logger.debug(`${info.changes} patient row(s) inserted`);
-
    }
 
    public static updatePatient(patient: Patient) {

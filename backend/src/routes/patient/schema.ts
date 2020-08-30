@@ -4,7 +4,7 @@ export default {
    findPatient: Joi.object().keys({
       patientId: Joi.number().required(),
    }),
-   createPatient: Joi.object().keys({
+   patient: Joi.object().keys({
       patientId: Joi.number(),
       ambulanceId: Joi.number(),
       name: Joi.string().required().max(150),

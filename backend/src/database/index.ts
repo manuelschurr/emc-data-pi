@@ -60,5 +60,6 @@ AmbulanceHelper.createAmbulanceEntry();
 // if the Node process ends, close the sqlite connection
 process.on('SIGINT', () => {
    DB_CONNECTION.close();
+   Logger.info('SQLite connection disconnected through app termination');
    process.exit(0);
 });
