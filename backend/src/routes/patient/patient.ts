@@ -17,7 +17,7 @@ router.get(
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    asyncHandler(async (req, res, next) => {
       const { patientId } = req.params;
-      const patient = PatientRepo.queryPatient(parseInt(patientId));
+      const patient = PatientRepo.querySpecificPatient(parseInt(patientId));
 
       if (!patient) {
          throw new BadRequestError('Patient could not be found.');
@@ -29,7 +29,7 @@ router.get(
 
 router.post(
    "/create",
-   validator(schema.createPatient),
+   validator(schema.patient),
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
@@ -52,7 +52,7 @@ router.post(
 
 router.post(
    "/finish",
-   validator(schema.createPatient),
+   validator(schema.patient),
    // eslint-disable-next-line @typescript-eslint/no-unused-vars
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);

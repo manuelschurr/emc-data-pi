@@ -1,0 +1,13 @@
+[Unit]
+Description=runs only upon shutdown
+Conflicts=reboot.target
+After=network.target
+
+[Service]
+Type=oneshot
+ExecStart=/bin/true
+ExecStop=/home/pi/Startup/gpioonoff.sh
+RemainAfterExit=yes
+
+[Install]
+WantedBy=multi-user.target
