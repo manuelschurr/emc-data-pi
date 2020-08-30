@@ -9,6 +9,11 @@ import PatientHelper from "../../helpers/patient.helper";
 import validator, { ValidationSource } from "../../helpers/validator";
 import schema from "./schema";
 
+declare var require:any;
+var child:any = 0;
+const { spawn } = require ('child_process');
+const { exec } = require ('child_process');
+
 const router = express.Router()
 
 router.get(
@@ -34,12 +39,7 @@ router.post(
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
 
-      /*
-      // /start child process that runs python script when patient is approached first
-      let pID = req.body.patientId;
-      let spawn = require('child_process');
-      let child = spawn('python3', ['../pulox.py', 'pID']);
-      */
+      child = exec('python3', ["../../pulox.py", req.patientId]);
 
       await PatientHelper.createOrUpdatePatientInformation(patient);
       
@@ -59,10 +59,7 @@ router.post(
 
       await PatientHelper.finishPatient(patient);
 
-      /*
-      // kill process that runs pulox.py script
-      child.kill('SIGTERM');
-      */
+      exec('pkill python');
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
