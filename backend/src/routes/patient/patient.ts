@@ -39,7 +39,7 @@ router.post(
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
 
-      child = exec('python3', ["../../pulox.py", req.patientId]);
+      //child = exec('python3', ["../../pulox.py", req.patientId]);
 
       await PatientHelper.createOrUpdatePatientInformation(patient);
       
@@ -59,7 +59,7 @@ router.post(
 
       await PatientHelper.finishPatient(patient);
 
-      exec('pkill python');
+      //exec('pkill python');
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
