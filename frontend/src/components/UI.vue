@@ -259,6 +259,8 @@ export default {
             isRecording: false,
             // declare dataObj
             dataObj: "",
+            submit: false,
+            finish: false,
         };
     },
     methods: {
@@ -326,6 +328,8 @@ export default {
                     // ambulanceID kann komplett raus, wird backend seitig realisiert
                     this.patientId = response.data.data.patient.patientId;
                     console.log(response);
+                    // set submit flag to true to indicate that data was sent successfully
+                    this.submit = true;
                     // Timer to reset button & display success message when data was sent
                     // setTimeout(() => {
                     //     this.loading = false;
@@ -334,19 +338,27 @@ export default {
                 })
                 .catch(function (error) {
                     console.log(error);
+                    // set submit flag to false to indicate that data was not sent successfully
+                    this.submit = false;
                     // alert(
                     //     "Daten konnten nicht gesendet werden, aufgrund " + error
                     // );
                 });
-            // // Timer to reset button & display success message when data was sent
-            if (dataJSON) {
+            // Display dialog depending on whether data was sent successfully or not
+            if (this.submit === true) {
                 setTimeout(() => {
                     this.loading = false;
                     this.$modal.show("sentModal");
                 }, 2000);
             } else {
-                this.loading = false;
-                alert("Daten konnten nicht gesendet werden...");
+                setTimeout(() => {
+                    this.loading = false;
+                    // alert(
+                    //     "Daten konnten nicht gesendet werden. Bitte überprüfen Sie Ihre Internetverbindung."
+                    // );
+                    // displaying error modal then
+                    this.$modal.show("errorModal");
+                }, 2000);
             }
         },
         /**
@@ -386,17 +398,28 @@ export default {
             })
                 .then((response) => {
                     console.log(response);
+                    // set finish flag to true when patient was finished successfully
+                    this.finish = true;
                 })
                 .catch(function (error) {
+                    // set finish flag to false when patient was not finished successfully
+                    this.finish = false;
                     console.log(error);
                 });
-            //this.$modal.hide("modal");
-            if (dataJSON) {
+            // display dialog whether patient was finished successfully or not
+            if (this.finish === true) {
                 setTimeout(() => {
-                    // when finished set flag to false again
+                    // when finished set spinner flag to false again
                     this.finishing = false;
-                    // displaying modal then
+                    // displaying finish modal then
                     this.$modal.show("finishModal");
+                }, 2000);
+            } else {
+                setTimeout(() => {
+                    // when finished set spinner flag to false again
+                    this.finishing = false;
+                    // displaying error modal then
+                    this.$modal.show("errorModal");
                 }, 2000);
             }
         },

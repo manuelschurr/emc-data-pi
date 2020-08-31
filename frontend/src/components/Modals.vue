@@ -34,6 +34,22 @@
                 <button type="button" class="btn btn-lg btn-dark btn-block" onclick="window.location.reload();">Neuer Patient</button>
             </div>
         </modal>
+        <!-- Error Modal Window to be displayed when data was not successfully sent or when patient has not successfully been finished -->
+        <modal id="errorModal" name="errorModal">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <b>Fehler!</b>
+                </h5>
+            </div>
+            <div class="modal-body" style="text-align: center; align: center; margin: auto">
+                <h3 style="margin: 25px auto">
+                    <b>Aktion nicht erfolgreich. Bitte überprüfen Sie Ihre Internetverbindung.</b>
+                </h3>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-lg btn-dark btn-block" @click="hideErrorModal()">Schließen</button>
+            </div>
+        </modal>
     </div>
 </template>
 
@@ -41,10 +57,13 @@
 export default {
     methods: {
         /**
-         * Method to hide the sent modal when the close button is clicked within
+         * Method to hide the sent and error modal when the close button is clicked within
          */
         hideSentModal() {
             this.$modal.hide("sentModal");
+        },
+        hideErrorModal() {
+            this.$modal.hide("errorModal");
         },
     },
 };
