@@ -8,10 +8,8 @@ data = []
 output = '['
 lock = threading.Lock()
 
-#set device connection port and grant read/write/execute permissons --> remove bashCommand part, as it will be part of Cron-job
+#set device connection port
 device = '/dev/ttyUSB0'
-bashCommand = 'sudo chmod 777 ' + device
-subprocess.check_call(bashCommand.split())
 
 #deliver next free PatientId from server into script to be inserted into documents to be sent to server
 parser = argparse.ArgumentParser()
