@@ -43,6 +43,7 @@ router.post(
          mode: "text",
          pythonPath: "/usr/bin/python3",
          pythonOptions: ["-u"],
+         //NEEDED CHANGE: adjust path to pi path
          scriptPath: "/home/tc/Documents/EMC/emc-data-pi/backend/src",
          args: [patient.patientId]
        } as Options;

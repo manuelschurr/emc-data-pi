@@ -5,8 +5,7 @@ import { corsUrl, environment } from "./config"
 import { ApiError, InternalError, NotFoundError } from "./core/ApiError"
 import Logger from "./core/Logger"
 import './database' // initialize database
-//for testing w/o gnss module
-//import './gnss' // initialize GNSS module
+import './gnss' // initialize GNSS module
 import routes from "./routes"
 
 process.on("uncaughtException", (e) => {

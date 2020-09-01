@@ -19,7 +19,6 @@ pID = args.pID
 
 #set server address
 url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
-#url = 'https://localhost:3000/patient/createPulsoxy'
 
 #establish connection via serial port; information on needed settings 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8
 ser = serial.Serial()
@@ -108,7 +107,8 @@ def write_data():
         #retry to connect to server in case of connection loss
         while flag:
             try:
-                requests.post(url, data = jsonData, verify = '../../certificates/cert.pem')
+                #NEEDED CHANGE: adjust certificate path to pi path
+                requests.post(url, data = jsonData, verify = '/home/tc/Documents/EMC/emc-data-pi/certificates/cert.pem')
                 break
             except:
                 print('No internet connection available. Retrying ...')

@@ -22,6 +22,3 @@ export const ambulanceIdentifier = process.env.AMBULANCE_IDENTIFIER
 // }
 
 export const logDirectory = process.env.LOG_DIR
-
-// temporary fix for self-signed certificate problem
-process.env['NODE_TLS_REJECT_UNAUTHORIZED'] = '0'
