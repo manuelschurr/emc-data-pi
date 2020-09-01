@@ -1,5 +1,6 @@
 import express from "express";
 import _ from "lodash";
+import { Options, PythonShell } from 'python-shell';
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
 import Patient from "../../database/model/Patient";
@@ -9,12 +10,8 @@ import PatientHelper from "../../helpers/patient.helper";
 import validator, { ValidationSource } from "../../helpers/validator";
 import schema from "./schema";
 
-declare var require:any;
-var child:any = 0;
-const { spawn } = require ('child_process');
-const { exec } = require ('child_process');
-
 const router = express.Router()
+var child:any = 0;
 
 router.get(
    "/findByPatientId/:patientId",
@@ -39,9 +36,18 @@ router.post(
    asyncHandler(async (req, res, next) => {
       let patient = Object.assign(new Patient(), req.body);
 
-      //child = exec('python3', ["../../pulox.py", req.patientId]);
-
       await PatientHelper.createOrUpdatePatientInformation(patient);
+
+      // start python script for pulsoximeter when new patient is created
+      let options = {
+         mode: "text",
+         pythonPath: "/usr/bin/python3",
+         pythonOptions: ["-u"],
+         scriptPath: "/home/tc/Documents/EMC/emc-data-pi/backend/src",
+         args: [patient.patientId]
+       } as Options;
+
+       child = new PythonShell('pulox.py', options).childProcess;
       
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
@@ -59,7 +65,8 @@ router.post(
 
       await PatientHelper.finishPatient(patient);
 
-      //exec('pkill python');
+      // kill python script for pulsoximeter when aptient is finished
+      child.kill('SIGINT');
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
