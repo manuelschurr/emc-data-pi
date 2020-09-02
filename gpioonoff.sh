@@ -1,6 +1,8 @@
 #!bin/bash
 # Shell script to power the GNSS HAT
 
+PI_PATH=/home/pi
+
 if [ ! -e /sys/class/gpio/gpio4 ]; then
    echo "File exists"
    echo "4" > /sys/class/gpio/export
@@ -10,4 +12,4 @@ echo "0" > /sys/class/gpio/gpio4/value
 sleep 2
 echo "1" > /sys/class/gpio/gpio4/value
 
-python ./gnss.py
+python $PI_PATH/Startup/gnss.py
