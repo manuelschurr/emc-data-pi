@@ -1,5 +1,6 @@
 import axios from "axios";
 import { centralServerAddress } from "../config";
+import { HttpsAgent } from "../core/HttpsAgent";
 import Logger from "../core/Logger";
 import Patient from "../database/model/Patient";
 import AmbulanceRepo from "../database/repository/AmbulanceRepo";
@@ -9,7 +10,8 @@ import PatientRepo from "../database/repository/PatientRepo";
 const axios_config = {
    headers: {
       'Content-Type': 'application/json'
-   }
+   },
+   httpsAgent: HttpsAgent
 };
 
 export default class PatientHelper {
@@ -43,7 +45,7 @@ export default class PatientHelper {
       else {
          // if a patient needs to be created, the next patientId needs to be retrieved
          await axios
-            .get(`${centralServerAddress}/patient/findNextPatientId`)
+            .get(`${centralServerAddress}/patient/findNextPatientId`, axios_config)
             .then(response => {
                patient.patientId = response.data.data;
             })
