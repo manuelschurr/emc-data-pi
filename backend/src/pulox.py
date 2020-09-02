@@ -107,8 +107,7 @@ def write_data():
         #retry to connect to server in case of connection loss
         while flag:
             try:
-                #NEEDED CHANGE: adjust certificate path to pi path
-                requests.post(url, data = jsonData, verify = '/home/tc/Documents/EMC/emc-data-pi/certificates/cert.pem')
+                requests.post(url, data = jsonData, verify = '/home/pi/emc-data-pi/certificates/cert.pem')
                 break
             except:
                 print('No internet connection available. Retrying ...')
