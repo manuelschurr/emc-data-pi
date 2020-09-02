@@ -55,13 +55,18 @@ mv gnss.py $PI_PATH/Startup/gnss.py
 mv chromium.sh $PI_PATH/Startup/chromium.sh
 mv ambulance.desktop $PI_PATH/Desktop/ambulance.desktop
 
+# Changing permissions for some files
+sudo chmod 777 $PI_PATH/Startup/gpioonoff.sh
+sudo chmod 777 $PI_PATH/Startup/gnss.py
+
 # Adding the gpioonoff.sh script to the crontab
 # The GNSS HAT will be automatically powered when the raspberry starts +
 # starting the backend and the frontend after a reboot
 echo "Adding GNSS file to crontab for automatic start when rebooting..."
 echo "Adding crontab to start the backend and the frontend of the system after a reboot..."
-# Parentheses needed to run the following commands in a sub-shell
-(sudo crontab -l 2>/dev/null; echo "@reboot sleep 5 && sh /home/pi/Startup/gpioonoff.sh\n@reboot sleep 10 && (cd /home/pi/emc-data-pi/backend ; npm run serve)\n@reboot sleep 20 && (cd /home/pi/emc-data-pi/frontend ; npm run serve)") | crontab -
+
+sudo crontab -l 2>/dev/null && echo "@reboot sleep 5 && sh /home/pi/Startup/gpioonoff.sh" | sudo crontab -u root -
+crontab -l 2>/dev/null && echo -e "@reboot @reboot sleep 10 && (cd /home/pi/emc-data-pi/backend ; npm run serve)\n@reboot sleep 20 && (cd /home/pi/emc-data-pi/frontend ; npm run serve)" | crontab -
 
 # Moving service file in needed directory and enabling the service
 # Used to shut down the GNSS HAT when Raspberry Pi is shut down
