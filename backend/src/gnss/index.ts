@@ -1,6 +1,7 @@
 import axios from "axios";
 import GPS from "gps";
 import { centralServerAddress } from "../config";
+import { HttpsAgent } from "../core/HttpsAgent";
 import Logger from "../core/Logger";
 import AmbulanceRepo from "../database/repository/AmbulanceRepo";
 
@@ -33,7 +34,8 @@ var ambulance = AmbulanceRepo.queryAmbulance();
 const axios_gnss_config = {
    headers: {
       'Content-Type': 'application/json'
-   }
+   },
+   httpsAgent: HttpsAgent
 };
 
 // GPSListener updated by SerialPortParser

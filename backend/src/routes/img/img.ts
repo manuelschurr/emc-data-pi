@@ -7,6 +7,7 @@ import path from "path";
 import { centralServerAddress } from '../../config';
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
+import { HttpsAgent } from "../../core/HttpsAgent";
 import asyncHandler from "../../helpers/asyncHandler";
 
 
@@ -39,6 +40,7 @@ router.post("/", upload.single("img"), asyncHandler(async (req, res, next) => {
             headers: {
                 ...data.getHeaders()
             },
+            httpsAgent: HttpsAgent
         };
         await axios.post(`${centralServerAddress}/img`, data, config)
     } catch (error) {
