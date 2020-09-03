@@ -6,6 +6,10 @@
             <VueRecordAudio mode="press" @result="onResult" />
             <!-- Container, um die Recordings anzuzeigen -->
             <div id="audio" class="audio" controls></div>
+            <!-- Bestätigungsnachricht/Errornachricht -->
+            <div id="audioMessage"></div>
+            <!-- <div v-if="audioMsg">Audio erfolgreich an Schockraum gesendet!</div> -->
+            <!-- <div v-if="!audioMsg">Audio nicht erfolgreich an Schockraum gesendet!</div> -->
             <!-- Recording loeschen Moeglichkeit -->
             <!-- <div v-for="(record, index) in recordings" :key="index" class="recorded-item">
                 <button @click="removeRecord(index)" class="button btn-dark">
@@ -28,6 +32,7 @@ export default {
     data() {
         return {
             audio: [],
+            // audioMsg: false,
         };
     },
     methods: {
@@ -44,6 +49,16 @@ export default {
             /**
              * sending audio to PI
              */
+            const formData = new FormData();
+            formData.append("audio", audioFile);
+            // var vm = this;
+            var audioMessage = document.getElementById("audioMessage");
+            // Test
+            var audioSpinner = document.createElement("div");
+            audioSpinner.setAttribute("class", "d-flex align-items-center");
+            audioSpinner.innerHTML =
+                '<strong>Sende Audio...</strong><div class="spinner-border ml-auto" role="status" aria-hidden="true"></div>';
+            audioMessage.appendChild(audioSpinner);
             console.log("Sending the blob data:", data);
             console.log("Downloadable audio", window.URL.createObjectURL(data));
             axios({
@@ -52,13 +67,18 @@ export default {
                 headers: {
                     "Content-Type": "audio/webm",
                 },
-                data: audioFile,
+                data: formData,
             })
                 .then(function (response) {
                     console.log(response);
+                    // vm.audioMsg = true;
+                    audioMessage.innerHTML = "Audio erfolgreich versendet!";
                 })
                 .catch(function (error) {
                     console.log(error);
+                    // vm.audioMsg = false;
+                    audioMessage.innerHTML =
+                        "Audio konnte nicht versendet werden";
                 });
             //alternativ ueber FormaData - nicht notwendig
             // try {
