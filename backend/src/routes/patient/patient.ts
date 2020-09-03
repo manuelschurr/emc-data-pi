@@ -12,6 +12,7 @@ import schema from "./schema";
 
 const router = express.Router()
 var child:any = 0;
+var flag = true;
 
 router.get(
    "/findByPatientId/:patientId",
@@ -39,15 +40,17 @@ router.post(
       await PatientHelper.createOrUpdatePatientInformation(patient);
 
       // start python script for pulsoximeter when new patient is created
-      let options = {
-         mode: "text",
-         pythonPath: "/usr/bin/python3",
-         pythonOptions: ["-u"],
-         scriptPath: "/home/pi/emc-data-pi/backend/src",
-         args: [patient.patientId]
-       } as Options;
+      if (flag) {
+         let options = {
+            mode: "text",
+            pythonPath: "/usr/bin/python3",
+            pythonOptions: ["-u"],
+            scriptPath: "/home/pi/emc-data-pi/backend/src",
+            args: [patient.patientId]
+         } as Options;
 
-       child = new PythonShell('pulox.py', options).childProcess;
+         child = new PythonShell('pulox.py', options).childProcess;
+      }
       
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
@@ -67,6 +70,7 @@ router.post(
 
       // kill python script for pulsoximeter when aptient is finished
       child.kill('SIGINT');
+      flag = false;
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
