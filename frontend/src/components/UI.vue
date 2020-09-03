@@ -313,6 +313,7 @@ export default {
                 };
             }
             let dataJSON = JSON.stringify(this.dataObj);
+            var vm = this;
             console.log("Sending " + dataJSON);
             axios({
                 method: "post",
@@ -326,42 +327,16 @@ export default {
                     // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
                     // patientID dann aus dataObj raus und in data (return) Objekt rein
                     // ambulanceID kann komplett raus, wird backend seitig realisiert
-                    this.patientId = response.data.data.patient.patientId;
+                    vm.patientId = response.data.data.patient.patientId;
                     console.log(response);
-                    this.$modal.show("sentModal");
-                    // set submit flag to true to indicate that data was sent successfully
-                    // this.submit = true;
-                    // Timer to reset button & display success message when data was sent
-                    // setTimeout(() => {
-                    //     this.loading = false;
-                    //     this.successMsg = true;
-                    // }, 2000);
+                    vm.loading = false;
+                    vm.$modal.show("sentModal");
                 })
                 .catch(function (error) {
                     console.log(error);
-                    // set submit flag to false to indicate that data was not sent successfully
-                    // this.submit = false;
-                    // alert(
-                    //     "Daten konnten nicht gesendet werden, aufgrund " + error
-                    // );
-                    this.$modal.show("errorModal");
+                    vm.loading = false;
+                    vm.$modal.show("errorModal");
                 });
-            // Display dialog depending on whether data was sent successfully or not
-            if (dataJSON) {
-                setTimeout(() => {
-                    this.loading = false;
-                    // this.$modal.show("sentModal");
-                }, 2000);
-            } else {
-                setTimeout(() => {
-                    this.loading = false;
-                    // alert(
-                    //     "Daten konnten nicht gesendet werden. Bitte überprüfen Sie Ihre Internetverbindung."
-                    // );
-                    // displaying error modal then
-                    // this.$modal.show("errorModal");
-                }, 2000);
-            }
         },
         /**
          * Patienten abschließen Funktionalität
@@ -390,6 +365,7 @@ export default {
             };
             let dataJSON = JSON.stringify(this.dataObj);
             console.log("Abgeschlossenes JSON Obj " + dataJSON);
+            var vm = this;
             axios({
                 method: "post",
                 url: "http://localhost:3000/patient/finish",
@@ -401,29 +377,17 @@ export default {
                 .then((response) => {
                     console.log(response);
                     // set finish flag to true when patient was finished successfully
-                    // this.finish = true;
+                    vm.finishing = false;
+                    // displaying finish modal then
+                    vm.$modal.show("finishModal");
                 })
                 .catch(function (error) {
                     // set finish flag to false when patient was not finished successfully
-                    // this.finish = false;
+                    vm.finishing = false;
+                    // displaying error modal then
+                    vm.$modal.show("errorModal");
                     console.log(error);
                 });
-            // display dialog whether patient was finished successfully or not
-            if (dataJSON) {
-                setTimeout(() => {
-                    // when finished set spinner flag to false again
-                    this.finishing = false;
-                    // displaying finish modal then
-                    this.$modal.show("finishModal");
-                }, 2000);
-            } else {
-                setTimeout(() => {
-                    // when finished set spinner flag to false again
-                    this.finishing = false;
-                    // displaying error modal then
-                    this.$modal.show("errorModal");
-                }, 2000);
-            }
         },
         /**
          * ABCDE Farben
