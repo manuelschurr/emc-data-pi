@@ -328,6 +328,7 @@ export default {
                     // ambulanceID kann komplett raus, wird backend seitig realisiert
                     this.patientId = response.data.data.patient.patientId;
                     console.log(response);
+                    this.$modal.show("sentModal");
                     // set submit flag to true to indicate that data was sent successfully
                     // this.submit = true;
                     // Timer to reset button & display success message when data was sent
@@ -343,12 +344,13 @@ export default {
                     // alert(
                     //     "Daten konnten nicht gesendet werden, aufgrund " + error
                     // );
+                    this.$modal.show("errorModal");
                 });
             // Display dialog depending on whether data was sent successfully or not
             if (dataJSON) {
                 setTimeout(() => {
                     this.loading = false;
-                    this.$modal.show("sentModal");
+                    // this.$modal.show("sentModal");
                 }, 2000);
             } else {
                 setTimeout(() => {
@@ -357,7 +359,7 @@ export default {
                     //     "Daten konnten nicht gesendet werden. Bitte überprüfen Sie Ihre Internetverbindung."
                     // );
                     // displaying error modal then
-                    this.$modal.show("errorModal");
+                    // this.$modal.show("errorModal");
                 }, 2000);
             }
         },
