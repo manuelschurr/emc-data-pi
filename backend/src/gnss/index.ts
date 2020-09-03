@@ -67,5 +67,9 @@ gpsListener.on("data", data => {
 
 // gets the (raw) data from the SerialPort and passes it to the GPSListener
 parser.on("data", (data: string) => {
-   gpsListener.update(data);
+   try {
+      gpsListener.update(data);
+   } catch (error) {
+      Logger.error(error);
+   }
 });
