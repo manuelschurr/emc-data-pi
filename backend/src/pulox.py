@@ -21,15 +21,21 @@ pID = args.pID
 url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
 
 #establish connection via serial port; information on needed settings 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8
-ser = serial.Serial()
-ser.baudrate = 115200          
-ser.bytesize = serial.EIGHTBITS    
-ser.parity = serial.PARITY_NONE     
-ser.stopbits = serial.STOPBITS_ONE  
-ser.xonxoff = 1                   
-ser.timeout = 1
-ser.port = device
-ser.open()
+flag = True
+while(flag):
+    try:
+        ser = serial.Serial()
+        ser.baudrate = 115200          
+        ser.bytesize = serial.EIGHTBITS    
+        ser.parity = serial.PARITY_NONE     
+        ser.stopbits = serial.STOPBITS_ONE  
+        ser.xonxoff = 1                   
+        ser.timeout = 1
+        ser.port = device
+        ser.open()
+        flag = False
+    except:
+        print('No device attached. Trying to establish connection to device.')
 
 #check if data input stream is received; key to be written to component for communication from 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8'
 try:
