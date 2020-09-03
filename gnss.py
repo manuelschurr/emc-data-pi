@@ -5,16 +5,11 @@ import time
 from decimal import *
 from subprocess import call
 
-def find(str, ch):
-    for i, ltr in enumerate(str):
-        if ltr == ch:
-            yield i
-
 # Enable Serial Communication
-port = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=5)
+port = serial.Serial("/dev/ttyS0", baudrate=115200, timeout=1)
+
 # Transmitting AT Commands to the Modem
 #  '\r\n' indicates the ENTER key
-
 port.write('AT'+'\r\n')
 rcv = port.read(100)
 print rcv
@@ -42,7 +37,3 @@ port.write('AT+CGNSINF'+'\r\n')
 rcv = port.read(200)
 print rcv
 time.sleep(.1)
-#ck=1
-#while ck == 1
- #  fd = port.read(200)
-  # time.sleep(.5)
