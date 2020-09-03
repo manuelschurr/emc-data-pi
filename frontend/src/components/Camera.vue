@@ -1,10 +1,13 @@
 <template>
     <!-- Here Camera and Modal configuration takes place -->
     <div>
+        <!-- Screenshot Modal -->
+        <!-- Modal Window to show and confirm screenshot taken -->
+        <!-- <modal id="screenshotModal" name="screenshotModal"></modal> -->
         <!-- Video -->
         <div class="videoAndButton">
             <div class="stream">
-                <video width="320" height="180" controls poster="../assets/videoIcon2.png">
+                <video ref="video" width="320" height="180" controls poster="../assets/videoIcon2.png">
                     <source="" type="video/mp4" />
                     <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
                 </video>
@@ -26,11 +29,12 @@
 </template>
 
 <script>
+import axios from "axios";
 // importing and using lib for modal windows
 import Vue from "vue";
 import VModal from "vue-js-modal";
-//Vue.use(VModal);
-Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
+Vue.use(VModal);
+//Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
 import Modals from "./Modals.vue";
 export default {
     components: {
@@ -38,7 +42,9 @@ export default {
     },
     data() {
         return {
-            screenshot: "",
+            video: {},
+            canvas: {},
+            captures: [],
         };
     },
     methods: {
@@ -58,13 +64,51 @@ export default {
                 alert("Video abspielen nicht möglich...");
             }
         },
+        /**
+         * Method to capture content of video on click of button
+         * and to store it in backend to further process it to trauma-room
+         */
         capture() {
-            this.$modal.show("screenshotModal");
+            this.video = this.$refs.video;
+            // document.getElementById("screenshotModal");
+            // var screenshotHeader = document.createElement("div");
+            // screenshotHeader.setAttribute("class", "modal-header");
+            // screenshotModal.appendChild(screenshotHeader);
+            // var video = document.getElementById("video");
+            this.canvas = document.createElement("canvas");
+            // canvas.width = video.videoWidth;
+            // canvas.height = video.videoHeight;
+            // draw the video at that frame
+            var context = this.canvas.getContext("2d");
+            context.drawImage(this.video, 0, 0, 640, 480);
+            // convert it to a usable data URL
+            const screenshotURL = this.canvas.toDataURL();
+            // new Form Data Object to append to POST to backend
+            const formData = new FormData();
+            formData.append("img", screenshotURL);
+            var vm = this;
+            axios({
+                method: "post",
+                url: "http://localhost:3000/img",
+                headers: {
+                    "Content-Type": "multipart/form-data",
+                },
+                data: formData,
+            })
+                .then((response) => {
+                    console.log(response);
+                    // show success message
+                    vm.$modal.show("screenshotModal");
+                })
+                .catch(function (error) {
+                    console.log(error);
+                    vm.$modal.show("errorModal");
+                });
+
             // this.canvas = this.$refs.canvas;
-            // var context = this.canvas.getContext("2d");
-            // var imgBinary = context.drawImage(this.video, 0, 0, 640, 480);
             // this.captures.push(this.canvas.toDataURL("image/png"));
             // this.$root.$emit("selectScreenshots", this.captures);
+            // this.$modal.show("screenshotModal");
             // this.$modal.show(
             //     {
             //         template: `<div class="modal-header">
