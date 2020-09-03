@@ -1,28 +1,46 @@
 <template>
+    <!-- Here Camera and Modal configuration takes place -->
     <div>
         <!-- Video -->
-        <div class="stream">
-            <video width="320" height="180" controls poster="../assets/videoIcon2.png">
-                <source="" type="video/mp4" />
-                <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
-            </video>
-        </div>
-        <!-- Start and Stop Stream Buttons -->
-        <!-- Video Stream Start - Button -->
-        <div class="streamButtons">
-            <button type="button" id="button_play" class="btn btn-primary btn-lg" onclick="buttonPlayPress()" style="margin-right: 0.5vw">
-                <i class="fa fa-video-camera"></i>
-            </button>
-            <!-- Video Stream Pause - Button -->
-            <button type="button" id="button_stop" class="btn btn-danger btn-lg" onclick="buttonStopPress()">
+        <div class="videoAndButton">
+            <div class="stream">
+                <video width="320" height="180" controls poster="../assets/videoIcon2.png">
+                    <source="" type="video/mp4" />
+                    <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
+                </video>
+            </div>
+            <!-- Start and Stop Stream Buttons -->
+            <!-- Video Stream Start - Button -->
+            <div class="streamButtons">
+                <button type="button" id="button_play" class="btn btn-dark btn-lg" v-on:click="capture()" style="margin-right: 0.5vw">
+                    <i class="fa fa-camera"></i>
+                </button>
+                <!-- Video Stream Pause - Button -->
+                <!-- <button type="button" id="button_stop" class="btn btn-danger btn-lg" onclick="buttonStopPress()">
                 <i class="fa fa-stop"></i>
-            </button>
+                </button>-->
+            </div>
+            <Modals />
         </div>
     </div>
 </template>
 
 <script>
+// importing and using lib for modal windows
+import Vue from "vue";
+import VModal from "vue-js-modal";
+//Vue.use(VModal);
+Vue.use(VModal, { dynamicDefault: { draggable: true, resizable: true } });
+import Modals from "./Modals.vue";
 export default {
+    components: {
+        Modals,
+    },
+    data() {
+        return {
+            screenshot: "",
+        };
+    },
     methods: {
         init() {
             if (
@@ -40,6 +58,35 @@ export default {
                 alert("Video abspielen nicht möglich...");
             }
         },
+        capture() {
+            this.$modal.show("screenshotModal");
+            // this.canvas = this.$refs.canvas;
+            // var context = this.canvas.getContext("2d");
+            // var imgBinary = context.drawImage(this.video, 0, 0, 640, 480);
+            // this.captures.push(this.canvas.toDataURL("image/png"));
+            // this.$root.$emit("selectScreenshots", this.captures);
+            // this.$modal.show(
+            //     {
+            //         template: `<div class="modal-header">
+            //     <h5 class="modal-title">
+            //         <b>Erfolg!</b>
+            //     </h5>
+            // </div>
+            // <div class="modal-body" style="text-align: center; align: center; margin: auto">
+            //     <p style="margin: 25px auto">
+            //         <b>Bild wurde erfolgreich an den Schockraum gesendet.</b>
+            //     </p>
+            //     <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
+            // </div>
+            // <div class="modal-footer">
+            //     <button type="button" class="btn btn-block btn-lg btn-secondary" data-dismiss="screenshotModal" v-on:click="hideScreenshotModal()">Schließen</button>
+            // </div>`,
+            //     },
+            //     {
+            //         height: "auto",
+            //     }
+            // );
+        },
     },
     beforeMount() {
         this.init();
@@ -51,7 +98,6 @@ export default {
 .stream {
     display: inline-block;
 }
-
 /*
 .camera {
   width: 100vw;

@@ -43,11 +43,28 @@
             </div>
             <div class="modal-body" style="text-align: center; align: center; margin: auto">
                 <h3 style="margin: 25px auto">
-                    <b>Aktion nicht erfolgreich. Bitte überprüfen Sie Ihre Internetverbindung.</b>
+                    <b>Aktion nicht erfolgreich. Bitte kontaktieren Sie Ihren Administrator.</b>
                 </h3>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-lg btn-dark btn-block" @click="hideErrorModal()">Schließen</button>
+            </div>
+        </modal>
+        <!-- Modal Window to show and confirm screenshot taken -->
+        <modal id="screenshotModal" name="screenshotModal">
+            <div class="modal-header">
+                <h5 class="modal-title">
+                    <b>Erfolg!</b>
+                </h5>
+            </div>
+            <div class="modal-body" style="text-align: center; align: center; margin: auto">
+                <p style="margin: 25px auto">
+                    <b>Bild wurde erfolgreich an den Schockraum gesendet.</b>
+                </p>
+                <canvas ref="canvas" id="canvas" width="640" height="480"></canvas>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-block btn-lg btn-secondary" data-dismiss="screenshotModal" v-on:click="hideScreenshotModal()">Schließen</button>
             </div>
         </modal>
     </div>
@@ -64,6 +81,12 @@ export default {
         },
         hideErrorModal() {
             this.$modal.hide("errorModal");
+        },
+        /**
+         * method to hide screenshot popup after a few seconds
+         */
+        hideScreenshotModal() {
+            this.$modal.hide("screenshotModal");
         },
     },
 };

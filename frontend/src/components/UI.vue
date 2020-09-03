@@ -191,7 +191,7 @@
                 </button>
             </div>
             <!-- Modal Windows Import for Data Sending and Patient Finishing Confirmation Windows -->
-            <Modals />
+            <!-- <Modals /> -->
             <!-- "Patient abschließen" Button - Reset Button -->
             <div id="finishButton" class="finish-button btn-lg btn-block" v-if="!finishing">
                 <button @click="this.finishPatient" id="finishButton" name="submit" type="reset" class="btn btn-danger btn-lg btn-block">
@@ -220,17 +220,17 @@ import Camera from "./Camera.vue";
 import Recording from "./Recording.vue";
 import axios from "axios";
 // importing and using lib for modal windows
-import Vue from "vue";
-import VModal from "vue-js-modal";
-Vue.use(VModal);
-import Modals from "./Modals.vue";
+// import Vue from "vue";
+// import VModal from "vue-js-modal";
+// Vue.use(VModal);
+// import Modals from "./Modals.vue";
 
 export default {
     name: "UI",
     components: {
         Camera,
         Recording,
-        Modals,
+        // Modals,
     },
     // return input of text fields
     data() {
@@ -259,8 +259,8 @@ export default {
             isRecording: false,
             // declare dataObj
             dataObj: "",
-            submit: false,
-            finish: false,
+            // submit: false,
+            // finish: false,
         };
     },
     methods: {
@@ -329,7 +329,7 @@ export default {
                     this.patientId = response.data.data.patient.patientId;
                     console.log(response);
                     // set submit flag to true to indicate that data was sent successfully
-                    this.submit = true;
+                    // this.submit = true;
                     // Timer to reset button & display success message when data was sent
                     // setTimeout(() => {
                     //     this.loading = false;
@@ -339,13 +339,13 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                     // set submit flag to false to indicate that data was not sent successfully
-                    this.submit = false;
+                    // this.submit = false;
                     // alert(
                     //     "Daten konnten nicht gesendet werden, aufgrund " + error
                     // );
                 });
             // Display dialog depending on whether data was sent successfully or not
-            if (this.submit === true) {
+            if (dataJSON) {
                 setTimeout(() => {
                     this.loading = false;
                     this.$modal.show("sentModal");
@@ -399,15 +399,15 @@ export default {
                 .then((response) => {
                     console.log(response);
                     // set finish flag to true when patient was finished successfully
-                    this.finish = true;
+                    // this.finish = true;
                 })
                 .catch(function (error) {
                     // set finish flag to false when patient was not finished successfully
-                    this.finish = false;
+                    // this.finish = false;
                     console.log(error);
                 });
             // display dialog whether patient was finished successfully or not
-            if (this.finish === true) {
+            if (dataJSON) {
                 setTimeout(() => {
                     // when finished set spinner flag to false again
                     this.finishing = false;
