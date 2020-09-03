@@ -50,7 +50,7 @@ gpsListener.on("data", data => {
       // all information needed is in the data record with the type 'GGA'
       if (data.type == "GGA") {
          // the quality of the record is != null, if a connection is established
-         if (data.quality != null) {
+         if (checkGnssRecord(data)) {
             var gnss = JSON.stringify({ "ambulanceId": ambulance.ambulanceId, "timestamp": new Date(), "longitude": data.lon, "latitude": data.lat });
             Logger.debug(gnss);
 
@@ -59,7 +59,7 @@ gpsListener.on("data", data => {
          }
          // the quality of the record is null, if a connection is not established
          else {
-            Logger.error("GNSS connection is not established - cannot retrieve GPS data");
+            Logger.warn("Quality of GNSS record is not sufficient");
          }
       }
    }
@@ -73,3 +73,12 @@ parser.on("data", (data: string) => {
       Logger.error(error);
    }
 });
+
+// Quality of data record needs to ne != null
+// Latitude in degrees has to be between -90 and +90
+// Longitude in degrees has to be between -180 and +180
+function checkGnssRecord(data: any) : boolean {
+   return data.quality != null &&
+   ( data.lat < 90 && data.lat > -90) &&
+   ( data.lon < 180 && data.lon > -180);
+}
