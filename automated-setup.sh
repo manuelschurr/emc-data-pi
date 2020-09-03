@@ -27,6 +27,14 @@ sudo apt install npm -y
 echo "Installing sqlite3..."
 sudo apt install sqlite3 -y
 
+# Move modified raspi-config
+echo "Installing new raspi-config..."
+sudo mv raspi-config /usr/bin/raspi-config
+
+# Enable serial_hw for GNSS
+echo "Enabling serial hardware for GNSS..."
+sudo raspi-config nonint do_serial_hw 0
+
 # Create first database
 echo "Creating first database..."
 mkdir $PI_PATH/DB
