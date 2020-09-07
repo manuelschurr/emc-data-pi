@@ -71,7 +71,15 @@ export default {
          * and to store it in backend to further process it to trauma-room
          */
         capture() {
+            // Accessing video, making screenshot to canvas and sending it to backend
             this.video = this.$refs.video;
+            // Pausing video until it has been processed for user to see the actual screenshot
+            this.video.pause();
+            // Dialogue to show when screenshot is being sent (should also show the sent screenshot somehow)
+            var screenshotMessage = document.getElementById(
+                "screenshotMessage"
+            );
+            console.log(screenshotMessage);
             this.canvas = document.createElement("canvas");
             this.canvas.setAttribute("width", "1280");
             this.canvas.setAttribute("height", "840");
@@ -93,11 +101,24 @@ export default {
                     .then((response) => {
                         console.log(response);
                         // show success message
-                        vm.$modal.show("screenshotModal");
+                        screenshotMessage.innerHTML =
+                            '<strong><p style="color:green">Letzter Screenshot <br> erfolgreich <br> versendet!</p></strong>';
+                        // start video again after some time where screenshot can be observed
+                        setTimeout(() => {
+                            // still holding video to see screenshot and after 5 seconds playing again
+                            vm.video.play();
+                            // remove screenshotmessage again then
+                            //screenshotMessage.innerHTML = "";
+                        }, 5000);
+                        //vm.$modal.show("screenshotModal");
                     })
                     .catch(function (error) {
                         console.log(error);
-                        vm.$modal.show("errorModal");
+                        screenshotMessage.innerHTML =
+                            '<strong><p style="color:red">Letzter Screenshot <br> nicht erfolgreich <br> versendet!</p></strong>';
+                        // start video again after screenshot not being sent
+                        vm.video.play();
+                        //vm.$modal.show("errorModal");
                     });
             });
         },
