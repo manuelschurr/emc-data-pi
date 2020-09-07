@@ -11,11 +11,13 @@ lock = threading.Lock()
 #set device connection port
 device = '/dev/ttyUSB0'
 
-#deliver next free PatientId from server into script to be inserted into documents to be sent to server
+#deliver next free PatientId from server into script to be inserted into documents to be sent to server and token for API authentication
 parser = argparse.ArgumentParser()
 parser.add_argument('pID', type=str, help='PatientId obtained from server.')
+parser.add_argument('authToken', type=str, help='Authentication token for API access.')
 args = parser.parse_args()
 pID = args.pID
+authToken = args.authToken
 
 #set server address
 url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
@@ -113,7 +115,7 @@ def write_data():
         #retry to connect to server in case of connection loss
         while flag:
             try:
-                requests.post(url, data = jsonData, verify = '/home/pi/emc-data-pi/certificates/cert.pem')
+                requests.post(url, data = jsonData, verify = '/home/pi/emc-data-pi/certificates/cert.pem', headers = {'x-access-token' : authToken})
                 break
             except:
                 print('No internet connection available. Retrying ...')

@@ -46,6 +46,7 @@ router.post(
             pythonPath: "/usr/bin/python3",
             pythonOptions: ["-u"],
             scriptPath: "/home/pi/emc-data-pi/backend/src",
+            //args: [patient.patientId, ?TOKEN?]
             args: [patient.patientId]
          } as Options;
 
