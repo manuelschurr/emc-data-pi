@@ -13,8 +13,11 @@
             <!-- Start and Stop Stream Buttons -->
             <!-- Video Stream Start - Button -->
             <div class="streamButtons">
-                <button type="button" id="button_play" class="btn btn-dark btn-lg" v-on:click="capture()" style>
+                <button type="button" id="button_play" class="btn btn-dark btn-lg" v-on:click="capture()" v-if="!screenshotProcessing">
                     <i class="fa fa-camera"></i>
+                </button>
+                <button type="button" id="button_play" class="btn btn-dark btn-lg" v-if="screenshotProcessing">
+                    <span class="spinner-border spinner-border-sm" role="status" aria-hidden="true"></span>
                 </button>
                 <div class="screenshotMsg" style="position: absolute; right: 10px; top: 30px;">
                     <div id="screenshotMessage"></div>
@@ -47,6 +50,7 @@ export default {
             video: {},
             canvas: {},
             captures: [],
+            screenshotProcessing: false,
         };
     },
     methods: {
@@ -73,6 +77,8 @@ export default {
         capture() {
             // Accessing video, making screenshot to canvas and sending it to backend
             this.video = this.$refs.video;
+            // setting flag to true to display loading spinner
+            this.screenshotProcessing = true;
             // Pausing video until it has been processed for user to see the actual screenshot
             this.video.pause();
             // Dialogue to show when screenshot is being sent (should also show the sent screenshot somehow)
@@ -99,6 +105,8 @@ export default {
                 })
                     .then((response) => {
                         console.log(response);
+                        // disable processing spinner
+                        vm.screenshotProcessing = false;
                         // show success message
                         screenshotMessage.innerHTML =
                             '<strong><p style="color:green">Letzter Screenshot <br> erfolgreich <br> versendet!</p></strong>';
@@ -113,6 +121,8 @@ export default {
                     })
                     .catch(function (error) {
                         console.log(error);
+                        // disable processing spinner
+                        vm.screenshotProcessing = false;
                         screenshotMessage.innerHTML =
                             '<strong><p style="color:red">Letzter Screenshot <br> nicht erfolgreich <br> versendet!</p></strong>';
                         // start video again after screenshot not being sent
