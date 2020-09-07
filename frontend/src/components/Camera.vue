@@ -79,7 +79,6 @@ export default {
             var screenshotMessage = document.getElementById(
                 "screenshotMessage"
             );
-            console.log(screenshotMessage);
             this.canvas = document.createElement("canvas");
             this.canvas.setAttribute("width", "1280");
             this.canvas.setAttribute("height", "840");
