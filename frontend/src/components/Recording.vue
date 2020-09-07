@@ -39,13 +39,34 @@ export default {
         onResult(data) {
             var audio = document.getElementById("audio");
             var mainaudio = document.createElement("audio");
-            mainaudio.setAttribute("controls", "controls");
-            audio.appendChild(mainaudio);
-            var audioFile = URL.createObjectURL(data);
-            mainaudio.innerHTML =
-                '<source src="' + audioFile + '" type="audio/webm" />';
+            var vm = this;
+            // if audio array is empty, display this recording and fill array with it
+            if (this.audio.length === 0) {
+                mainaudio.setAttribute("controls", "controls");
+                audio.appendChild(mainaudio);
+                var audioFile = URL.createObjectURL(data);
+                mainaudio.innerHTML =
+                    '<source src="' + audioFile + '" type="audio/webm" />';
+                this.audio.push(audioFile);
+                console.log(mainaudio);
+            }
+            // if audio array is not empty, clear it and fill array with current recording and display it
+            else {
+                // empty array
+                vm.audio = [];
+                // empty mainaudio.innerHTML
+                audio.innerHTML = "";
+                console.log(mainaudio);
+                // repeat above steps
+                mainaudio.setAttribute("controls", "controls");
+                audio.appendChild(mainaudio);
+                audioFile = URL.createObjectURL(data);
+                mainaudio.innerHTML =
+                    '<source src="' + audioFile + '" type="audio/webm" />';
+                this.audio.push(audioFile);
+            }
             //this.audio.push(data);
-            this.audio.push(audioFile);
+            //this.audio.push(audioFile);
             /**
              * sending audio to PI
              */
@@ -72,32 +93,16 @@ export default {
                 .then(function (response) {
                     console.log(response);
                     // vm.audioMsg = true;
-                    audioMessage.innerHTML = "Audio erfolgreich versendet!";
+                    audioMessage.innerHTML =
+                        '<strong><p style="color:green">Audio versendet!</p></strong>';
                 })
                 .catch(function (error) {
                     console.log(error);
                     // vm.audioMsg = false;
                     audioMessage.innerHTML =
-                        "Audio konnte nicht versendet werden";
+                        '<strong><p style="color:red">Audio nicht versendet!</p></strong>';
                 });
-            //alternativ ueber FormaData - nicht notwendig
-            // try {
-            //     const formData = new FormData();
-            //     formData.append("audioFile", audioFile);
-
-            //     axios.post("https://localhost:3000/audio", formData);
-            // } catch (error) {
-            //     console.log(error);
-            // }
         },
-        // removeRecord(index) {
-        //     this.recordings.splice(index, 1);
-        //     // mainaudio.innerHTML =
-        //     //     '<source src="' +
-        //     //     URL.createObjectURL(data) +
-        //     //     '" type="audio/webm" />';
-        //     console.log("index removed");
-        // },
     },
 };
 </script>
