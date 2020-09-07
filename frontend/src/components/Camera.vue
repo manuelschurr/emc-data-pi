@@ -1,34 +1,39 @@
 <template>
-    <!-- Here Camera and Modal configuration takes place -->
-    <div>
-        <!-- Screenshot Modal -->
-        <!-- Modal Window to show and confirm screenshot taken -->
-        <!-- <modal id="screenshotModal" name="screenshotModal"></modal> -->
-        <!-- Video -->
-        <div class="videoAndButton">
-            <div class="stream">
-                <!-- <video ref="video" width="448" height="252" controls poster="../assets/videoIcon2.png"> -->
-                <video ref="video" width="448" height="252" poster="../assets/videoIcon2.png">
-                    <source="" type="video/mp4" />
-                    <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
-                </video>
-            </div>
-            <!-- Start and Stop Stream Buttons -->
-            <!-- Video Stream Start - Button -->
-            <div class="streamButtons">
-                <button type="button" id="button_play" class="btn btn-dark btn-lg" v-on:click="capture()" style>
-                    <i class="fa fa-camera"></i>
-                </button>
-                <div class="screenshotMsg" style="position: absolute; right: 10px; top: 30px;">
-                    <div id="screenshotMessage"></div>
-                </div>
-                <!-- Video Stream Pause - Button -->
-                <!-- <button type="button" id="button_stop" class="btn btn-danger btn-lg" onclick="buttonStopPress()">
-                    <i class="fa fa-stop"></i>
-                </button>-->
-            </div>
-            <Modals />
+  <!-- Here Camera and Modal configuration takes place -->
+  <div>
+    <!-- Screenshot Modal -->
+    <!-- Modal Window to show and confirm screenshot taken -->
+    <!-- <modal id="screenshotModal" name="screenshotModal"></modal> -->
+    <!-- Video -->
+    <div class="videoAndButton">
+      <div class="stream">
+        <!-- <video ref="video" width="448" height="252" controls poster="../assets/videoIcon2.png"> -->
+        <video ref="video" width="448" height="252" poster="../assets/videoIcon2.png">
+          <source="" type="video/mp4" />
+          <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
+        </video>
+      </div>
+      <!-- Start and Stop Stream Buttons -->
+      <!-- Video Stream Start - Button -->
+      <div class="streamButtons">
+        <button
+          type="button"
+          id="button_play"
+          class="btn btn-dark btn-lg"
+          v-on:click="capture()"
+          style
+        >
+          <i class="fa fa-camera"></i>
+        </button>
+        <div class="screenshotMsg" style="position: absolute; right: 10px; top: 30px;">
+          <div id="screenshotMessage"></div>
         </div>
+        <!-- Video Stream Pause - Button -->
+        <!-- <button type="button" id="button_stop" class="btn btn-danger btn-lg" onclick="buttonStopPress()">
+                    <i class="fa fa-stop"></i>
+        </button>-->
+      </div>
+      <Modals />
     </div>
   </div>
 </template>
