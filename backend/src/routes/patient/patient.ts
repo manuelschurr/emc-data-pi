@@ -50,6 +50,7 @@ router.post(
          } as Options;
 
          child = new PythonShell('pulox.py', options).childProcess;
+         flag = false;
       }
       
       return new SuccessResponse("Successful", {
@@ -70,7 +71,7 @@ router.post(
 
       // kill python script for pulsoximeter when aptient is finished
       child.kill('SIGINT');
-      flag = false;
+      flag = true;
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
