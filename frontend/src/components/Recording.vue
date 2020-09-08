@@ -21,6 +21,7 @@
 </template>
 
 <script>
+import moment from "moment";
 // Sprachnachricht Funktionalitaet von externer open source library
 import Vue from "vue";
 import VueRecord from "@codekraft-studio/vue-record";
@@ -71,7 +72,9 @@ export default {
              * sending audio to PI
              */
             const formData = new FormData();
-            formData.append("audio", audioFile);
+            const time = moment().format("YYYY-MM-DD_HH-mm-ss");
+            formData.append("audio", data, `${time}.mp3`);
+            // falsch: formData.append("audio", audioFile, `${time}.mp3`)
             // var vm = this;
             var audioMessage = document.getElementById("audioMessage");
             // Test
@@ -86,7 +89,8 @@ export default {
                 method: "post",
                 url: "https://localhost:3000/audio",
                 headers: {
-                    "Content-Type": "audio/webm",
+                    // "Content-Type": "audio/webm",
+                    "Content-Type": "multipart/form-data",
                 },
                 data: formData,
             })
