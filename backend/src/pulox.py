@@ -11,33 +11,34 @@ lock = threading.Lock()
 #set device connection port
 device = '/dev/ttyUSB0'
 
-#deliver next free PatientId from server into script to be inserted into documents to be sent to server and token for API authentication
+#deliver next free PatientId from server into script to be inserted into documents to be sent to server, token for API authentication and server url
 parser = argparse.ArgumentParser()
 parser.add_argument('pID', type=str, help='PatientId obtained from server.')
 parser.add_argument('authToken', type=str, help='Authentication token for API access.')
+parser.add_argument('url', type=str, help='Central server url.')
 args = parser.parse_args()
 pID = args.pID
 authToken = args.authToken
+url = args.url
 
-#set server address
-url = 'https://wifo1-29.bwl.uni-mannheim.de:3000/patient/createPulsoxy'
+#set server route
+route =  url + '/patient/createPulsoxy'
 
 #establish connection via serial port; information on needed settings 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8
-flag = True
-while(flag):
-    try:
-        ser = serial.Serial()
-        ser.baudrate = 115200          
-        ser.bytesize = serial.EIGHTBITS    
-        ser.parity = serial.PARITY_NONE     
-        ser.stopbits = serial.STOPBITS_ONE  
-        ser.xonxoff = 1                   
-        ser.timeout = 1
-        ser.port = device
-        ser.open()
-        flag = False
-    except:
-        print('No device attached. Trying to establish connection to device.')
+
+try:
+    ser = serial.Serial()
+    ser.baudrate = 115200          
+    ser.bytesize = serial.EIGHTBITS    
+    ser.parity = serial.PARITY_NONE     
+    ser.stopbits = serial.STOPBITS_ONE  
+    ser.xonxoff = 1                   
+    ser.timeout = 1
+    ser.port = device
+    ser.open()
+except:
+    print('No connection with device possible. Terminating script.')
+    exit()
 
 #check if data input stream is received; key to be written to component for communication from 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8'
 try:
@@ -115,7 +116,7 @@ def write_data():
         #retry to connect to server in case of connection loss
         while flag:
             try:
-                requests.post(url, data = jsonData, verify = '/home/pi/emc-data-pi/certificates/cert.pem', headers = {'x-access-token' : authToken})
+                requests.post(route, data = jsonData, verify = '/home/pi/emc-data-pi/certificates/cert.pem', headers = {'x-access-token' : authToken})
                 break
             except:
                 print('No internet connection available. Retrying ...')

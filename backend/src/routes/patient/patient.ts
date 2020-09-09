@@ -46,11 +46,11 @@ router.post(
             pythonPath: "/usr/bin/python3",
             pythonOptions: ["-u"],
             scriptPath: "/home/pi/emc-data-pi/backend/src",
-            //args: [patient.patientId, ?TOKEN?]
-            args: [patient.patientId]
+            args: [patient.patientId, /*AxiosConfig.getInstance().getToken(),*/ process.env.CENTRAL_SERVER_ADDRESS]
          } as Options;
 
          child = new PythonShell('pulox.py', options).childProcess;
+         flag = false;
       }
       
       return new SuccessResponse("Successful", {
@@ -69,9 +69,9 @@ router.post(
 
       await PatientHelper.finishPatient(patient);
 
-      // kill python script for pulsoximeter when aptient is finished
+      // kill python script for pulsoximeter when a patient is finished
       child.kill('SIGINT');
-      flag = false;
+      flag = true;
 
       return new SuccessResponse("Successful", {
          patient: _.pick(patient, ['patientId', 'ambulanceId'])
