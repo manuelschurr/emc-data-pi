@@ -89,6 +89,24 @@ export default {
         init() {
             // set cameraRunning flag to true, as camera is now running
             this.cameraRunning = true;
+
+            var videoFlag = JSON.stringify({ isVideoRunning: true });
+            // PUT boolean flag isVideoRunning to true so that in backend GNSS is deactivated
+            axios({
+                method: "put",
+                url: "http://localhost:3000/ambulance/changeGnss",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: videoFlag,
+            })
+                .then((response) => {
+                    console.log("VideoRunning PUT: " + response);
+                })
+                .catch(function (error) {
+                    console.log("VideoRunning PUT: " + error);
+                });
+            // start video
             if (
                 "mediaDevices" in navigator &&
                 "getUserMedia" in navigator.mediaDevices
@@ -119,6 +137,23 @@ export default {
             tracks.forEach((track) => track.stop());
             // set cameraRunning flag to false, as camera has ben turned off
             this.cameraRunning = false;
+            // axios PUT video not running anymore
+            var videoFlag = JSON.stringify({ isVideoRunning: false });
+            // PUT boolean flag isVideoRunning to true so that in backend GNSS is deactivated
+            axios({
+                method: "put",
+                url: "http://localhost:3000/ambulance/changeGnss",
+                headers: {
+                    "Content-Type": "application/json",
+                },
+                data: videoFlag,
+            })
+                .then((response) => {
+                    console.log("VideoRunning PUT: " + response);
+                })
+                .catch(function (error) {
+                    console.log("VideoRunning PUT: " + error);
+                });
         },
 
         /**
