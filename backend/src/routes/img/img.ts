@@ -7,6 +7,7 @@ import path from "path";
 import { centralServerAddress } from '../../config';
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
+import AxiosBaseConfig from "../../core/AxiosConfig";
 import { HttpsAgent } from "../../core/HttpsAgent";
 import asyncHandler from "../../helpers/asyncHandler";
 
@@ -38,7 +39,8 @@ router.post("/", upload.single("img"), asyncHandler(async (req, res, next) => {
 
         const config = {
             headers: {
-                ...data.getHeaders()
+                ...data.getHeaders(),
+                'x-access-token': AxiosBaseConfig.getInstance().getToken()
             },
             httpsAgent: HttpsAgent
         };
