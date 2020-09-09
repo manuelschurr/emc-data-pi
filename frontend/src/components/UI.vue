@@ -263,6 +263,24 @@ export default {
             // finish: false,
         };
     },
+    /**
+     * On mount the patient ID is retreived
+     */
+    mounted() {
+        // axios get on patientID
+        var vm = this;
+        axios({
+            method: "get",
+            url: "http://localhost:3000/patient/findNextPatientId",
+        })
+            .then((response) => {
+                console.log(response);
+                vm.patientId = response.data.data;
+            })
+            .catch(function (error) {
+                console.log(error);
+            });
+    },
     methods: {
         /**
          * Methode zum Versenden der Daten an Backend ueber Submit Button
@@ -272,46 +290,65 @@ export default {
             this.loading = true;
             // JSON Objekt aus Data der Textfelder/User Input
             // if patient ID exists, then send it as well to be able to update patients
-            if (this.patientId != 0) {
-                this.dataObj = {
-                    patientId: this.patientId,
-                    name: this.nameOf,
-                    gender: this.geschlecht,
-                    age: this.alter,
-                    preExistingIllness: this.vorerkrankung,
-                    miscellaneous: this.sonstiges,
-                    AIsSelected: this.Avalue,
-                    AText: this.Ainput,
-                    BIsSelected: this.Bvalue,
-                    BText: this.Binput,
-                    CIsSelected: this.Cvalue,
-                    CText: this.Cinput,
-                    DIsSelected: this.Dvalue,
-                    DText: this.Dinput,
-                    EIsSelected: this.Evalue,
-                    EText: this.Einput,
-                };
-                // JSON Objekt aus Data der Textfelder/User Input
-                // if patient ID not existing yet, new patient
-            } else {
-                this.dataObj = {
-                    name: this.nameOf,
-                    gender: this.geschlecht,
-                    age: this.alter,
-                    preExistingIllness: this.vorerkrankung,
-                    miscellaneous: this.sonstiges,
-                    AIsSelected: this.Avalue,
-                    AText: this.Ainput,
-                    BIsSelected: this.Bvalue,
-                    BText: this.Binput,
-                    CIsSelected: this.Cvalue,
-                    CText: this.Cinput,
-                    DIsSelected: this.Dvalue,
-                    DText: this.Dinput,
-                    EIsSelected: this.Evalue,
-                    EText: this.Einput,
-                };
-            }
+            // if (this.patientId != 0) {
+            //     this.dataObj = {
+            //         patientId: this.patientId,
+            //         name: this.nameOf,
+            //         gender: this.geschlecht,
+            //         age: this.alter,
+            //         preExistingIllness: this.vorerkrankung,
+            //         miscellaneous: this.sonstiges,
+            //         AIsSelected: this.Avalue,
+            //         AText: this.Ainput,
+            //         BIsSelected: this.Bvalue,
+            //         BText: this.Binput,
+            //         CIsSelected: this.Cvalue,
+            //         CText: this.Cinput,
+            //         DIsSelected: this.Dvalue,
+            //         DText: this.Dinput,
+            //         EIsSelected: this.Evalue,
+            //         EText: this.Einput,
+            //     };
+            //     // JSON Objekt aus Data der Textfelder/User Input
+            //     // if patient ID not existing yet, new patient
+            // } else {
+            //     this.dataObj = {
+            //         name: this.nameOf,
+            //         gender: this.geschlecht,
+            //         age: this.alter,
+            //         preExistingIllness: this.vorerkrankung,
+            //         miscellaneous: this.sonstiges,
+            //         AIsSelected: this.Avalue,
+            //         AText: this.Ainput,
+            //         BIsSelected: this.Bvalue,
+            //         BText: this.Binput,
+            //         CIsSelected: this.Cvalue,
+            //         CText: this.Cinput,
+            //         DIsSelected: this.Dvalue,
+            //         DText: this.Dinput,
+            //         EIsSelected: this.Evalue,
+            //         EText: this.Einput,
+            //     };
+            // }
+            // Send patient ID as well as all the other data to backend
+            this.dataObj = {
+                patientId: this.patientId,
+                name: this.nameOf,
+                gender: this.geschlecht,
+                age: this.alter,
+                preExistingIllness: this.vorerkrankung,
+                miscellaneous: this.sonstiges,
+                AIsSelected: this.Avalue,
+                AText: this.Ainput,
+                BIsSelected: this.Bvalue,
+                BText: this.Binput,
+                CIsSelected: this.Cvalue,
+                CText: this.Cinput,
+                DIsSelected: this.Dvalue,
+                DText: this.Dinput,
+                EIsSelected: this.Evalue,
+                EText: this.Einput,
+            };
             let dataJSON = JSON.stringify(this.dataObj);
             var vm = this;
             console.log("Sending " + dataJSON);
