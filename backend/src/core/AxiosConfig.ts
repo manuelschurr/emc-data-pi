@@ -49,7 +49,7 @@ export default class AxiosBaseConfig implements AxiosRequestConfig {
       await axios
          .post(`${centralServerAddress}/user/login`, { username: centralServerAuthUser, password: centralServerAuthPassword }, this.axios_config)
          .then(response => {
-            this.token = response.data.token;
+            this.token = response.data.data.token;
          })
          .catch(error => {
             Logger.error(error);

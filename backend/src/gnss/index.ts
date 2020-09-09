@@ -31,7 +31,7 @@ const parser = port.pipe(new SerialPortParser());
 var ambulance = AmbulanceRepo.queryAmbulance();
 
 // GPSListener updated by SerialPortParser
-gpsListener.on("data", data => {
+gpsListener.on("data", async data => {
    // if the ambulanceId could not be read, the data cannot be used
    // ambulance information needs to be retrieved again
    if (typeof ambulance === 'undefined' || typeof ambulance.ambulanceId === 'undefined' || ambulance.ambulanceId === null) {
@@ -47,7 +47,7 @@ gpsListener.on("data", data => {
             Logger.debug(gnss);
 
             // send data to central server
-            axios.post(`${centralServerAddress}/ambulance/createGnss`, gnss, AxiosBaseConfig.getInstance());
+            axios.post(`${centralServerAddress}/ambulance/createGnss`, gnss, await AxiosBaseConfig.getInstance());
          }
          // the quality of the record is null, if a connection is not established
          else {
