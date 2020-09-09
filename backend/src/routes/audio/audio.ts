@@ -7,6 +7,7 @@ import path from "path";
 import { centralServerAddress } from '../../config';
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
+import AxiosBaseConfig from "../../core/AxiosConfig";
 import { HttpsAgent } from "../../core/HttpsAgent";
 import asyncHandler from "../../helpers/asyncHandler";
 
@@ -40,10 +41,12 @@ router.post("/", upload.single("audio"), asyncHandler(async (req, res, next) => 
         const data = new FormData()
         data.append("audio", fs.createReadStream(path.join(CUR_DIR + "/" + file.path)))
 
+        // cannot use entire AxiosBaseConfig, but token has to be read
         // Header configuration to ensure correct formatting (multipart/form-data)
         const config = {
             headers: {
-                ...data.getHeaders()
+                ...data.getHeaders(),
+                'x-access-token': (await AxiosBaseConfig.getInstance()).getToken()
             },
             httpsAgent: HttpsAgent
         };
