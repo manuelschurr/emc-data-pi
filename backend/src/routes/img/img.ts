@@ -29,7 +29,7 @@ const upload = multer({ storage: storage })
 
 const CUR_DIR = path.join(process.cwd())
 
-// POST endpoint to upload audio files
+// POST endpoint to upload image files
 router.post("/", upload.single("img"), asyncHandler(async (req, res, next) => {
     const file = req.file
 
