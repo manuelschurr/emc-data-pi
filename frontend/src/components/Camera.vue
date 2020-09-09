@@ -93,13 +93,18 @@ export default {
       // Dialogue to show when screenshot is being sent (should also show the sent screenshot somehow)
       var screenshotMessage = document.getElementById("screenshotMessage");
       this.canvas = document.createElement("canvas");
+      // Set canvas size to appropriate values (possible to experiment with values up to FHD)
+      // to "unstretch" the image, as camera does not deliver 16:9 format
       this.canvas.setAttribute("width", "1180");
       this.canvas.setAttribute("height", "840");
       var context = this.canvas.getContext("2d");
       var vm = this;
+      // Paint screenshot in appropriate size (see canvas size)
       context.drawImage(this.video, 0, 0, 1180, 840);
+      // Get blob from binary data (does not work otherwise) to send the image data to the backend
       this.canvas.toBlob(function (blob) {
         const formData = new FormData();
+        // Name the image file with the current timestamp
         const time = moment().format("YYYY-MM-DD_HH-mm-ss");
         formData.append("img", blob, `${time}.jpg`);
         axios({
