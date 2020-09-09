@@ -1,6 +1,7 @@
 import express from "express";
 import _ from "lodash";
 import { Options, PythonShell } from 'python-shell';
+import { centralServerAddress, certPath } from "../../config";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
 import Patient from "../../database/model/Patient";
@@ -46,7 +47,7 @@ router.post(
             pythonPath: "/usr/bin/python3",
             pythonOptions: ["-u"],
             scriptPath: "/home/pi/emc-data-pi/backend/src",
-            args: [patient.patientId, /*AxiosConfig.getInstance().getToken(),*/ process.env.CENTRAL_SERVER_ADDRESS]
+            args: [patient.patientId, AxiosBaseConfig.getInstance().getToken(), centralServerAddress, certPath]
          } as Options;
 
          child = new PythonShell('pulox.py', options).childProcess;
