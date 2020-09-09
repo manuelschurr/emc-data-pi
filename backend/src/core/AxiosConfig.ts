@@ -31,10 +31,10 @@ export default class AxiosBaseConfig implements AxiosRequestConfig {
     * This implementation let you subclass the Singleton class while keeping
     * just one instance of each subclass around.
     */
-   public static getInstance(): AxiosBaseConfig {
+   public static async getInstance(): Promise<AxiosBaseConfig> {
       if (!AxiosBaseConfig.INSTANCE) {
          AxiosBaseConfig.INSTANCE = new AxiosBaseConfig();
-         this.INSTANCE.create();
+         await this.INSTANCE.create();
       }
 
       return AxiosBaseConfig.INSTANCE;
