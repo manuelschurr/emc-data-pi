@@ -44,7 +44,6 @@ router.get(
       await axios
       .get(`${centralServerAddress}/patient/findNextPatientId`, await AxiosBaseConfig.getInstance())
       .then(response => {
-         console.log(response.data);
          patientId = response.data.data;
       })
       .catch(error => {
