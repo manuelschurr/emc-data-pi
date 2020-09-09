@@ -35,16 +35,6 @@ export default class PatientHelper {
       }
       // if isPatientExisting is false, a patient tuple needs to be created
       else {
-         // if a patient needs to be created, the next patientId needs to be retrieved
-         await axios
-            .get(`${centralServerAddress}/patient/findNextPatientId`, await AxiosBaseConfig.getInstance())
-            .then(response => {
-               patient.patientId = response.data.data;
-            })
-            .catch(error => {
-               Logger.error(error);
-            });
-
          // with the new information a patient tuple can be created locally
          Logger.debug("Patient will be created: " + JSON.stringify(patient));
          PatientRepo.insertPatient(patient);
