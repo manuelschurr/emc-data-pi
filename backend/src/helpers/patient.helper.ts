@@ -28,7 +28,7 @@ export default class PatientHelper {
 
          // sending a PUT request to the central server with axios
          axios
-            .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, AxiosBaseConfig.getInstance())
+            .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });
@@ -37,7 +37,7 @@ export default class PatientHelper {
       else {
          // if a patient needs to be created, the next patientId needs to be retrieved
          await axios
-            .get(`${centralServerAddress}/patient/findNextPatientId`, AxiosBaseConfig.getInstance())
+            .get(`${centralServerAddress}/patient/findNextPatientId`, await AxiosBaseConfig.getInstance())
             .then(response => {
                patient.patientId = response.data.data;
             })
@@ -51,7 +51,7 @@ export default class PatientHelper {
 
          // the new patient needs to be sent to the central server (with a POST request)
          axios
-            .post(`${centralServerAddress}/patient/create`, patient, AxiosBaseConfig.getInstance())
+            .post(`${centralServerAddress}/patient/create`, patient, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });;
@@ -66,7 +66,7 @@ export default class PatientHelper {
 
       // sending a PUT request to the central server with axios
       axios
-         .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, AxiosBaseConfig.getInstance())
+         .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
          .catch(error => {
             Logger.error(error);
          });
@@ -86,7 +86,7 @@ export default class PatientHelper {
 
       // sending a PUT request to the central server with axios
       await axios
-         .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, AxiosBaseConfig.getInstance())
+         .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, await AxiosBaseConfig.getInstance())
          .catch(error => {
             Logger.error(error);
          });
@@ -97,7 +97,7 @@ export default class PatientHelper {
 
       // sending a PUT request to the central server with axios
       await axios
-         .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, AxiosBaseConfig.getInstance())
+         .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
          .catch(error => {
             Logger.error(error);
          });

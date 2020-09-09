@@ -46,7 +46,7 @@ router.post("/", upload.single("audio"), asyncHandler(async (req, res, next) => 
         const config = {
             headers: {
                 ...data.getHeaders(),
-                'x-access-token': AxiosBaseConfig.getInstance().getToken()
+                'x-access-token': (await AxiosBaseConfig.getInstance()).getToken()
             },
             httpsAgent: HttpsAgent
         };

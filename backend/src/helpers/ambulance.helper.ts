@@ -21,7 +21,7 @@ export default class AmbulanceHelper {
 
          // if an ambulance needs to be created, the next ambulanceId needs to be retrieved
          await axios
-            .get(`${centralServerAddress}/ambulance/findNextAmbulanceId`, AxiosBaseConfig.getInstance())
+            .get(`${centralServerAddress}/ambulance/findNextAmbulanceId`, await AxiosBaseConfig.getInstance())
             .then(response => {
                ambulance.ambulanceId = response.data.data;
             })
@@ -39,7 +39,7 @@ export default class AmbulanceHelper {
 
          // the new ambulance information needs to be sent to the central server (with a POST request)
          axios
-            .post(`${centralServerAddress}/ambulance/create`, ambulance, AxiosBaseConfig.getInstance())
+            .post(`${centralServerAddress}/ambulance/create`, ambulance, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });;
@@ -55,7 +55,7 @@ export default class AmbulanceHelper {
 
          // sending a PUT request to the central server with axios
          await axios
-            .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, AxiosBaseConfig.getInstance())
+            .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });
