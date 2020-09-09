@@ -3,7 +3,7 @@
         <!-- Voice Record - Row + Button -->
         <div class="form-group row">
             <label for="Audio" class="col-2 col-form-label labelTop">Audio</label>
-            <VueRecordAudio mode="hold" @result="onResult" />
+            <VueRecordAudio mode="press" @result="onResult" />
             <!-- Container, um die Recordings anzuzeigen -->
             <div id="audio" class="audio" controls></div>
             <!-- Bestätigungsnachricht/Errornachricht -->
