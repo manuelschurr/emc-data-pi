@@ -91,7 +91,6 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                     vm.failCounter += 1;
-                    console.log(vm.failCounter);
                     // vm.audioMsg = false;
                     audioMessage.innerHTML =
                         '<strong><p style="color:red">Audio nicht erfolgreich versendet (Dateien: ' +

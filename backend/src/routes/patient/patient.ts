@@ -1,8 +1,10 @@
 import express from "express";
 import _ from "lodash";
 import { Options, PythonShell } from 'python-shell';
+import { centralServerAddress } from "../../config";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
+import AxiosBaseConfig from "../../core/AxiosConfig";
 import Patient from "../../database/model/Patient";
 import PatientRepo from "../../database/repository/PatientRepo";
 import asyncHandler from "../../helpers/asyncHandler";
@@ -46,7 +48,7 @@ router.post(
             pythonPath: "/usr/bin/python3",
             pythonOptions: ["-u"],
             scriptPath: "/home/pi/emc-data-pi/backend/src",
-            args: [patient.patientId]
+            args: [patient.patientId, (await AxiosBaseConfig.getInstance()).getToken(), centralServerAddress]
          } as Options;
 
          child = new PythonShell('pulox.py', options).childProcess;
@@ -69,7 +71,7 @@ router.post(
 
       await PatientHelper.finishPatient(patient);
 
-      // kill python script for pulsoximeter when aptient is finished
+      // kill python script for pulsoximeter when a patient is finished
       child.kill('SIGINT');
       flag = true;
 

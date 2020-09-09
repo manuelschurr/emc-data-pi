@@ -1,6 +1,6 @@
 import axios from "axios";
 import { ambulanceIdentifier, centralServerAddress } from "../config";
-import { HttpsAgent } from "../core/HttpsAgent";
+import AxiosBaseConfig from "../core/AxiosConfig";
 import Logger from "../core/Logger";
 import Ambulance from "../database/model/Ambulance";
 import AmbulanceRepo from "../database/repository/AmbulanceRepo";
@@ -9,14 +9,6 @@ import AmbulanceRepo from "../database/repository/AmbulanceRepo";
 export default class AmbulanceHelper {
    // creating the entry for the ambulance information, if there is non existing
    public static async createAmbulanceEntry() {
-      // creating the config for the axios-calls
-      let axios_ambulance_config = {
-         headers: {
-            'Content-Type': 'application/json'
-         },
-         httpsAgent: HttpsAgent
-      };
-
       // check if an ambulance tuple is existing
       let isAmbulanceExisting = AmbulanceRepo.checkIfAmbulanceDataExists();
       Logger.debug(`Checking if ambulance is existing: ${isAmbulanceExisting}`);
@@ -29,7 +21,7 @@ export default class AmbulanceHelper {
 
          // if an ambulance needs to be created, the next ambulanceId needs to be retrieved
          await axios
-            .get(`${centralServerAddress}/ambulance/findNextAmbulanceId`, axios_ambulance_config)
+            .get(`${centralServerAddress}/ambulance/findNextAmbulanceId`, await AxiosBaseConfig.getInstance())
             .then(response => {
                ambulance.ambulanceId = response.data.data;
             })
@@ -47,7 +39,7 @@ export default class AmbulanceHelper {
 
          // the new ambulance information needs to be sent to the central server (with a POST request)
          axios
-            .post(`${centralServerAddress}/ambulance/create`, ambulance, axios_ambulance_config)
+            .post(`${centralServerAddress}/ambulance/create`, ambulance, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });;
@@ -63,7 +55,7 @@ export default class AmbulanceHelper {
 
          // sending a PUT request to the central server with axios
          await axios
-            .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, axios_ambulance_config)
+            .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });

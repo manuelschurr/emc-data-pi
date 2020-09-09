@@ -1,7 +1,7 @@
 import axios from "axios";
 import GPS from "gps";
 import { centralServerAddress } from "../config";
-import { HttpsAgent } from "../core/HttpsAgent";
+import AxiosBaseConfig from "../core/AxiosConfig";
 import Logger from "../core/Logger";
 import AmbulanceRepo from "../database/repository/AmbulanceRepo";
 
@@ -30,14 +30,6 @@ const parser = port.pipe(new SerialPortParser());
 // query ambulance information - ambulanceId needed
 var ambulance = AmbulanceRepo.queryAmbulance();
 
-// config for the post request
-const axios_gnss_config = {
-   headers: {
-      'Content-Type': 'application/json'
-   },
-   httpsAgent: HttpsAgent
-};
-
 // GPSListener updated by SerialPortParser
 gpsListener.on("data", data => {
    // if the ambulanceId could not be read, the data cannot be used
@@ -55,7 +47,7 @@ gpsListener.on("data", data => {
             Logger.debug(gnss);
 
             // send data to central server
-            axios.post(`${centralServerAddress}/ambulance/createGnss`, gnss, axios_gnss_config);
+            axios.post(`${centralServerAddress}/ambulance/createGnss`, gnss, AxiosBaseConfig.getInstance());
          }
          // the quality of the record is null, if a connection is not established
          else {
