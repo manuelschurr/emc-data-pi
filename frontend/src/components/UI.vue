@@ -56,7 +56,7 @@
             <div class="form-group row">
                 <label for="textarea" class="col-2 col-form-label labelTop">Sonstiges</label>
                 <div class="col-10">
-                    <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="10" class="form-control"></textarea>
+                    <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="14" class="form-control"></textarea>
                 </div>
             </div>
             <!-- Sprachnachricht Audio Import an dieser Stelle -->
@@ -67,7 +67,7 @@
             <!------- Camera Import -------->
             <Camera />
             <!-- ABCDE Schema -->
-            <form class="text-fields-right" id="right-text-fields">
+            <form class="text-fields-right" id="right-text-fields" autocomplete="off">
                 <!-- A -->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
