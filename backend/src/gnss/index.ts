@@ -30,6 +30,9 @@ const parser = port.pipe(new SerialPortParser());
 // query ambulance information - ambulanceId needed
 var ambulance = AmbulanceRepo.queryAmbulance();
 
+// toggle GNSS
+var isGnssEnabled = true;
+
 // GPSListener updated by SerialPortParser
 gpsListener.on("data", async data => {
    // if the ambulanceId could not be read, the data cannot be used
@@ -59,10 +62,12 @@ gpsListener.on("data", async data => {
 
 // gets the (raw) data from the SerialPort and passes it to the GPSListener
 parser.on("data", (data: string) => {
-   try {
-      gpsListener.update(data);
-   } catch (error) {
-      Logger.error(error);
+   if (isGnssEnabled) {
+      try {
+         gpsListener.update(data);
+      } catch (error) {
+         Logger.error(error);
+      }
    }
 });
 
@@ -73,4 +78,8 @@ function checkGnssRecord(data: any) : boolean {
    return data.quality != null &&
    ( data.lat < 90 && data.lat > -90) &&
    ( data.lon < 180 && data.lon > -180);
+}
+
+export function setIsGnssEnabled(gnssToggle : boolean) {
+   isGnssEnabled = gnssToggle;
 }
