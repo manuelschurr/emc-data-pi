@@ -5,7 +5,7 @@
         <div class="videoAndButton">
             <div class="stream">
                 <!-- <video ref="video" width="448" height="252" controls poster="../assets/videoIcon2.png"> -->
-                <video ref="video" width="448" height="252" poster="../assets/videoIcon2.png">
+                <video ref="video" width="448" height="252" poster="../assets/videoIcon3.png">
                     <source="" type="video/mp4" />
                     <p>Ihr Browser verhindert das Abspielen von Video Tags. Sie sollten einen anderen Browser verwenden.</p>
                 </video>
