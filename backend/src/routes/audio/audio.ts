@@ -13,6 +13,8 @@ import asyncHandler from "../../helpers/asyncHandler";
 
 const router = express.Router()
 
+// Defines the multer storage parameters
+// Saves files in backend/audio with the originalname from the request
 const storage = multer.diskStorage({
     destination: function (req, file, cb) {
         cb(null, "./audio/")
@@ -22,20 +24,23 @@ const storage = multer.diskStorage({
     }
 })
 
+// Multer object
 const upload = multer({ storage: storage })
 
 const CUR_DIR = path.join(process.cwd())
 
+// POST endpoint to upload audio files
 router.post("/", upload.single("audio"), asyncHandler(async (req, res, next) => {
     const file = req.file
 
     if (!file) throw new BadRequestError("No file provided")
 
-    // Forward file to uni server
+    // Forwards file to central uni server via POST request
     try {
         const data = new FormData()
         data.append("audio", fs.createReadStream(path.join(CUR_DIR + "/" + file.path)))
 
+        // Header configuration to ensure correct formatting (multipart/form-data)
         const config = {
             headers: {
                 ...data.getHeaders()
