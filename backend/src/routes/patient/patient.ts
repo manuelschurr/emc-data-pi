@@ -1,3 +1,4 @@
+import axios from "axios";
 import express from "express";
 import _ from "lodash";
 import { Options, PythonShell } from 'python-shell';
@@ -5,6 +6,7 @@ import { centralServerAddress } from "../../config";
 import { BadRequestError } from "../../core/ApiError";
 import { SuccessResponse } from "../../core/ApiResponse";
 import AxiosBaseConfig from "../../core/AxiosConfig";
+import Logger from "../../core/Logger";
 import Patient from "../../database/model/Patient";
 import PatientRepo from "../../database/repository/PatientRepo";
 import asyncHandler from "../../helpers/asyncHandler";
@@ -29,6 +31,27 @@ router.get(
       }
 
       return new SuccessResponse("Successful", patient).send(res);
+   }),
+)
+
+router.get(
+   "/findNextPatientId",
+   // eslint-disable-next-line @typescript-eslint/no-unused-vars
+   asyncHandler(async (req, res, next) => {
+      var patientId = 0;
+      
+      // get next available patientId
+      await axios
+      .get(`${centralServerAddress}/patient/findNextPatientId`, await AxiosBaseConfig.getInstance())
+      .then(response => {
+         console.log(response.data);
+         patientId = response.data.data;
+      })
+      .catch(error => {
+         Logger.error(error);
+      });
+
+      return new SuccessResponse("Successful", patientId).send(res);
    }),
 )
 
