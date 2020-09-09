@@ -33,51 +33,35 @@ export default {
     data() {
         return {
             audio: [],
+            successCounter: 0,
+            failCounter: 0,
             // audioMsg: false,
         };
     },
     methods: {
         onResult(data) {
-            var audio = document.getElementById("audio");
-            var mainaudio = document.createElement("audio");
-            var vm = this;
-            // if audio array is empty, display this recording and fill array with it
-            if (this.audio.length === 0) {
-                mainaudio.setAttribute("controls", "controls");
-                audio.appendChild(mainaudio);
-                var audioFile = URL.createObjectURL(data);
-                mainaudio.innerHTML =
-                    '<source src="' + audioFile + '" type="audio/webm" />';
-                this.audio.push(audioFile);
-                console.log(mainaudio);
-            }
-            // if audio array is not empty, clear it and fill array with current recording and display it
-            else {
-                // empty array
-                vm.audio = [];
-                // empty mainaudio.innerHTML
-                audio.innerHTML = "";
-                console.log(mainaudio);
-                // repeat above steps
-                mainaudio.setAttribute("controls", "controls");
-                audio.appendChild(mainaudio);
-                audioFile = URL.createObjectURL(data);
-                mainaudio.innerHTML =
-                    '<source src="' + audioFile + '" type="audio/webm" />';
-                this.audio.push(audioFile);
-            }
-            //this.audio.push(data);
-            //this.audio.push(audioFile);
+            // console.log("Blob Object " + data);
+            // creating Audio Element to display all the audios in UI
+            // does not make sense as there is no soundcard in PI --> show success/fail message instead
+            // var audio = document.getElementById("audio");
+            // var mainaudio = document.createElement("audio");
+            // mainaudio.setAttribute("controls", "controls");
+            // audio.appendChild(mainaudio);
+            // var audioFile = URL.createObjectURL(data);
+            // mainaudio.innerHTML =
+            //     '<source src="' + audioFile + '" type="audio/webm" />';
+            // this.audio.push(audioFile);
+            // console.log(mainaudio);
             /**
              * sending audio to PI
              */
             const formData = new FormData();
             const time = moment().format("YYYY-MM-DD_HH-mm-ss");
             formData.append("audio", data, `${time}.webm`);
-            // falsch: formData.append("audio", audioFile, `${time}.mp3`)
-            // var vm = this;
             var audioMessage = document.getElementById("audioMessage");
-            // Test
+            // give audioMessage some distance to button
+            audioMessage.setAttribute("style", "padding: 1px;");
+            // AudioSpinner
             var audioSpinner = document.createElement("div");
             audioSpinner.setAttribute("class", "d-flex align-items-center");
             audioSpinner.innerHTML =
@@ -85,6 +69,7 @@ export default {
             audioMessage.appendChild(audioSpinner);
             console.log("Sending the blob data:", data);
             console.log("Downloadable audio", window.URL.createObjectURL(data));
+            var vm = this;
             axios({
                 method: "post",
                 url: "http://localhost:3000/audio",
@@ -97,14 +82,21 @@ export default {
                 .then(function (response) {
                     console.log(response);
                     // vm.audioMsg = true;
+                    vm.successCounter += 1;
                     audioMessage.innerHTML =
-                        '<strong><p style="color:green">Audio versendet!</p></strong>';
+                        '<strong><p style="color:green">Audio erfolgreich versendet (Dateien: ' +
+                        vm.successCounter +
+                        ")</p></strong>";
                 })
                 .catch(function (error) {
                     console.log(error);
+                    vm.failCounter += 1;
+                    console.log(vm.failCounter);
                     // vm.audioMsg = false;
                     audioMessage.innerHTML =
-                        '<strong><p style="color:red">Audio nicht versendet!</p></strong>';
+                        '<strong><p style="color:red">Audio nicht erfolgreich versendet (Dateien: ' +
+                        vm.failCounter +
+                        ")</p></strong>";
                 });
         },
     },
