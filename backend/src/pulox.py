@@ -13,15 +13,13 @@ device = '/dev/ttyUSB0'
 
 #deliver next free PatientId from server into script to be inserted into documents to be sent to server, token for API authentication and server url
 parser = argparse.ArgumentParser()
-parser.add_argument('pID', type=str, help='PatientId obtained from server.')
+parser.add_argument('pID', type=int, help='PatientId obtained from server.')
 parser.add_argument('authToken', type=str, help='Authentication token for API access.')
 parser.add_argument('url', type=str, help='Central server url.')
-parser.add_argument('cert', type=str, help='Certificate path.')
 args = parser.parse_args()
 pID = args.pID
 authToken = args.authToken
 url = args.url
-cert = args.cert
 
 #set server route
 route =  url + '/patient/createPulsoxy'
@@ -118,7 +116,7 @@ def write_data():
         #retry to connect to server in case of connection loss
         while flag:
             try:
-                requests.post(route, data = jsonData, verify = cert, headers = {'x-access-token' : authToken})
+                requests.post(route, data = jsonData, headers = {'x-access-token' : authToken})
                 break
             except:
                 print('No internet connection available. Retrying ...')
