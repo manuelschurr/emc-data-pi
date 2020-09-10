@@ -32,16 +32,14 @@ echo "Creating first database..."
 mkdir $PI_PATH/DB
 touch $PI_PATH/DB/emcdata.db
 
-# Install Python modules for pulsoximeter script
-sudo pip install pyserial
-sudo pip install requests
 # Install PIP (package manager for Python)
 echo "Installing PIP..."
-sudo apt install python-pip -y
+sudo apt install python3-pip -y
 
-# Install Python Modules Serial
-echo "Installing pyserial..."
-sudo pip install pyserial -y
+# Install Python modules for pulsoximeter script
+echo "Installing Python modules..."
+sudo pip3 install pyserial
+sudo pip3 install requests
 
 # Show installed versions
 echo -n "Installed version Node.js: ";node -v
@@ -59,6 +57,10 @@ mv ambulance.desktop $PI_PATH/Desktop/ambulance.desktop
 echo "Disabling standard audio cords..."
 sudo mv aliases.conf /lib/modprobe.d/aliases.conf
 echo 'blacklist snd_bcm2835' | sudo tee /etc/modprobe.d/raspi-blacklist.conf
+
+# Disable mouse cursor
+echo "Disabling the mouse cursor..."
+sudo mv autostart /etc/xdg/lxsession/LXDE-pi/autostart
 
 # Changing permissions for some files
 sudo chmod 777 $PI_PATH/Startup/gpioonoff.sh
