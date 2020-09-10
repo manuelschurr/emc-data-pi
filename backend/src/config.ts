@@ -12,8 +12,6 @@ export const centralServerAddress = process.env.CENTRAL_SERVER_ADDRESS
 
 export const ambulanceIdentifier = process.env.AMBULANCE_IDENTIFIER
 
-export const certPath = process.env.CERT_PATH
-
 export const centralServerAuthUser = process.env.CENTRAL_SERVER_AUTH_USER
 export const centralServerAuthPassword = process.env.CENTRAL_SERVER_AUTH_PASSWORD
 
