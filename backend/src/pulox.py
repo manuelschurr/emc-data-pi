@@ -85,6 +85,8 @@ def read_data():
         time = datetime.now().strftime('%m-%d-%Y %H:%M:%S')
         pulsRate_i = raw[5] & 0x7f
         spo2_i = raw[6] & 0x7f
+        if spo2_i > 100:
+            spo2_i = 100
         lock.acquire()
         data = [time, pulsRate_i, spo2_i]
         lock.release()
