@@ -548,7 +548,7 @@ export default {
         patientId: this.patientId,
         name: this.nameOf,
         gender: this.geschlecht,
-        age: parseInt(this.alter),
+        age: parseInt(this.alter === "" ? 0 : this.alter),
         preExistingIllness: this.vorerkrankung,
         miscellaneous: this.sonstiges,
         AIsSelected: this.Avalue,
