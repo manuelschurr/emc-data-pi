@@ -338,7 +338,7 @@
         v-if="!loading"
       >
         <button
-          @click="this.manualSubmitData()"
+          @click="this.manualSubmitData"
           id="SubmitButton"
           name="submit"
           type="submit"
