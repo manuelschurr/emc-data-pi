@@ -63,6 +63,12 @@ router.post(
 
       await PatientHelper.createOrUpdatePatientInformation(patient);
 
+
+      if (child!=0) {
+         child.kill('SIGINT');
+         child = 0;
+         flag = true;
+      }
       // start python script for pulsoximeter when new patient is created
       if (flag) {
          let options = {
@@ -74,7 +80,6 @@ router.post(
          } as Options;
 
          child = new PythonShell('pulox.py', options).childProcess;
-         flag = false;
       }
       
       return new SuccessResponse("Successful", {
@@ -95,6 +100,7 @@ router.post(
 
       // kill python script for pulsoximeter when a patient is finished
       child.kill('SIGINT');
+      child = 0;
       flag = true;
 
       return new SuccessResponse("Successful", {
