@@ -70,16 +70,6 @@ def read_data():
     y = True
     while y:
         try:
-            ser.close()
-            ser = serial.Serial()
-            ser.baudrate = 115200          
-            ser.bytesize = serial.EIGHTBITS    
-            ser.parity = serial.PARITY_NONE     
-            ser.stopbits = serial.STOPBITS_ONE  
-            ser.xonxoff = 1                   
-            ser.timeout = 1
-            ser.port = device
-            ser.open()
             ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
             raw = ser.read(9)
             y = False
@@ -102,16 +92,6 @@ def read_data():
         y = True
         while y:
             try:
-                ser.close()
-                ser = serial.Serial()
-                ser.baudrate = 115200          
-                ser.bytesize = serial.EIGHTBITS    
-                ser.parity = serial.PARITY_NONE     
-                ser.stopbits = serial.STOPBITS_ONE  
-                ser.xonxoff = 1                   
-                ser.timeout = 1
-                ser.port = device
-                ser.open()
                 ser.write(b'\x7d\x81\xa1\x80\x80\x80\x80\x80\x80')
                 raw = ser.read(9)
                 y = False
