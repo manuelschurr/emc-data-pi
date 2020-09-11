@@ -338,7 +338,7 @@
         v-if="!loading"
       >
         <button
-          @click="this.submitData"
+          @click="this.submitData(true)"
           id="SubmitButton"
           name="submit"
           type="submit"
@@ -485,7 +485,7 @@ export default {
         console.log("watcher: " + this.submitted);
         if (this.submitted) {
           this.interval = setInterval(() => {
-            this.submitData();
+            this.submitData(false);
           }, 10000);
         } else {
           clearInterval(this.interval);
@@ -497,7 +497,7 @@ export default {
     /**
      * Methode zum Versenden der Daten an Backend ueber Submit Button
      */
-    submitData() {
+    submitData(manual) {
       // set loading to true so that spinner is shown
       this.loading = true;
 
@@ -580,13 +580,17 @@ export default {
           vm.patientId = response.data.data.patient.patientId;
           console.log(response);
           vm.loading = false;
-          vm.$modal.show("sentModal");
+          if (manual) {
+            vm.$modal.show("sentModal");
+          }
           vm.submitted = true;
         })
         .catch(function(error) {
           console.log(error);
           vm.loading = false;
-          vm.$modal.show("errorModal");
+          if (manual) {
+            vm.$modal.show("errorModal");
+          }
         });
     },
     /**
