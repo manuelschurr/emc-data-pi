@@ -338,7 +338,7 @@
         v-if="!loading"
       >
         <button
-          @click="this.submitData(true)"
+          @click="this.manualSubmitData()"
           id="SubmitButton"
           name="submit"
           type="submit"
@@ -494,6 +494,9 @@ export default {
     }
   },
   methods: {
+    manualSubmitData() {
+      this.submitData(true);
+    },
     /**
      * Methode zum Versenden der Daten an Backend ueber Submit Button
      */
