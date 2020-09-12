@@ -12,6 +12,7 @@ export default class DateTime {
       return dateTimestamp;
    }
 
+   // adjust 0 before single digits
    private static IntTwoChars(i: number) {
       return (`0${i}`).slice(-2);
    }
