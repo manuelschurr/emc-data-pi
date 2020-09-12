@@ -53,7 +53,7 @@ export default class AmbulanceHelper {
          Logger.debug("Ambulance will be updated: " + JSON.stringify(ambulance));
          AmbulanceRepo.updateAmbulance(ambulance);
 
-         // sending a PUT request to the central server with axios
+         // update the ambulance information in the central server (with a PUT request)
          await axios
             .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
             .catch(error => {
