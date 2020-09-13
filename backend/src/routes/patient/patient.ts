@@ -63,13 +63,13 @@ router.post(
 
       await PatientHelper.createOrUpdatePatientInformation(patient);
 
-
+      // if python script running pulox.py is already running, terminate before startup to avoid multiple data outputs
       if (child!=0) {
          child.kill('SIGINT');
          child = 0;
          flag = true;
       }
-      // start python script for pulsoximeter when new patient is created
+      // start python script for pulsoximeter when new patient is created and provide all needed input data
       if (flag) {
          let options = {
             mode: "text",
@@ -98,7 +98,7 @@ router.post(
 
       await PatientHelper.finishPatient(patient);
 
-      // kill python script for pulsoximeter when a patient is finished
+      // kill python script for pulsoximeter when patient is finished
       child.kill('SIGINT');
       child = 0;
       flag = true;
