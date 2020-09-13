@@ -1,6 +1,6 @@
 #!/bin/sh
 
-import serial, subprocess, time, threading, json, requests, argparse
+import serial, time, threading, json, requests, argparse
 from datetime import datetime
 
 #declare variables
