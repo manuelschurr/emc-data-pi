@@ -11,7 +11,7 @@
         <!-------------------------------------------- Left Half of the Screen ----------------------------------------------------->
         <form class="text-fields-left" id="left-text-fields">
             <!-- "Name" field -->
-            <div id="NameFeld" class="form-group row">
+            <div id="NameFeld" class="form-group row labelLeft">
                 <label for="text" class="col-2 col-form-label">Name</label>
                 <div class="col-10">
                     <div class="input-group">
@@ -22,7 +22,7 @@
             </div>
 
             <!-- "Alter" field -->
-            <div class="form-group row">
+            <div class="form-group row labelLeft">
                 <label for="text1" class="col-2 col-form-label">Alter</label>
                 <div class="col-2">
                     <input v-model="alter" id="text1" name="text1" type="text" class="form-control" />
@@ -30,7 +30,7 @@
             </div>
 
             <!-- "Geschlecht" selection field -->
-            <div class="form-group row">
+            <div class="form-group row labelLeft">
                 <label class="col-2">Geschlecht</label>
                 <div class="col-2">
                     <div class="custom-control custom-radio custom-control-inline">
@@ -44,7 +44,7 @@
                 </div>
             </div>
             <!-- "Vorerkrankung" field -->
-            <div class="form-group row">
+            <div class="form-group row labelLeft">
                 <label class="col-2 col-form-label" for>Vorerkrankung</label>
                 <div class="col-10">
                     <div class="input-group">
@@ -53,8 +53,11 @@
                 </div>
             </div>
             <!-- "Sonstiges" text area -->
-            <div class="form-group row">
-                <label for="textarea" class="col-2 col-form-label labelTop">Sonstiges</label>
+            <div class="form-group row labelLeft">
+                <label for="textarea" class="col-2 col-form-label labelTop">
+                    Verdachtsdiagnose/
+                    <br />Einlieferungsdetails
+                </label>
                 <div class="col-10">
                     <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="14" class="form-control"></textarea>
                 </div>
@@ -546,6 +549,9 @@ export default {
 <style scoped>
 #rtwForm {
     height: 100%;
+}
+.labelLeft {
+    padding: 10px;
 }
 .text-fields-left {
     float: left;
