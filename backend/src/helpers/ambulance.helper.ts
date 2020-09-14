@@ -4,6 +4,7 @@ import AxiosBaseConfig from "../core/AxiosConfig";
 import Logger from "../core/Logger";
 import Ambulance from "../database/model/Ambulance";
 import AmbulanceRepo from "../database/repository/AmbulanceRepo";
+import PatientRepo from "../database/repository/PatientRepo";
 
 
 export default class AmbulanceHelper {
@@ -56,6 +57,24 @@ export default class AmbulanceHelper {
          // update the ambulance information in the central server (with a PUT request)
          await axios
             .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
+            .catch(error => {
+               Logger.error(error);
+            });
+      }
+
+      // update the patient information
+      let patient = PatientRepo.queryLatestActivePatient();
+
+      if (patient) {
+         patient.ambulanceId = 0;
+
+         // update the patient locally
+         Logger.debug("Patient will be updated: " + JSON.stringify(patient));
+         PatientRepo.updatePatient(patient);
+
+         // sending a PUT request to the central server with axios to update the old patient
+         await axios
+            .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, await AxiosBaseConfig.getInstance())
             .catch(error => {
                Logger.error(error);
             });

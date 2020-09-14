@@ -45,6 +45,15 @@ sudo pip3 install requests
 echo -n "Installed version Node.js: ";node -v
 echo -n "Installed version npm: ";npm -v
 
+# Running npm install for backend and frontend
+echo "Running npm i for backend and frontend..."
+(cd backend/ ; npm i)
+(cd frontend/ ; npm i)
+
+# Running build for backend
+echo "Running npm build for backend..."
+(cd backend/ ; npm run build)
+
 # Moving some files into a newly created 'Startup' directory
 echo "Moving different files for startup..."
 mkdir $PI_PATH/Startup
