@@ -3,7 +3,7 @@ import App from './App.vue'
 // Bootstrap Import
 import 'bootstrap'
 import 'bootstrap/dist/css/bootstrap.min.css'
-// Font Awesome Import
+// Font Awesome (Icons) Import and Usage
 import { library } from '@fortawesome/fontawesome-svg-core'
 import { faCoffee } from '@fortawesome/free-solid-svg-icons'
 import { FontAwesomeIcon } from '@fortawesome/vue-fontawesome'

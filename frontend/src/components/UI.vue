@@ -1,5 +1,5 @@
 <template>
-    <!-- Backgroundcolor is set in index.html -->
+    <!-- This component contains the main UI and loads in some of the other components being then used here  -->
     <div id="rtwForm">
         <!-- Header -->
         <div class="container-fluid bg-dark text-white" style="text-align: left">
@@ -8,10 +8,10 @@
             </p>
         </div>
         <!-- Main Body -->
-        <!-- Left Half of Screen -->
+        <!-------------------------------------------- Left Half of the Screen ----------------------------------------------------->
         <form class="text-fields-left" id="left-text-fields">
-            <!-- Name Feld -->
-            <div id="NameFeld" class="form-group row">
+            <!-- "Name" field -->
+            <div id="NameFeld" class="form-group row labelLeft">
                 <label for="text" class="col-2 col-form-label">Name</label>
                 <div class="col-10">
                     <div class="input-group">
@@ -21,16 +21,16 @@
                 </div>
             </div>
 
-            <!-- Alter Feld -->
-            <div class="form-group row">
+            <!-- "Alter" field -->
+            <div class="form-group row labelLeft">
                 <label for="text1" class="col-2 col-form-label">Alter</label>
                 <div class="col-2">
-                    <input v-model="alter" id="text1" name="text1" type="number" min="0" class="form-control" />
+                    <input v-model="alter" id="text1" name="text1" type="text" class="form-control" />
                 </div>
             </div>
 
-            <!-- Geschlecht Auswahl-Feld -->
-            <div class="form-group row">
+            <!-- "Geschlecht" selection field -->
+            <div class="form-group row labelLeft">
                 <label class="col-2">Geschlecht</label>
                 <div class="col-2">
                     <div class="custom-control custom-radio custom-control-inline">
@@ -43,8 +43,8 @@
                     </div>
                 </div>
             </div>
-            <!-- Vorerkrankung Textfeld -->
-            <div class="form-group row">
+            <!-- "Vorerkrankung" field -->
+            <div class="form-group row labelLeft">
                 <label class="col-2 col-form-label" for>Vorerkrankung</label>
                 <div class="col-10">
                     <div class="input-group">
@@ -52,23 +52,26 @@
                     </div>
                 </div>
             </div>
-            <!-- Sonstiges Textarea -->
-            <div class="form-group row">
-                <label for="textarea" class="col-2 col-form-label labelTop">Sonstiges</label>
+            <!-- "Sonstiges" text area -->
+            <div class="form-group row labelLeft">
+                <label for="textarea" class="col-2 col-form-label labelTop">
+                    Verdachtsdiagnose/
+                    <br />Einlieferungsdetails
+                </label>
                 <div class="col-10">
                     <textarea v-model="sonstiges" id="textarea" name="textarea" cols="40" rows="14" class="form-control"></textarea>
                 </div>
             </div>
-            <!-- Sprachnachricht Audio Import an dieser Stelle -->
+            <!------- Voice message recording import binding the patientId to the taken audios -------->
             <Recording :patientId="this.patientId" />
         </form>
-        <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
+        <!-------------------------------------------- Right Half of the Screen ----------------------------------------------------->
         <div>
-            <!------- Camera Import -------->
+            <!------- Camera import binding the patientId to the taken images -------->
             <Camera :patientId="this.patientId" />
-            <!-- ABCDE Schema -->
+            <!-- ABCDE Scheme -->
             <form class="text-fields-right" id="right-text-fields" autocomplete="off">
-                <!-- A -->
+                <!------------------- A ---------------------->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
                         <b>A</b>
@@ -105,7 +108,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- B -->
+                <!------------------- B ---------------------->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
                         <b>B</b>
@@ -142,7 +145,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- C -->
+                <!------------------- C ---------------------->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
                         <b>C</b>
@@ -179,7 +182,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- D -->
+                <!------------------- D ---------------------->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
                         <b>D</b>
@@ -216,7 +219,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- E -->
+                <!------------------- E ---------------------->
                 <div class="form-group row">
                     <label class="col-1 col-form-label" for="text">
                         <b>E</b>
@@ -255,28 +258,28 @@
                 </div>
             </form>
         </div>
-        <!-- Bootstrap Button Group to display buttons next to each other and at bottom of screen -->
-        <div class="btn-group confirmButtons fixed-bottom" role="group">
-            <!-- Submit button -->
+        <!-- Bootstrap Button Group to display submit & finish buttons next to each other and at bottom of screen -->
+        <div class="btn-group confirmButtons fixed-bottom" style="margin:10px auto" role="group">
+            <!-- Submit button being sent when no data is being processed-->
             <div id="submitButton" class="submit-button btn-lg btn-block" v-if="!loading">
                 <button @click="this.manualSubmitData" id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
                     <b>Senden</b>
                 </button>
             </div>
-            <!-- Spinner inside Submit Button to indicate when data is being processed -->
+            <!-- Submit button with spinner to indicate when data is being processed -->
             <div class="submit-button btn-lg btn-block" v-if="loading">
                 <button id="SubmitButton" name="submit" type="submit" class="btn btn-success btn-lg btn-block">
                     <span id="btnMsg" class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
                     Daten werden gesendet...
                 </button>
             </div>
-            <!-- "Patient abschließen" Button - Reset Button -->
+            <!-- "Patient abschließen" button - finish button when no data is being processed-->
             <div id="finishButton" class="finish-button btn-lg btn-block" v-if="!finishing">
                 <button @click="this.finishPatient" id="finishButton" name="submit" type="reset" class="btn btn-danger btn-lg btn-block">
                     <b>Patient abschließen / Neuer Patient</b>
                 </button>
             </div>
-            <!-- Spinner inside Finish Button to indicate when data is being processed -->
+            <!-- Finish button with spinner indicating when data is being processed -->
             <div class="finish-button btn-lg btn-block" v-if="finishing">
                 <button id="finishButton" name="finish" type="submit" class="btn btn-danger btn-lg btn-block">
                     <span id="btnMsg" class="spinner-border spinner-border-sm" style="display: inline-block" role="status" aria-hidden="true"></span>
@@ -284,27 +287,29 @@
                 </button>
             </div>
         </div>
-        <!-- Logo - deactivated due to screen size reasons -->
+        <!-- Logo Uniklinik - deactivated for now -->
         <!-- <div class="logo">
-            <img src="./images/logo.png" class="img-fluid" alt="Logo Uniklinik" />
+            <img src="../assets/logo.png" class="img-fluid" alt="Logo Uniklinik" />
         </div>-->
     </div>
 </template>
 
 <!------------------------------ Script ------------------------------> 
 <script>
-// Camera import
+// Camera and Recording components import
 import Camera from "./Camera.vue";
 import Recording from "./Recording.vue";
+// axios import for REST API
 import axios from "axios";
 
 export default {
     name: "UI",
+    // imported components are loaded here
     components: {
         Camera,
         Recording,
     },
-    // return input of text fields
+    // component-wide definition of variables that are accessed throughout the component's runtime
     data() {
         return {
             submitted: false,
@@ -355,6 +360,7 @@ export default {
                 console.log(error);
             });
     },
+    // Watcher to make sure changed data is automatically transmitted every 10 seconds
     watch: {
         submitted: {
             handler() {
@@ -370,16 +376,19 @@ export default {
         },
     },
     methods: {
+        /**
+         * Manually submitting data: loading submit data with parameter true
+         */
         manualSubmitData() {
             this.submitData(true);
         },
         /**
-         * Methode zum Versenden der Daten an Backend ueber Submit Button
+         * Method submitting the data to the backend
          */
         submitData(manual) {
-            // set loading to true so that spinner is shown
+            // set loading to true so that loading spinner is shown
             this.loading = true;
-            // Send patient ID as well as all the other data to backend
+            // Data object where all the required data is set to be then submitted
             this.dataObj = {
                 patientId: this.patientId,
                 name: this.nameOf,
@@ -398,9 +407,11 @@ export default {
                 EIsSelected: this.Evalue,
                 EText: this.Einput,
             };
+            // data is submitted in JSON format
             let dataJSON = JSON.stringify(this.dataObj);
             var vm = this;
             console.log("Sending " + dataJSON);
+            // POST of the data object to backend
             axios({
                 method: "post",
                 url: "http://localhost:3000/patient/create",
@@ -410,12 +421,10 @@ export default {
                 data: dataJSON,
             })
                 .then((response) => {
-                    // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
-                    // patientID dann aus dataObj raus und in data (return) Objekt rein
-                    // ambulanceID kann komplett raus, wird backend seitig realisiert
                     vm.patientId = response.data.data.patient.patientId;
                     console.log(response);
                     vm.loading = false;
+                    // modals must only be shown when there is a manual user interaction to send the data
                     if (manual) {
                         vm.$modal.show("sentModal");
                     }
@@ -424,18 +433,19 @@ export default {
                 .catch(function (error) {
                     console.log(error);
                     vm.loading = false;
+                    // modals must only be shown when there is a manual user interaction to send the data
                     if (manual) {
                         vm.$modal.show("errorModal");
                     }
                 });
         },
         /**
-         * Patienten abschließen Funktionalität
+         * Finishing the patient, i.e. sending all the data to backend and clearing all the input fields
          */
         finishPatient() {
             // set finishing flag to true
             this.finishing = true;
-            // sending dataObj with the patientID to PI
+            // data object containing all the data to be sent
             this.dataObj = {
                 patientId: this.patientId,
                 name: this.nameOf,
@@ -454,9 +464,11 @@ export default {
                 EIsSelected: this.Evalue,
                 EText: this.Einput,
             };
+            // sending data as JSON
             let dataJSON = JSON.stringify(this.dataObj);
             console.log("Abgeschlossenes JSON Obj " + dataJSON);
             var vm = this;
+            // axios POSt to backend
             axios({
                 method: "post",
                 url: "http://localhost:3000/patient/finish",
@@ -482,7 +494,8 @@ export default {
                 });
         },
         /**
-         * ABCDE Farben
+         * Seting the colors of the rows of the ABCDE-scheme depending on whether
+         * good (green) or bad (red) in the corresponding rows has been pressed
          */
         colorizeRow() {
             if (this.Avalue === true) {
@@ -540,6 +553,9 @@ export default {
 #rtwForm {
     height: 100%;
 }
+.labelLeft {
+    padding: 10px;
+}
 .text-fields-left {
     float: left;
     width: 50vw;
@@ -553,7 +569,8 @@ export default {
     display: inline-block;
 }
 
-/* .logo {
+/* logo is deactivated for now
+.logo {
     position: relative;
     bottom: 0vw;
     left: 1vw;

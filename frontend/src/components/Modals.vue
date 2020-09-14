@@ -1,6 +1,7 @@
 <template>
+    <!-- In this component the configuration of the modals (similar to popups) takes place which are then called for success/error messages -->
     <div id="modals">
-        <!-- Modal window to be displayed as a confirmation when data has successfully been sent -->
+        <!-- Modal window to be displayed as a confirmation when the master data has successfully been sent -->
         <modal id="sentModal" name="sentModal">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -17,7 +18,7 @@
                 <button type="button" class="btn btn-block btn-lg btn-secondary" data-dismiss="sentModal" @click="hideSentModal()">Schließen</button>
             </div>
         </modal>
-        <!-- Modal window to be displayed as a confirmation when patient has successfully been finished, shall only be closable via confirmation button -->
+        <!-- Modal window to be displayed as a confirmation when the patient has successfully been finished, shall only be closable via confirmation button -->
         <modal id="finishModal" name="finishModal" v-bind:click-to-close="false">
             <div class="modal-header">
                 <h5 class="modal-title">
@@ -74,7 +75,8 @@
 export default {
     methods: {
         /**
-         * Method to hide the sent and error modal when the close button is clicked within
+         * The modals also have to be closed somehow, here: through clicking
+         * the corresponding "Schließen" button calling this method
          */
         hideSentModal() {
             this.$modal.hide("sentModal");
@@ -82,9 +84,6 @@ export default {
         hideErrorModal() {
             this.$modal.hide("errorModal");
         },
-        /**
-         * method to hide screenshot popup after a few seconds
-         */
         hideScreenshotModal() {
             this.$modal.hide("screenshotModal");
         },
