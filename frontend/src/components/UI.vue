@@ -339,7 +339,7 @@ export default {
     /**
      * On mount the patient ID is retreived
      */
-    mounted() {
+    created() {
         // axios get on patientID
         var vm = this;
         axios({
