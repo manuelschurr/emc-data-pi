@@ -1,6 +1,6 @@
 #!/bin/sh
 
-import serial, subprocess, time, threading, json, requests, argparse
+import serial, time, threading, json, requests, argparse
 from datetime import datetime
 
 #declare variables
@@ -11,7 +11,7 @@ lock = threading.Lock()
 #set device connection port
 device = '/dev/ttyUSB0'
 
-#deliver next free PatientId from server into script to be inserted into documents to be sent to server, token for API authentication and server url
+#input of next free PatientId from server, token for API authentication and server url
 parser = argparse.ArgumentParser()
 parser.add_argument('pID', type=int, help='PatientId obtained from server.')
 parser.add_argument('authToken', type=str, help='Authentication token for API access.')
@@ -24,8 +24,7 @@ url = args.url
 #set server route
 route =  url + '/patient/createPulsoxy'
 
-#establish connection via serial port; information on needed settings 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8
-
+#establish connection via serial port; information on needed settings from 'https://gist.github.com/patrick-samy/df33e296885364f602f0c27f1eb139a8
 try:
     ser = serial.Serial()
     ser.baudrate = 115200          
@@ -49,7 +48,7 @@ except:
     ser.close()
     exit()
     
-#wait for data recording until pulsoximeter is applied to patient for the first time (equals first time recording other values than zero)
+#wait for data recording until pulsoximeter is applied to patient for the first time (first time recording other values than zero)
 fingerIn = raw[5] & 0x7f
 
 while(fingerIn == 0):
@@ -63,7 +62,7 @@ while(fingerIn == 0):
 
     fingerIn = raw[5] & 0x7f
 
-#constantly obtain data from device
+#constantly obtain data from device by sending key and reading device bit stream afterwards
 def read_data():
     global data
 
@@ -80,6 +79,7 @@ def read_data():
             print ('Data read error. Trying again...')
             y = True
 
+#create data package as demanded by server route
     x = True
     while x:
         time = datetime.now().strftime('%m-%d-%Y %H:%M:%S')
@@ -104,7 +104,7 @@ def read_data():
                 print ('Data read error. Trying again...')
                 y = True
 
-#write data to server once a second
+#write data to server once a second; with thread locks to ensure data integrity
 def write_data():
     global data
     global output

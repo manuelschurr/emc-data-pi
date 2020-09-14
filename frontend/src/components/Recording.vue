@@ -1,70 +1,57 @@
 <template>
+  <!-- This component handels the Audio -->
   <div>
     <!-- Voice Record - Row + Button -->
     <div class="form-group row">
       <label for="Audio" class="col-2 col-form-label labelTop">Audio</label>
-      <VueRecordAudio mode="hold" @result="onResult" />
-      <!-- Container, um die Recordings anzuzeigen -->
+      <VueRecordAudio mode="press" @result="onResult" />
+      <!-- Container, where audio files can be stored -->
       <div id="audio" class="audio" controls></div>
-      <!-- Bestätigungsnachricht/Errornachricht -->
+      <!-- Container for success/error message -->
       <div id="audioMessage"></div>
-      <!-- <div v-if="audioMsg">Audio erfolgreich an Schockraum gesendet!</div> -->
-      <!-- <div v-if="!audioMsg">Audio nicht erfolgreich an Schockraum gesendet!</div> -->
-      <!-- Recording loeschen Moeglichkeit -->
-      <!-- <div v-for="(record, index) in recordings" :key="index" class="recorded-item">
-                <button @click="removeRecord(index)" class="button btn-dark">
-                    <i class="fa fa-trash"></i>
-                </button>
-      </div>-->
     </div>
   </div>
 </template>
 
 <script>
+// moment import for proper naming of files with timestamd
 import moment from "moment";
-// Sprachnachricht Funktionalitaet von externer open source library
+// Voice message is of an external library: "@codekraft-studio/vue-record"
 import Vue from "vue";
 import VueRecord from "@codekraft-studio/vue-record";
-// REST
+Vue.use(VueRecord);
+// axios import for REST
 import axios from "axios";
 
-Vue.use(VueRecord);
 export default {
   data() {
+    // component-wide definition of variables that are accessed throughout the component's runtime
     return {
       audio: [],
       successCounter: 0,
       failCounter: 0,
-      // audioMsg: false,
     };
   },
+  // patientId is hand over by the UI component and further on used here as well
   props: { patientId: Number },
   methods: {
+    /**
+     * this method instanciates the voice message as a blob and sends it to the backend via POST
+     */
     onResult(data) {
-      // console.log("Blob Object " + data);
-      // creating Audio Element to display all the audios in UI
-      // does not make sense as there is no soundcard in PI --> show success/fail message instead
-      // var audio = document.getElementById("audio");
-      // var mainaudio = document.createElement("audio");
-      // mainaudio.setAttribute("controls", "controls");
-      // audio.appendChild(mainaudio);
-      // var audioFile = URL.createObjectURL(data);
-      // mainaudio.innerHTML =
-      //     '<source src="' + audioFile + '" type="audio/webm" />';
-      // this.audio.push(audioFile);
-      // console.log(mainaudio);
       /**
-       * sending audio to PI
+       * sending audio to PI via the form data object containing
        */
       var vm = this;
       const formData = new FormData();
       const time = moment().format("YYYY-MM-DD_HH-mm-ss");
       const patId = vm.patientId ? vm.patientId : 0;
+      // creating form data object containing the audio blob to be sent to backend
       formData.append("audio", data, `${patId}-${time}.webm`);
       var audioMessage = document.getElementById("audioMessage");
       // give audioMessage some distance to button
       audioMessage.setAttribute("style", "padding: 1px;");
-      // AudioSpinner
+      // setting up the audioSpinner to show that the sending of the audio message is processed
       var audioSpinner = document.createElement("div");
       audioSpinner.setAttribute("class", "d-flex align-items-center");
       audioSpinner.innerHTML =
@@ -72,18 +59,18 @@ export default {
       audioMessage.appendChild(audioSpinner);
       console.log("Sending the blob data:", data);
       console.log("Downloadable audio", window.URL.createObjectURL(data));
+      // POSTing the audio to the backend
       axios({
         method: "post",
         url: "http://localhost:3000/audio",
         headers: {
           "Content-Type": "audio/webm",
-          //   "Content-Type": "multipart/form-data",
         },
         data: formData,
       })
         .then(function (response) {
           console.log(response);
-          // vm.audioMsg = true;
+          // on success, displaying success message with number of files successfully sent
           vm.successCounter += 1;
           audioMessage.innerHTML =
             '<strong><p style="color:green">Audio erfolgreich versendet (Dateien: ' +
@@ -92,8 +79,8 @@ export default {
         })
         .catch(function (error) {
           console.log(error);
+          // on error, displaying error message with number of files not successfully sent
           vm.failCounter += 1;
-          // vm.audioMsg = false;
           audioMessage.innerHTML =
             '<strong><p style="color:red">Audio nicht erfolgreich versendet (Dateien: ' +
             vm.failCounter +

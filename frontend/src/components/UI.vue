@@ -1,5 +1,5 @@
 <template>
-  <!-- Backgroundcolor is set in index.html -->
+  <!-- This component contains the main UI and loads in some of the other components being then used here  -->
   <div id="rtwForm">
     <!-- Header -->
     <div class="container-fluid bg-dark text-white" style="text-align: left">
@@ -8,40 +8,29 @@
       </p>
     </div>
     <!-- Main Body -->
-    <!-- Left Half of Screen -->
+    <!-------------------------------------------- Left Half of the Screen ----------------------------------------------------->
     <form class="text-fields-left" id="left-text-fields">
-      <!-- Name Feld -->
-      <div id="NameFeld" class="form-group row">
+      <!-- "Name" field -->
+      <div id="NameFeld" class="form-group row labelLeft">
         <label for="text" class="col-2 col-form-label">Name</label>
         <div class="col-10">
           <div class="input-group">
             <div class="input-group-prepend"></div>
-            <input
-              id="nameInput"
-              v-model="nameOf"
-              type="text"
-              class="form-control"
-            />
+            <input id="nameInput" v-model="nameOf" type="text" class="form-control" />
           </div>
         </div>
       </div>
 
-      <!-- Alter Feld -->
-      <div class="form-group row">
+      <!-- "Alter" field -->
+      <div class="form-group row labelLeft">
         <label for="text1" class="col-2 col-form-label">Alter</label>
         <div class="col-2">
-          <input
-            v-model="alter"
-            id="text1"
-            name="text1"
-            type="text"
-            class="form-control"
-          />
+          <input v-model="alter" id="text1" name="text1" type="number" min="0" class="form-control" />
         </div>
       </div>
 
-      <!-- Geschlecht Auswahl-Feld -->
-      <div class="form-group row">
+      <!-- "Geschlecht" selection field -->
+      <div class="form-group row labelLeft">
         <label class="col-2">Geschlecht</label>
         <div class="col-2">
           <div class="custom-control custom-radio custom-control-inline">
@@ -68,26 +57,18 @@
           </div>
         </div>
       </div>
-      <!-- Vorerkrankung Textfeld -->
-      <div class="form-group row">
+      <!-- "Vorerkrankung" field -->
+      <div class="form-group row labelLeft">
         <label class="col-2 col-form-label" for>Vorerkrankung</label>
         <div class="col-10">
           <div class="input-group">
-            <input
-              v-model="vorerkrankung"
-              id
-              name
-              type="text"
-              class="form-control"
-            />
+            <input v-model="vorerkrankung" id name type="text" class="form-control" />
           </div>
         </div>
       </div>
-      <!-- Sonstiges Textarea -->
-      <div class="form-group row">
-        <label for="textarea" class="col-2 col-form-label labelTop"
-          >Sonstiges</label
-        >
+      <!-- "Sonstiges" text area -->
+      <div class="form-group row labelLeft">
+        <label for="textarea" class="col-2 col-form-label labelTop">Sonstiges</label>
         <div class="col-10">
           <textarea
             v-model="sonstiges"
@@ -99,16 +80,16 @@
           ></textarea>
         </div>
       </div>
-      <!-- Sprachnachricht Audio Import an dieser Stelle -->
+      <!------- Voice message recording import binding the patientId to the taken audios -------->
       <Recording :patientId="this.patientId" />
     </form>
-    <!-------------------------------------------- Right Middle Half of Screen ----------------------------------------------------->
+    <!-------------------------------------------- Right Half of the Screen ----------------------------------------------------->
     <div>
-      <!------- Camera Import -------->
+      <!------- Camera import binding the patientId to the taken images -------->
       <Camera :patientId="this.patientId" />
-      <!-- ABCDE Schema -->
+      <!-- ABCDE Scheme -->
       <form class="text-fields-right" id="right-text-fields" autocomplete="off">
-        <!-- A -->
+        <!------------------- A ---------------------->
         <div class="form-group row">
           <label class="col-1 col-form-label" for="text">
             <b>A</b>
@@ -128,13 +109,7 @@
                   <i class="fa fa-check"></i>
                 </button>
               </div>
-              <input
-                v-model="Ainput"
-                id="ARow"
-                name="text"
-                type="text"
-                class="form-control"
-              />
+              <input v-model="Ainput" id="ARow" name="text" type="text" class="form-control" />
               <div class="input-group-append">
                 <button
                   class="input-group-text btn btn-danger"
@@ -151,7 +126,7 @@
             </div>
           </div>
         </div>
-        <!-- B -->
+        <!------------------- B ---------------------->
         <div class="form-group row">
           <label class="col-1 col-form-label" for="text">
             <b>B</b>
@@ -171,13 +146,7 @@
                   <i class="fa fa-check"></i>
                 </button>
               </div>
-              <input
-                v-model="Binput"
-                id="BRow"
-                name="text"
-                type="text"
-                class="form-control"
-              />
+              <input v-model="Binput" id="BRow" name="text" type="text" class="form-control" />
               <div class="input-group-append">
                 <button
                   class="input-group-text btn btn-danger"
@@ -194,7 +163,7 @@
             </div>
           </div>
         </div>
-        <!-- C -->
+        <!------------------- C ---------------------->
         <div class="form-group row">
           <label class="col-1 col-form-label" for="text">
             <b>C</b>
@@ -214,13 +183,7 @@
                   <i class="fa fa-check"></i>
                 </button>
               </div>
-              <input
-                v-model="Cinput"
-                id="CRow"
-                name="text"
-                type="text"
-                class="form-control"
-              />
+              <input v-model="Cinput" id="CRow" name="text" type="text" class="form-control" />
               <div class="input-group-append">
                 <button
                   class="input-group-text btn btn-danger"
@@ -237,7 +200,7 @@
             </div>
           </div>
         </div>
-        <!-- D -->
+        <!------------------- D ---------------------->
         <div class="form-group row">
           <label class="col-1 col-form-label" for="text">
             <b>D</b>
@@ -257,13 +220,7 @@
                   <i class="fa fa-check"></i>
                 </button>
               </div>
-              <input
-                v-model="Dinput"
-                id="DRow"
-                name="text"
-                type="text"
-                class="form-control"
-              />
+              <input v-model="Dinput" id="DRow" name="text" type="text" class="form-control" />
               <div class="input-group-append">
                 <button
                   class="input-group-text btn btn-danger"
@@ -280,7 +237,7 @@
             </div>
           </div>
         </div>
-        <!-- E -->
+        <!------------------- E ---------------------->
         <div class="form-group row">
           <label class="col-1 col-form-label" for="text">
             <b>E</b>
@@ -300,13 +257,7 @@
                   <i class="fa fa-check"></i>
                 </button>
               </div>
-              <input
-                v-model="Einput"
-                id="ERow"
-                name="text"
-                type="text"
-                class="form-control"
-              />
+              <input v-model="Einput" id="ERow" name="text" type="text" class="form-control" />
               <div class="input-group-append">
                 <button
                   class="input-group-text btn btn-danger"
@@ -325,18 +276,10 @@
         </div>
       </form>
     </div>
-    <!-- Bootstrap Button Group to display buttons next to each other and at bottom of screen -->
-    <div
-      class="btn-group confirmButtons fixed-bottom"
-      style="margin:10px auto"
-      role="group"
-    >
-      <!-- Submit button -->
-      <div
-        id="submitButton"
-        class="submit-button btn-lg btn-block"
-        v-if="!loading"
-      >
+    <!-- Bootstrap Button Group to display submit & finish buttons next to each other and at bottom of screen -->
+    <div class="btn-group confirmButtons fixed-bottom" style="margin:10px auto" role="group">
+      <!-- Submit button being sent when no data is being processed-->
+      <div id="submitButton" class="submit-button btn-lg btn-block" v-if="!loading">
         <button
           @click="this.manualSubmitData"
           id="SubmitButton"
@@ -347,7 +290,7 @@
           <b>Senden</b>
         </button>
       </div>
-      <!-- Spinner inside Submit Button to indicate when data is being processed -->
+      <!-- Submit button with spinner to indicate when data is being processed -->
       <div class="submit-button btn-lg btn-block" v-if="loading">
         <button
           id="SubmitButton"
@@ -365,14 +308,8 @@
           Daten werden gesendet...
         </button>
       </div>
-      <!-- Modal Windows Import for Data Sending and Patient Finishing Confirmation Windows -->
-      <!-- <Modals /> -->
-      <!-- "Patient abschließen" Button - Reset Button -->
-      <div
-        id="finishButton"
-        class="finish-button btn-lg btn-block"
-        v-if="!finishing"
-      >
+      <!-- "Patient abschließen" button - finish button when no data is being processed-->
+      <div id="finishButton" class="finish-button btn-lg btn-block" v-if="!finishing">
         <button
           @click="this.finishPatient"
           id="finishButton"
@@ -383,7 +320,7 @@
           <b>Patient abschließen / Neuer Patient</b>
         </button>
       </div>
-      <!-- Spinner inside Finish Button to indicate when data is being processed -->
+      <!-- Finish button with spinner indicating when data is being processed -->
       <div class="finish-button btn-lg btn-block" v-if="finishing">
         <button
           id="finishButton"
@@ -404,31 +341,27 @@
     </div>
     <!-- Logo Uniklinik - deactivated for now -->
     <!-- <div class="logo">
-            <img src="./images/logo.png" class="img-fluid" alt="Logo Uniklinik" />
+            <img src="../assets/logo.png" class="img-fluid" alt="Logo Uniklinik" />
     </div>-->
   </div>
 </template>
 
 <!------------------------------ Script ------------------------------> 
 <script>
-// Camera import
+// Camera and Recording components import
 import Camera from "./Camera.vue";
 import Recording from "./Recording.vue";
+// axios import for REST API
 import axios from "axios";
-// importing and using lib for modal windows
-// import Vue from "vue";
-// import VModal from "vue-js-modal";
-// Vue.use(VModal);
-// import Modals from "./Modals.vue";
 
 export default {
   name: "UI",
+  // imported components are loaded here
   components: {
     Camera,
-    Recording
-    // Modals,
+    Recording,
   },
-  // return input of text fields
+  // component-wide definition of variables that are accessed throughout the component's runtime
   data() {
     return {
       submitted: false,
@@ -455,7 +388,7 @@ export default {
       Einput: "",
       isRecording: false,
       // declare dataObj
-      dataObj: ""
+      dataObj: "",
       // submit: false,
       // finish: false,
     };
@@ -463,22 +396,23 @@ export default {
   /**
    * On mount the patient ID is retreived
    */
-  mounted() {
+  created() {
     // axios get on patientID
     var vm = this;
     axios({
       method: "get",
-      url: "http://localhost:3000/patient/findNextPatientId"
+      url: "http://localhost:3000/patient/findNextPatientId",
     })
-      .then(response => {
+      .then((response) => {
         console.log(response);
         vm.patientId = response.data.data;
         console.log(`patientId: ${vm.patientId}`);
       })
-      .catch(function(error) {
+      .catch(function (error) {
         console.log(error);
       });
   },
+  // Watcher to make sure changed data is automatically transmitted every 10 seconds
   watch: {
     submitted: {
       handler() {
@@ -490,63 +424,23 @@ export default {
         } else {
           clearInterval(this.interval);
         }
-      }
-    }
+      },
+    },
   },
   methods: {
+    /**
+     * Manually submitting data: loading submit data with parameter true
+     */
     manualSubmitData() {
       this.submitData(true);
     },
     /**
-     * Methode zum Versenden der Daten an Backend ueber Submit Button
+     * Method submitting the data to the backend
      */
     submitData(manual) {
-      // set loading to true so that spinner is shown
+      // set loading to true so that loading spinner is shown
       this.loading = true;
-
-      // JSON Objekt aus Data der Textfelder/User Input
-      // if patient ID exists, then send it as well to be able to update patients
-      // if (this.patientId != 0) {
-      //     this.dataObj = {
-      //         patientId: this.patientId,
-      //         name: this.nameOf,
-      //         gender: this.geschlecht,
-      //         age: this.alter,
-      //         preExistingIllness: this.vorerkrankung,
-      //         miscellaneous: this.sonstiges,
-      //         AIsSelected: this.Avalue,
-      //         AText: this.Ainput,
-      //         BIsSelected: this.Bvalue,
-      //         BText: this.Binput,
-      //         CIsSelected: this.Cvalue,
-      //         CText: this.Cinput,
-      //         DIsSelected: this.Dvalue,
-      //         DText: this.Dinput,
-      //         EIsSelected: this.Evalue,
-      //         EText: this.Einput,
-      //     };
-      //     // JSON Objekt aus Data der Textfelder/User Input
-      //     // if patient ID not existing yet, new patient
-      // } else {
-      //     this.dataObj = {
-      //         name: this.nameOf,
-      //         gender: this.geschlecht,
-      //         age: this.alter,
-      //         preExistingIllness: this.vorerkrankung,
-      //         miscellaneous: this.sonstiges,
-      //         AIsSelected: this.Avalue,
-      //         AText: this.Ainput,
-      //         BIsSelected: this.Bvalue,
-      //         BText: this.Binput,
-      //         CIsSelected: this.Cvalue,
-      //         CText: this.Cinput,
-      //         DIsSelected: this.Dvalue,
-      //         DText: this.Dinput,
-      //         EIsSelected: this.Evalue,
-      //         EText: this.Einput,
-      //     };
-      // }
-      // Send patient ID as well as all the other data to backend
+      // Data object where all the required data is set to be then submitted
       this.dataObj = {
         patientId: this.patientId,
         name: this.nameOf,
@@ -563,46 +457,47 @@ export default {
         DIsSelected: this.Dvalue,
         DText: this.Dinput,
         EIsSelected: this.Evalue,
-        EText: this.Einput
+        EText: this.Einput,
       };
+      // data is submitted in JSON format
       let dataJSON = JSON.stringify(this.dataObj);
       var vm = this;
       console.log("Sending " + dataJSON);
+      // POST of the data object to backend
       axios({
         method: "post",
         url: "http://localhost:3000/patient/create",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        data: dataJSON
+        data: dataJSON,
       })
-        .then(response => {
-          // var patientID = ..... response vom PI --> die response methode hier setted dann die PatientID, die dann im data return Objekt ist
-          // patientID dann aus dataObj raus und in data (return) Objekt rein
-          // ambulanceID kann komplett raus, wird backend seitig realisiert
+        .then((response) => {
           vm.patientId = response.data.data.patient.patientId;
           console.log(response);
           vm.loading = false;
+          // modals must only be shown when there is a manual user interaction to send the data
           if (manual) {
             vm.$modal.show("sentModal");
           }
           vm.submitted = true;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           console.log(error);
           vm.loading = false;
+          // modals must only be shown when there is a manual user interaction to send the data
           if (manual) {
             vm.$modal.show("errorModal");
           }
         });
     },
     /**
-     * Patienten abschließen Funktionalität
+     * Finishing the patient, i.e. sending all the data to backend and clearing all the input fields
      */
     finishPatient() {
       // set finishing flag to true
       this.finishing = true;
-      // sending dataObj with the patientID to PI
+      // data object containing all the data to be sent
       this.dataObj = {
         patientId: this.patientId,
         name: this.nameOf,
@@ -619,20 +514,22 @@ export default {
         DIsSelected: this.Dvalue,
         DText: this.Dinput,
         EIsSelected: this.Evalue,
-        EText: this.Einput
+        EText: this.Einput,
       };
+      // sending data as JSON
       let dataJSON = JSON.stringify(this.dataObj);
       console.log("Abgeschlossenes JSON Obj " + dataJSON);
       var vm = this;
+      // axios POSt to backend
       axios({
         method: "post",
         url: "http://localhost:3000/patient/finish",
         headers: {
-          "Content-Type": "application/json"
+          "Content-Type": "application/json",
         },
-        data: dataJSON
+        data: dataJSON,
       })
-        .then(response => {
+        .then((response) => {
           console.log(response);
           // set finish flag to true when patient was finished successfully
           vm.finishing = false;
@@ -640,7 +537,7 @@ export default {
           vm.$modal.show("finishModal");
           vm.submitted = false;
         })
-        .catch(function(error) {
+        .catch(function (error) {
           // set finish flag to false when patient was not finished successfully
           vm.finishing = false;
           // displaying error modal then
@@ -649,7 +546,8 @@ export default {
         });
     },
     /**
-     * ABCDE Farben
+     * Seting the colors of the rows of the ABCDE-scheme depending on whether
+     * good (green) or bad (red) in the corresponding rows has been pressed
      */
     colorizeRow() {
       if (this.Avalue === true) {
@@ -687,8 +585,8 @@ export default {
         document.getElementById("ERow").style.backgroundColor = "#C82333";
         document.getElementById("ERow").style.color = "white";
       }
-    }
-  }
+    },
+  },
 };
 </script>
 
@@ -696,6 +594,9 @@ export default {
 <style scoped>
 #rtwForm {
   height: 100%;
+}
+.labelLeft {
+  padding-left: 10px;
 }
 .text-fields-left {
   float: left;
@@ -710,7 +611,8 @@ export default {
   display: inline-block;
 }
 
-/* .logo {
+/* logo is deactivated for now
+.logo {
     position: relative;
     bottom: 0vw;
     left: 1vw;
@@ -720,8 +622,13 @@ export default {
 
 .submit-button {
   width: 50vw;
+  position: absolute;
+  bottom: 1%;
 }
 .finish-button {
   width: 50vw;
+  position: absolute;
+  bottom: 1%;
+  left: 50vw;
 }
 </style>

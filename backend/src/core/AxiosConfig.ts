@@ -3,6 +3,8 @@ import { centralServerAddress, centralServerAuthPassword, centralServerAuthUser 
 import { HttpsAgent } from "./HttpsAgent";
 import Logger from "./Logger";
 
+// base class to use for axios calls, relevant properties are already set
+// using a singleton since this config should only exist once
 export default class AxiosBaseConfig implements AxiosRequestConfig {
    private static INSTANCE: AxiosBaseConfig;
 
@@ -15,22 +17,15 @@ export default class AxiosBaseConfig implements AxiosRequestConfig {
       httpsAgent: HttpsAgent
    } as AxiosRequestConfig;
 
-   // axios properties
+   // properties from interface AxiosRequestConfig
    headers?: any;
    httpsAgent?: any;
 
-   /**
-    * The Singleton's constructor should always be private to prevent direct
-    * construction calls with the `new` operator.
-    */
+   // private singleton constructor to prevent direct construction with the new operator
    private constructor() {
    }
 
-   /**
-    * The static method that controls the access to the singleton instance.
-    * This implementation let you subclass the Singleton class while keeping
-    * just one instance of each subclass around.
-    */
+   // controlling the access to the singleton instance
    public static async getInstance(): Promise<AxiosBaseConfig> {
       if (!AxiosBaseConfig.INSTANCE) {
          AxiosBaseConfig.INSTANCE = new AxiosBaseConfig();
@@ -45,7 +40,7 @@ export default class AxiosBaseConfig implements AxiosRequestConfig {
    }
 
    async create() {
-      // get token from central server
+      // doing a login to get the token from central server
       await axios
          .post(`${centralServerAddress}/user/login`, { username: centralServerAuthUser, password: centralServerAuthPassword }, this.axios_config)
          .then(response => {
@@ -55,13 +50,13 @@ export default class AxiosBaseConfig implements AxiosRequestConfig {
             Logger.error(error);
          });
 
-      // set header for config
+      // set header for base config
       this.headers = {
          'Content-Type': 'application/json',
          'x-access-token': this.token
       };
       
-      //set https agent for secure connection
+      // set https agent for secure connection
       this.httpsAgent = HttpsAgent;
    }
 }
