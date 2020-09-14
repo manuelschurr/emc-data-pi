@@ -25,7 +25,7 @@
             <div class="form-group row">
                 <label for="text1" class="col-2 col-form-label">Alter</label>
                 <div class="col-2">
-                    <input v-model="alter" id="text1" name="text1" type="text" class="form-control" />
+                    <input v-model="alter" id="text1" name="text1" type="number" min="0" class="form-control" />
                 </div>
             </div>
 
