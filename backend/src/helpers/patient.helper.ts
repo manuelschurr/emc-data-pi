@@ -26,7 +26,7 @@ export default class PatientHelper {
          Logger.debug("Patient will be updated: " + JSON.stringify(patient));
          PatientRepo.updatePatient(patient);
 
-         // sending a PUT request to the central server with axios
+         // update the patient information in the central server (with a PUT request)
          axios
             .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, await AxiosBaseConfig.getInstance())
             .catch(error => {
@@ -54,7 +54,7 @@ export default class PatientHelper {
       Logger.debug("Ambulance will be updated: " + JSON.stringify(ambulance));
       AmbulanceRepo.updateAmbulance(ambulance);
 
-      // sending a PUT request to the central server with axios
+      // update the ambulance information in the central server (with a PUT request)
       axios
          .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
          .catch(error => {
@@ -74,7 +74,7 @@ export default class PatientHelper {
       Logger.debug("Patient will be updated: " + JSON.stringify(patient));
       PatientRepo.updatePatient(patient);
 
-      // sending a PUT request to the central server with axios
+      // update the patient information in the central server (with a PUT request)
       await axios
          .put(`${centralServerAddress}/patient/update/${patient.patientId}`, patient, await AxiosBaseConfig.getInstance())
          .catch(error => {
@@ -85,7 +85,7 @@ export default class PatientHelper {
       Logger.debug("Ambulance will be updated: " + JSON.stringify(ambulance));
       AmbulanceRepo.updateAmbulance(ambulance);
 
-      // sending a PUT request to the central server with axios
+      // update the ambulance information in the central server (with a PUT request)
       await axios
          .put(`${centralServerAddress}/ambulance/update/${ambulance.ambulanceId}`, ambulance, await AxiosBaseConfig.getInstance())
          .catch(error => {
